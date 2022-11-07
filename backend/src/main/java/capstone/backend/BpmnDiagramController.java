@@ -1,9 +1,7 @@
 package capstone.backend;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,5 +15,10 @@ public class BpmnDiagramController {
     @GetMapping
     List<BpmnDiagram> getAllDiagrams() {
         return service.getAllDiagrams();
+    }
+
+    @PostMapping
+    public BpmnDiagram addBpmnDiagram(@RequestBody BpmnDiagram bpmnDiagram) {
+        return service.addBpmnDiagram(bpmnDiagram);
     }
 }
