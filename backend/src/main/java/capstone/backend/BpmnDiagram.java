@@ -1,6 +1,8 @@
 package capstone.backend;
 
+import lombok.With;
 
+@With
 public record BpmnDiagram(
         String id,
         String name,
