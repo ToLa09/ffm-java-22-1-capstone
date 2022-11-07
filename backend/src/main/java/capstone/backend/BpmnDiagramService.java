@@ -12,7 +12,10 @@ public class BpmnDiagramService {
     private final BpmnDiagramRepository repository;
 
     public List<BpmnDiagram> getAllDiagrams() {
-        return null;
+        return repository.findAll();
     }
 
+    public BpmnDiagram addBpmnDiagram(BpmnDiagram bpmnDiagram) {
+        return repository.save(bpmnDiagram);
+    }
 }
