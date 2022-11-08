@@ -1,0 +1,71 @@
+name: deploy app to aws
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Build Frontend
+        working-directory: frontend
+        run: |
+          npm install
+          npm run build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: frontend-build
+          path: frontend/build/
+
+  build-backend:
+    runs-on: ubuntu-20.04
+    needs: build-frontend
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '19'
+          distribution: 'adopt'
+      - uses: actions/download-artifact@v2
+        with:
+          name: frontend-build
+          path: backend/src/main/resources/static
+      - name: Build with maven
+        working-directory: backend
+        run: mvn -B package
+      - uses: actions/upload-artifact@v2
+        with:
+          name: app.jar
+          path: backend/target/app.jar
+
+  deploy-aws:
+    runs-on: ubuntu-latest
+    needs: build-backend
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1 # More information on this action can be found below in the 'AWS Credentials' section
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: capstone
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
