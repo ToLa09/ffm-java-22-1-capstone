@@ -84,4 +84,4 @@ jobs:
           aws elasticbeanstalk create-application-version --application-name capstone \
               --version-label ${{ github.sha }} --source-bundle S3Bucket="ffm-java-22-1-capstone",S3Key="deployment-${{ github.sha }}.zip" --region us-east-1
           aws elasticbeanstalk update-environment --application-name capstone \
-              --environment-name Capstone-env --version-label ${{ github.sha }} --region eu-central-1
+              --environment-name Capstone-env --version-label ${{ github.sha }} --region us-east-1
