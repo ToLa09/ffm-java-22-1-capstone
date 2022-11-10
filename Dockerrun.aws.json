@@ -1,12 +1,12 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "capstone",
+    "Name": "273454126244.dkr.ecr.us-east-1.amazonaws.com/capstone:latest",
     "Update": "true"
   },
   "Ports": [
     {
-      "ContainerPort": "3000"
+      "ContainerPort": "8080"
     }
   ]
 }
