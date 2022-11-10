@@ -51,11 +51,16 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: app.jar
+          path: backend/target
+
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
 
       - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v20
+        uses: DylanBDev/beanstalk-deploy@initial
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -63,4 +68,5 @@ jobs:
           environment_name: capstone-env
           version_label: 1
           region: eu-central-1
-          deployment_package: deploy.zip
+          deployment_package: app.jar
+          Existing bucket Name: ffm-java-22-1-capstone
