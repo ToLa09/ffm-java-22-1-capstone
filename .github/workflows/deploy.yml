@@ -78,7 +78,7 @@ jobs:
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
       - run:
-          name: Deploy
+          name: Deploy to Beanstalk
           command: |
             zip -r deployment-${{ github.sha }}.zip .
             aws s3 cp deployment-${{ github.sha }}.zip s3://capstone --region eu-central-1
