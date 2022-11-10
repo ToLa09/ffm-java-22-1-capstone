@@ -76,3 +76,13 @@ jobs:
           echo "Pushing image to ECR..."
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - run:
+          name: Deploy
+          command: |
+            zip -r deployment-${{ github.sha }}.zip .
+            aws s3 cp deployment-${{ github.sha }}.zip s3://capstone --region eu-central-1
+            aws elasticbeanstalk create-application-version --application-name capstone \
+                --version-label ${{ github.sha }} --source-bundle S3Bucket="capstone-bucket",S3Key="deployment-${{ github.sha }}.zip" --region eu-central-1
+            aws elasticbeanstalk update-environment --application-name capstone \
+                --environment-name Capstone-env --version-label ${{ github.sha }} --region eu-central-1
