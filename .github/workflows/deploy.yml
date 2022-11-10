@@ -82,6 +82,6 @@ jobs:
           zip -r deployment-${{ github.sha }}.zip .
           aws s3 cp deployment-${{ github.sha }}.zip s3://ffm-java-22-1-capstone --region eu-central-1
           aws elasticbeanstalk create-application-version --application-name capstone \
-              --version-label ${{ github.sha }} --source-bundle S3Bucket="ffm-java-22-1-capstone",S3Key="deployment-${{ github.sha }}.zip" --region eu-central-1
+              --version-label ${{ github.sha }} --source-bundle S3Bucket="ffm-java-22-1-capstone",S3Key="deployment-${{ github.sha }}.zip" --region us-east-1
           aws elasticbeanstalk update-environment --application-name capstone \
               --environment-name Capstone-env --version-label ${{ github.sha }} --region eu-central-1
