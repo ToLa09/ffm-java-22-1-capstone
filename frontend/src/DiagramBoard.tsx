@@ -20,7 +20,7 @@ function DiagramBoard() {
         <ul>
             {
                 bpmnDiagrams.map(diagram => {
-                    return <li>{diagram.name}, {diagram.businessKey}, {diagram.xmlFile}, {diagram.comment}</li>
+                    return <li key={diagram.id}>{diagram.name}, {diagram.businessKey}, {diagram.xmlFile}, {diagram.comment}</li>
                 })
             }
         </ul>
