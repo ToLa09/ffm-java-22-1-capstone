@@ -1,4 +1,4 @@
-package capstone.backend;
+package neuefische.capstone;
 
 import org.junit.jupiter.api.Test;
 
