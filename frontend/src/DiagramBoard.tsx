@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {BpmnDiagramModel} from "./BpmnDiagramModel";
 import axios from "axios";
+import DiagramLine from "./DiagramLine";
 
 function DiagramBoard() {
     const [bpmnDiagrams, setBpmnDiagrams] = useState<BpmnDiagramModel[]>([])
@@ -16,6 +17,7 @@ function DiagramBoard() {
         fetchDiagrams()
     },[])
 
+
     return (
         <table>
             <tr>
@@ -23,15 +25,11 @@ function DiagramBoard() {
                 <th>Businesskey</th>
                 <th>xmlFile</th>
                 <th>Comment</th>
+                <th>Action</th>
             </tr>
             {
                 bpmnDiagrams.map(diagram => {
-                    return <tr key={diagram.id}>
-                        <td>{diagram.name}</td>
-                        <td>{diagram.businessKey}</td>
-                        <td>{diagram.xmlFile}</td>
-                        <td>{diagram.comment}</td>
-                    </tr>
+                    return <DiagramLine diagram={diagram} fetchDiagrams={fetchDiagrams}></DiagramLine>
                 })
             }
         </table>
