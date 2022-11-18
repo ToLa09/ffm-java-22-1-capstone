@@ -103,4 +103,26 @@ class BpmnDiagramIntegrationTest {
                         }
                     """.replace("<id>",responseObject.id())));
     }
+
+    @Test
+    @DirtiesContext
+    void DELETEBpmnDiagram_expect204() throws Exception {
+        String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                    {
+                        "name": "create bill",
+                        "businessKey": "capstone.bpmn.billing.create-bill",
+                        "xmlFile": "create-bill.xml",
+                        "comment": "first version of billing"
+                    }
+                    """))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        BpmnDiagram responseObject = objectMapper.readValue(responseBody, BpmnDiagram.class);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/bpmndiagrams/"+responseObject.id()))
+                .andExpect(status().isNoContent());
+    }
 }
