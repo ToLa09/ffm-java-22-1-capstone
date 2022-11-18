@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {BpmnDiagramModel} from "./BpmnDiagramModel";
+import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
 import axios from "axios";
 
 export type Props = {
