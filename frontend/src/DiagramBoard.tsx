@@ -17,13 +17,24 @@ function DiagramBoard() {
     },[])
 
     return (
-        <ul>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Businesskey</th>
+                <th>xmlFile</th>
+                <th>Comment</th>
+            </tr>
             {
                 bpmnDiagrams.map(diagram => {
-                    return <li key={diagram.id}>{diagram.name}, {diagram.businessKey}, {diagram.xmlFile}, {diagram.comment}</li>
+                    return <tr key={diagram.id}>
+                        <td>{diagram.name}</td>
+                        <td>{diagram.businessKey}</td>
+                        <td>{diagram.xmlFile}</td>
+                        <td>{diagram.comment}</td>
+                    </tr>
                 })
             }
-        </ul>
+        </table>
     );
 }
 

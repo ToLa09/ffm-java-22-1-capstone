@@ -31,7 +31,6 @@ function App() {
   return (
     <>
         <h1>BPMN-Library</h1>
-        <DiagramBoard/>
         <form onSubmit={handleSubmit}>
             <input placeholder="Name" value={name} onChange={e => setName(e.target.value)}/>
             <input placeholder="Businesskey" value={businessKey} onChange={e => setBusinessKey(e.target.value)}/>
@@ -39,6 +38,7 @@ function App() {
             <input placeholder="Kommentar" value={comment} onChange={e => setComment(e.target.value)}/>
             <button type="submit">Add</button>
         </form>
+        <DiagramBoard/>
     </>
   );
 }
