@@ -18,4 +18,12 @@ public class BpmnDiagramService {
     public BpmnDiagram addBpmnDiagram(BpmnDiagram bpmnDiagram) {
         return repository.save(bpmnDiagram);
     }
+
+    public BpmnDiagram updateBpmnDiagram(BpmnDiagram updatedBpmnDiagram) {
+        return repository.insert(updatedBpmnDiagram);
+    }
+
+    public void deleteBpmnDiagram(String id) {
+        repository.deleteById(id);
+    }
 }
