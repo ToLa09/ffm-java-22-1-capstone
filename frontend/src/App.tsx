@@ -30,7 +30,7 @@ function App() {
 
   return (
     <>
-        <h1>BPMN-Diagramm-Verwaltung</h1>
+        <h1>BPMN-Library</h1>
         <DiagramBoard/>
         <form onSubmit={handleSubmit}>
             <input placeholder="Name" value={name} onChange={e => setName(e.target.value)}/>
