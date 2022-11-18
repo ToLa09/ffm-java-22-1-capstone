@@ -38,4 +38,26 @@ class BpmnDiagramServiceTest {
         verify(repository).save(testDiagram);
         assertEquals(expected, actual);
     }
+
+    @Test
+    void updateBpmnDiagram() {
+        //given
+        BpmnDiagram testDiagram = new BpmnDiagram("123","create bill","capstone.bpmn.billing.create-bill", "create-bill.xml", "first version of billing");
+        when(repository.insert(testDiagram)).thenReturn(testDiagram);
+        //when
+        BpmnDiagram actual = service.updateBpmnDiagram(testDiagram);
+        //then
+        verify(repository).insert(testDiagram);
+        assertEquals(testDiagram, actual);
+    }
+    @Test
+    void deleteBpmnDiagram() {
+        //given
+        String id = "123";
+        doNothing().when(repository).deleteById(id);
+        //when
+        service.deleteBpmnDiagram(id);
+        //then
+        verify(repository).deleteById(id);
+    }
 }
