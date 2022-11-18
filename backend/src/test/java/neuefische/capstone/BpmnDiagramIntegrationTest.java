@@ -1,4 +1,4 @@
-package capstone.backend;
+package neuefische.capstone;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

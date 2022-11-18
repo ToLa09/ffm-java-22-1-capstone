@@ -1,4 +1,4 @@
-package capstone.backend;
+package neuefische.capstone;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
