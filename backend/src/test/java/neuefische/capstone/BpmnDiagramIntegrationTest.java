@@ -24,7 +24,7 @@ class BpmnDiagramIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void getAllDiagrams() throws Exception {
+    void GETAllDiagrams_expect200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/bpmndiagrams"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
@@ -32,7 +32,7 @@ class BpmnDiagramIntegrationTest {
 
     @Test
     @DirtiesContext
-    void addBpmnDiagram() throws Exception {
+    void POSTBpmnDiagram_expect201() throws Exception {
         String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -61,5 +61,46 @@ class BpmnDiagramIntegrationTest {
                         }
                     ]
                     """.replace("<id>", responseObject.id())));
+    }
+
+    @Test
+    @DirtiesContext
+    void PUTBpmnDiagram_expect200() throws Exception {
+        String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                    {
+                        "name": "create bill",
+                        "businessKey": "capstone.bpmn.billing.create-bill",
+                        "xmlFile": "create-bill.xml",
+                        "comment": "first version of billing"
+                    }
+                    """))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        BpmnDiagram responseObject = objectMapper.readValue(responseBody, BpmnDiagram.class);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/bpmndiagrams/"+responseObject.id())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                            "id": "<id>",
+                            "name": "create bill",
+                            "businessKey": "capstone.bpmn.billing.createBill",
+                            "xmlFile": "create-bill.xml",
+                            "comment": "second version of billing"
+                        }
+                    """.replace("<id>",responseObject.id())))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                            "id": "<id>",
+                            "name": "create bill",
+                            "businessKey": "capstone.bpmn.billing.createBill",
+                            "xmlFile": "create-bill.xml",
+                            "comment": "second version of billing"
+                        }
+                    """.replace("<id>",responseObject.id())));
     }
 }
