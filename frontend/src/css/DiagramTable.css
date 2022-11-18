@@ -1,0 +1,11 @@
+.diagramtable {
+    border-width: 0;
+    border-style: solid;
+    border-collapse: collapse;
+    width: 80%;
+    table-layout: fixed;
+}
+.tableHead {
+    border-bottom-style: solid;
+    border-width: 1px;
+}

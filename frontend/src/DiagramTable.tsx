@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
 import axios from "axios";
 import DiagramLine from "./DiagramLine";
+import './css/DiagramTable.css';
 
 function DiagramTable() {
     const [bpmnDiagrams, setBpmnDiagrams] = useState<BpmnDiagramModel[]>([])
@@ -19,8 +20,8 @@ function DiagramTable() {
 
 
     return (
-        <table>
-            <thead>
+        <table className="diagramtable">
+            <thead className="tableHead">
                 <tr>
                     <th>Name</th>
                     <th>Businesskey</th>

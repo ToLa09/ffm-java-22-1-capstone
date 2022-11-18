@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
 import axios from "axios";
+import './css/DiagramLine.css';
 
 export type Props = {
     diagram: BpmnDiagramModel
@@ -45,20 +46,20 @@ function DiagramLine(props: Props) {
     }
 
     return (
-        <tr key={props.diagram.id}>
+        <tr key={props.diagram.id} className="diagramRow">
             {editMode ?
                 <>
-                    <td><input placeholder={"name"} value={name} onChange={(event) => setName(event.target.value)}/></td>
-                    <td><input placeholder={"businessKey"} value={businessKey} onChange={(event) => setBusinessKey(event.target.value)}/></td>
-                    <td><input placeholder={"xmlFile"} value={xmlFile} onChange={(event) => setXmlFile(event.target.value)}/></td>
-                    <td><input placeholder={"comment"} value={comment} onChange={(event) => setComment(event.target.value)}/></td>
+                    <td className="diagramValue"><input placeholder={"name"} value={name} onChange={(event) => setName(event.target.value)}/></td>
+                    <td className="diagramValue"><input placeholder={"businessKey"} value={businessKey} onChange={(event) => setBusinessKey(event.target.value)}/></td>
+                    <td className="diagramValue"><input placeholder={"xmlFile"} value={xmlFile} onChange={(event) => setXmlFile(event.target.value)}/></td>
+                    <td className="diagramValue"><input placeholder={"comment"} value={comment} onChange={(event) => setComment(event.target.value)}/></td>
                 </>
                 :
                 <>
-                    <td>{props.diagram.name}</td>
-                    <td>{props.diagram.businessKey}</td>
-                    <td>{props.diagram.xmlFile}</td>
-                    <td>{props.diagram.comment}</td>
+                    <td className="diagramValue">{props.diagram.name}</td>
+                    <td className="diagramValue">{props.diagram.businessKey}</td>
+                    <td className="diagramValue">{props.diagram.xmlFile}</td>
+                    <td className="diagramValue">{props.diagram.comment}</td>
                 </>
             }
 
