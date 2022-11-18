@@ -1,6 +1,6 @@
 import React, {FormEvent, useState} from 'react';
-import './App.css';
-import DiagramBoard from "./DiagramBoard";
+import './css/App.css';
+import DiagramTable from "./DiagramTable";
 import axios from "axios";
 
 function App() {
@@ -38,7 +38,7 @@ function App() {
             <input placeholder="Kommentar" value={comment} onChange={e => setComment(e.target.value)}/>
             <button type="submit">Add</button>
         </form>
-        <DiagramBoard/>
+        <DiagramTable/>
     </>
   );
 }
