@@ -33,6 +33,7 @@ public class BpmnDiagramController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteBpmnDiagram(@PathVariable String id) {
         service.deleteBpmnDiagram(id);
     }
