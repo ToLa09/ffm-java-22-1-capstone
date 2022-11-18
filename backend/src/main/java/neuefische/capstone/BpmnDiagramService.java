@@ -16,11 +16,11 @@ public class BpmnDiagramService {
     }
 
     public BpmnDiagram addBpmnDiagram(BpmnDiagram bpmnDiagram) {
-        return repository.save(bpmnDiagram);
+        return repository.insert(bpmnDiagram);
     }
 
     public BpmnDiagram updateBpmnDiagram(BpmnDiagram updatedBpmnDiagram) {
-        return repository.insert(updatedBpmnDiagram);
+        return repository.save(updatedBpmnDiagram);
     }
 
     public void deleteBpmnDiagram(String id) {
