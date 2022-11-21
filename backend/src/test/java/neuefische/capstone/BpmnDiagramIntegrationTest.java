@@ -106,6 +106,24 @@ class BpmnDiagramIntegrationTest {
 
     @Test
     @DirtiesContext
+    void PUTBpmnDiagram_expect400() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/bpmndiagrams/1234")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                    {
+                        "id": "1111",
+                        "name": "create bill",
+                        "businessKey": "capstone.bpmn.billing.create-bill",
+                        "xmlFile": "create-bill.xml",
+                        "comment": "first version of billing"
+                    }
+                    """))
+                .andExpect(status().isBadRequest())
+                .andExpect(status().reason("Request ID Mismatch"));
+    }
+
+    @Test
+    @DirtiesContext
     void DELETEBpmnDiagram_expect204() throws Exception {
         String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
                         .contentType(MediaType.APPLICATION_JSON)
