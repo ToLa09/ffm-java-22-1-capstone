@@ -26,7 +26,6 @@ function App() {
                 alert("BPMN-Diagram erfolreich hinzugefügt!")
             })
             .catch(error => console.error(error))
-
     }
 
   return (
@@ -38,7 +37,7 @@ function App() {
                 <div className="addFormInputWrapper"><TextField className="addFormInputField" variant="outlined" label="Businesskey" value={businessKey} onChange={e => setBusinessKey(e.target.value)}/></div>
                 <div className="addFormInputWrapper"><TextField className="addFormInputField" variant="outlined" label="XML-Filename" value={xmlFile} onChange={e => setXmlFile(e.target.value)}/></div>
                 <div className="addFormInputWrapper"><TextField className="addFormInputField" variant="outlined" label="Comment" value={comment} onChange={e => setComment(e.target.value)}/></div>
-                <Button variant="contained" color="success" type="submit">Add</Button>
+                <Button variant="contained" color="primary" type="submit">Add</Button>
             </form>
         </header>
         <main>

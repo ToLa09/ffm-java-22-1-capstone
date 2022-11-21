@@ -29,18 +29,18 @@
 }
 
 h1 {
-  color: rgb(253, 93, 13);
+  color: dimgray;
 }
 
 .addForm {
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-color: rgb(253, 93, 13);
+  border-color: dimgray;
   border-width: 1px;
   border-style: dashed;
   border-radius: 1pc;
-  background-color: rgb(227, 239, 205);
+  background-color: rgb(157, 183, 204);
 }
 
 .addFormInputWrapper {
@@ -49,6 +49,7 @@ h1 {
 
 .addFormInputField {
   background-color: white;
+  border-radius: 5px;
 }
 
 header  {
