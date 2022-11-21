@@ -1,8 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
 import axios from "axios";
-import DiagramTableLine from "./DiagramTableLine";
+import DiagramTableRow from "./DiagramTableRow";
 import './css/DiagramTable.css';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 function DiagramTable() {
     const [bpmnDiagrams, setBpmnDiagrams] = useState<BpmnDiagramModel[]>([])
@@ -20,24 +27,24 @@ function DiagramTable() {
 
 
     return (
-        <table className="diagramtable">
-            <thead className="tableHead">
-                <tr>
-                    <td>Name</td>
-                    <td>Businesskey</td>
-                    <td>xmlFile</td>
-                    <td>Comment</td>
-                    <td>Action</td>
-                </tr>
-            </thead>
-            <tbody className="tableBody">
-                {
-                    bpmnDiagrams.map(diagram => {
-                        return <DiagramTableLine key={diagram.id} diagram={diagram} fetchDiagrams={fetchDiagrams}></DiagramTableLine>
-                    })
-                }
-            </tbody>
-        </table>
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell align="right">Key</TableCell>
+                        <TableCell align="right">XML-File</TableCell>
+                        <TableCell align="right">Comment</TableCell>
+                        <TableCell align="right">Actions</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {bpmnDiagrams.map(diagram => (
+                        <DiagramTableRow diagram={diagram} fetchDiagrams={fetchDiagrams}></DiagramTableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 }
 
