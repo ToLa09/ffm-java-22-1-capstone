@@ -44,11 +44,14 @@ h1 {
 }
 
 .addFormInputWrapper {
-  padding: 20px;
+  margin: 10px;
+  padding: 8px;
+  border-radius: 10px;
+  background-color: #ececec;
 }
 
 .addFormInputField {
-  background-color: white;
+  background-color: #ececec;
   border-radius: 5px;
 }
 
