@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
 import axios from "axios";
-import DiagramLine from "./DiagramLine";
+import DiagramTableLine from "./DiagramTableLine";
 import './css/DiagramTable.css';
 
 function DiagramTable() {
@@ -23,17 +23,17 @@ function DiagramTable() {
         <table className="diagramtable">
             <thead className="tableHead">
                 <tr>
-                    <th>Name</th>
-                    <th>Businesskey</th>
-                    <th>xmlFile</th>
-                    <th>Comment</th>
-                    <th>Action</th>
+                    <td>Name</td>
+                    <td>Businesskey</td>
+                    <td>xmlFile</td>
+                    <td>Comment</td>
+                    <td>Action</td>
                 </tr>
             </thead>
-            <tbody>
+            <tbody className="tableBody">
                 {
                     bpmnDiagrams.map(diagram => {
-                        return <DiagramLine key={diagram.id} diagram={diagram} fetchDiagrams={fetchDiagrams}></DiagramLine>
+                        return <DiagramTableLine key={diagram.id} diagram={diagram} fetchDiagrams={fetchDiagrams}></DiagramTableLine>
                     })
                 }
             </tbody>
