@@ -60,10 +60,10 @@ export default function DiagramTableRow(props: Props) {
         >
             { editMode ?
                 <>
-                    <TableCell component="th" scope="row"><input placeholder={"name"} value={name} onChange={(event) => setName(event.target.value)}/></TableCell>
-                    <TableCell align="right"><input placeholder={"businessKey"} value={businessKey} onChange={(event) => setBusinessKey(event.target.value)}/></TableCell>
-                    <TableCell align="right"><input placeholder={"xmlFile"} value={xmlFile} onChange={(event) => setXmlFile(event.target.value)}/></TableCell>
-                    <TableCell align="right"><input placeholder={"comment"} value={comment} onChange={(event) => setComment(event.target.value)}/></TableCell>
+                    <TableCell component="th" scope="row"><input placeholder={"name"} size={name.length} value={name} onChange={(event) => setName(event.target.value)}/></TableCell>
+                    <TableCell align="right"><input placeholder={"businessKey"} size={businessKey.length} value={businessKey} onChange={(event) => setBusinessKey(event.target.value)}/></TableCell>
+                    <TableCell align="right"><input placeholder={"xmlFile"} size={xmlFile.length} value={xmlFile} onChange={(event) => setXmlFile(event.target.value)}/></TableCell>
+                    <TableCell align="right"><input placeholder={"comment"} size={comment.length} value={comment} onChange={(event) => setComment(event.target.value)}/></TableCell>
                 </>
                 :
                 <>
