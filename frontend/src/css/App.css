@@ -40,3 +40,8 @@ h1 {
     transform: rotate(360deg);
   }
 }
+
+main {
+  display: flex;
+  padding: 20px;
+}

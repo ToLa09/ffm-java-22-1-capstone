@@ -38,7 +38,9 @@ function App() {
             <input placeholder="Kommentar" value={comment} onChange={e => setComment(e.target.value)}/>
             <button type="submit">Add</button>
         </form>
-        <DiagramTable/>
+        <main>
+            <DiagramTable/>
+        </main>
     </>
   );
 }
