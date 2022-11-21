@@ -28,14 +28,14 @@ function DiagramTable() {
 
     return (
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table sx={{ minWidth: 650 }} aria-label="BPMN-Diagram-table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Name</TableCell>
+                        <TableCell >Name</TableCell>
                         <TableCell align="right">Key</TableCell>
                         <TableCell align="right">XML-File</TableCell>
                         <TableCell align="right">Comment</TableCell>
-                        <TableCell align="right">Actions</TableCell>
+                        <TableCell sx={{width: 120}} align="center">Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

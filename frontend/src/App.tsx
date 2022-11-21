@@ -2,6 +2,7 @@ import React, {FormEvent, useState} from 'react';
 import './css/App.css';
 import DiagramTable from "./DiagramTable";
 import axios from "axios";
+import {Button, TextField} from "@mui/material";
 
 function App() {
     const [name,setName] = useState<string>("")
@@ -30,14 +31,16 @@ function App() {
 
   return (
     <>
-        <h1>BPMN-Library</h1>
-        <form onSubmit={handleSubmit}>
-            <input placeholder="Name" value={name} onChange={e => setName(e.target.value)}/>
-            <input placeholder="Businesskey" value={businessKey} onChange={e => setBusinessKey(e.target.value)}/>
-            <input placeholder="XML-Filename" value={xmlFile} onChange={e => setXmlFile(e.target.value)}/>
-            <input placeholder="Kommentar" value={comment} onChange={e => setComment(e.target.value)}/>
-            <button type="submit">Add</button>
-        </form>
+        <header>
+            <h1>BPMN-Library</h1>
+            <form className="addForm" onSubmit={handleSubmit}>
+                <div className="addFormInputWrapper"><TextField className="addFormInputField" variant="outlined" label="Name" value={name} onChange={e => setName(e.target.value)}/></div>
+                <div className="addFormInputWrapper"><TextField className="addFormInputField" variant="outlined" label="Businesskey" value={businessKey} onChange={e => setBusinessKey(e.target.value)}/></div>
+                <div className="addFormInputWrapper"><TextField className="addFormInputField" variant="outlined" label="XML-Filename" value={xmlFile} onChange={e => setXmlFile(e.target.value)}/></div>
+                <div className="addFormInputWrapper"><TextField className="addFormInputField" variant="outlined" label="Comment" value={comment} onChange={e => setComment(e.target.value)}/></div>
+                <Button variant="contained" color="success" type="submit">Add</Button>
+            </form>
+        </header>
         <main>
             <DiagramTable/>
         </main>
