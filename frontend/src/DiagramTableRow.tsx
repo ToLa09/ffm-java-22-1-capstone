@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
 import axios from "axios";
 import './css/DiagramLine.css';
@@ -13,6 +13,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 export type Props = {
     diagram: BpmnDiagramModel
     fetchDiagrams: () => void
+    setSnackbarDeleteOpen: Dispatch<SetStateAction<boolean>>
+    setSnackbarDuplicateOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function DiagramTableRow(props: Props) {
@@ -42,52 +44,58 @@ export default function DiagramTableRow(props: Props) {
                 "xmlFile": diagram.xmlFile,
                 "comment": "duplicated"
             })
-            .then(props.fetchDiagrams)
+            .then(() => {
+                props.fetchDiagrams()
+                props.setSnackbarDuplicateOpen(true)
+            })
             .catch(error => console.error(error))
     }
 
     const handleDelete = (id: string) => {
         axios.delete("/api/bpmndiagrams/"+id)
-            .then(props.fetchDiagrams)
+            .then(() => {
+                props.fetchDiagrams()
+                props.setSnackbarDeleteOpen(true)
+            })
             .catch(error => console.error(error))
     }
 
     return (
         <>
-        <TableRow
-            key={props.diagram.id}
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-        >
-            { editMode ?
-                <>
-                    <TableCell component="th" scope="row"><input placeholder={"name"} value={name} onChange={(event) => setName(event.target.value)}/></TableCell>
-                    <TableCell align="right"><input placeholder={"businessKey"} value={businessKey} onChange={(event) => setBusinessKey(event.target.value)}/></TableCell>
-                    <TableCell align="right"><input placeholder={"xmlFile"} value={xmlFile} onChange={(event) => setXmlFile(event.target.value)}/></TableCell>
-                    <TableCell align="right"><input placeholder={"comment"} value={comment} onChange={(event) => setComment(event.target.value)}/></TableCell>
-                </>
-                :
-                <>
-                    <TableCell component="th" scope="row">{props.diagram.name}</TableCell>
-                    <TableCell align="right">{props.diagram.businessKey}</TableCell>
-                    <TableCell align="right">{props.diagram.xmlFile}</TableCell>
-                    <TableCell align="right">{props.diagram.comment}</TableCell>
-                </>
-            }
-            <TableCell component="th" scope="row">
-                {editMode ?
-                    <IconButton onClick={() => {
-                        setEditMode(false)
-                        handleUpdate()
-                    }} >
-                        <CheckIcon color="secondary"/>
-                    </IconButton>
+            <TableRow
+                key={props.diagram.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+                { editMode ?
+                    <>
+                        <TableCell component="th" scope="row"><input placeholder={"name"} value={name} onChange={(event) => setName(event.target.value)}/></TableCell>
+                        <TableCell align="right"><input placeholder={"businessKey"} value={businessKey} onChange={(event) => setBusinessKey(event.target.value)}/></TableCell>
+                        <TableCell align="right"><input placeholder={"xmlFile"} value={xmlFile} onChange={(event) => setXmlFile(event.target.value)}/></TableCell>
+                        <TableCell align="right"><input placeholder={"comment"} value={comment} onChange={(event) => setComment(event.target.value)}/></TableCell>
+                    </>
                     :
-                    <IconButton onClick={() => setEditMode(true)}><EditIcon color="primary" /></IconButton>
+                    <>
+                        <TableCell component="th" scope="row">{props.diagram.name}</TableCell>
+                        <TableCell align="right">{props.diagram.businessKey}</TableCell>
+                        <TableCell align="right">{props.diagram.xmlFile}</TableCell>
+                        <TableCell align="right">{props.diagram.comment}</TableCell>
+                    </>
                 }
-                <IconButton onClick={() => handleDuplicate(props.diagram)}><ContentCopyIcon color="secondary" /></IconButton>
-                <IconButton onClick={() => handleDelete(props.diagram.id)}><DeleteForeverIcon color="error" /></IconButton>
-            </TableCell>
-        </TableRow>
+                <TableCell component="th" scope="row">
+                    {editMode ?
+                        <IconButton onClick={() => {
+                            setEditMode(false)
+                            handleUpdate()
+                        }} >
+                            <CheckIcon color="secondary"/>
+                        </IconButton>
+                        :
+                        <IconButton onClick={() => setEditMode(true)}><EditIcon color="primary" /></IconButton>
+                    }
+                    <IconButton onClick={() => handleDuplicate(props.diagram)}><ContentCopyIcon color="secondary" /></IconButton>
+                    <IconButton onClick={() => handleDelete(props.diagram.id)}><DeleteForeverIcon color="error" /></IconButton>
+                </TableCell>
+            </TableRow>
         </>
     );
 }
