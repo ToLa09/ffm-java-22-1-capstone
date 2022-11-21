@@ -33,10 +33,10 @@ function App() {
         <header>
             <h1>BPMN-Library</h1>
             <form className="addForm" onSubmit={handleSubmit}>
-                <div className="addFormInputWrapper"><TextField className="addFormInputField" variant="outlined" label="Name" value={name} onChange={e => setName(e.target.value)}/></div>
-                <div className="addFormInputWrapper"><TextField className="addFormInputField" variant="outlined" label="Businesskey" value={businessKey} onChange={e => setBusinessKey(e.target.value)}/></div>
-                <div className="addFormInputWrapper"><TextField className="addFormInputField" variant="outlined" label="XML-Filename" value={xmlFile} onChange={e => setXmlFile(e.target.value)}/></div>
-                <div className="addFormInputWrapper"><TextField className="addFormInputField" variant="outlined" label="Comment" value={comment} onChange={e => setComment(e.target.value)}/></div>
+                <div className="addFormInputWrapper"><TextField size="small" className="addFormInputField" variant="outlined" label="Name" value={name} onChange={e => setName(e.target.value)}/></div>
+                <div className="addFormInputWrapper"><TextField size="small" className="addFormInputField" variant="outlined" label="Businesskey" value={businessKey} onChange={e => setBusinessKey(e.target.value)}/></div>
+                <div className="addFormInputWrapper"><TextField size="small" className="addFormInputField" variant="outlined" label="XML-Filename" value={xmlFile} onChange={e => setXmlFile(e.target.value)}/></div>
+                <div className="addFormInputWrapper"><TextField size="small" className="addFormInputField" variant="outlined" label="Comment" value={comment} onChange={e => setComment(e.target.value)}/></div>
                 <Button variant="contained" color="primary" type="submit">Add</Button>
             </form>
         </header>
