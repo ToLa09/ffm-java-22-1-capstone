@@ -2,19 +2,22 @@ import React, {FormEvent, useState} from 'react';
 import './css/App.css';
 import DiagramTable from "./DiagramTable";
 import axios from "axios";
-import {Button, Snackbar, TextField} from "@mui/material";
+import {Alert, Button, Snackbar, TextField} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 function App() {
     const [name,setName] = useState<string>("")
     const [businessKey,setBusinessKey] = useState<string>("")
     const [xmlFile,setXmlFile] = useState<string>("")
     const [comment,setComment] = useState<string>("")
-    const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
+    const [snackbarAddOpen, setSnackbarAddOpen] = useState<boolean>(false)
+    const [snackbarErrorOpen, setSnackbarErrorOpen] = useState<boolean>(false)
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         if(name==="" || businessKey==="" || xmlFile===""){
-            alert("Inputfields must not be empty!")
+            setSnackbarErrorOpen(true)
             return
         }
         axios.post("/api/bpmndiagrams",{
@@ -28,7 +31,7 @@ function App() {
                 setBusinessKey("")
                 setXmlFile("")
                 setComment("")
-                setSnackbarOpen(true)
+                setSnackbarAddOpen(true)
             })
             .catch(error => console.error(error))
     }
@@ -44,11 +47,18 @@ function App() {
                 <div className="addFormInputWrapper"><TextField size="small" className="addFormInputField" variant="outlined" label="Comment" value={comment} onChange={e => setComment(e.target.value)}/></div>
                 <Button variant="contained" color="primary" type="submit">Add</Button>
                 <Snackbar
-                    open={snackbarOpen}
+                    open={snackbarAddOpen}
                     autoHideDuration={3000}
                     message="Diagram added!"
-                    onClose={() => setSnackbarOpen(false)}
+                    onClose={() => setSnackbarAddOpen(false)}
+                    action={<IconButton onClick={() => setSnackbarAddOpen(false)}><CloseIcon/></IconButton>}
                 />
+                <Snackbar
+                    open={snackbarErrorOpen}
+                    autoHideDuration={3000}
+                    onClose={() => setSnackbarErrorOpen(false)}
+                    action={<IconButton onClick={() => setSnackbarErrorOpen(false)}><CloseIcon/></IconButton>}
+                ><Alert severity="error">Inputfields must not be empty!</Alert></Snackbar>
             </form>
         </header>
         <main>

@@ -11,11 +11,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {Snackbar} from "@mui/material";
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 function DiagramTable() {
     const [bpmnDiagrams, setBpmnDiagrams] = useState<BpmnDiagramModel[]>([])
     const [snackbarDeleteOpen, setSnackbarDeleteOpen] = useState<boolean>(false)
     const [snackbarDuplicateOpen, setSnackbarDuplicateOpen] = useState<boolean>(false)
+    const [snackbarUpdateOpen, setSnackbarUpdateOpen] = useState<boolean>(false)
 
     const fetchDiagrams = () => {
         axios.get("/api/bpmndiagrams")
@@ -49,7 +52,8 @@ function DiagramTable() {
                                 diagram={diagram}
                                 fetchDiagrams={fetchDiagrams}
                                 setSnackbarDeleteOpen={setSnackbarDeleteOpen}
-                                setSnackbarDuplicateOpen={setSnackbarDuplicateOpen}></DiagramTableRow>
+                                setSnackbarDuplicateOpen={setSnackbarDuplicateOpen}
+                                setSnackbarUpdateOpen={setSnackbarUpdateOpen}></DiagramTableRow>
                         ))}
                     </TableBody>
                 </Table>
@@ -59,12 +63,21 @@ function DiagramTable() {
                 autoHideDuration={3000}
                 message="Diagram deleted!"
                 onClose={() => setSnackbarDeleteOpen(false)}
+                action={<IconButton onClick={() => setSnackbarDeleteOpen(false)}><CloseIcon/></IconButton>}
             />
             <Snackbar
                 open={snackbarDuplicateOpen}
                 autoHideDuration={3000}
                 message="Diagram duplicated!"
                 onClose={() => setSnackbarDuplicateOpen(false)}
+                action={<IconButton onClick={() => setSnackbarDuplicateOpen(false)}><CloseIcon/></IconButton>}
+            />
+            <Snackbar
+                open={snackbarUpdateOpen}
+                autoHideDuration={3000}
+                message="Diagram updated!"
+                onClose={() => setSnackbarUpdateOpen(false)}
+                action={<IconButton onClick={() => setSnackbarUpdateOpen(false)}><CloseIcon/></IconButton>}
             />
         </>
     );

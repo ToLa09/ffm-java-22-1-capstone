@@ -15,6 +15,7 @@ export type Props = {
     fetchDiagrams: () => void
     setSnackbarDeleteOpen: Dispatch<SetStateAction<boolean>>
     setSnackbarDuplicateOpen: Dispatch<SetStateAction<boolean>>
+    setSnackbarUpdateOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function DiagramTableRow(props: Props) {
@@ -33,7 +34,10 @@ export default function DiagramTableRow(props: Props) {
             "xmlFile": xmlFile,
             "comment":comment
         })
-            .then(props.fetchDiagrams)
+            .then(() => {
+                props.fetchDiagrams()
+                props.setSnackbarUpdateOpen(true)
+            })
             .catch(error => console.error(error))
     }
 
