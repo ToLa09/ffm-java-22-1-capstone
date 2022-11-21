@@ -30,12 +30,12 @@ class BpmnDiagramServiceTest {
     void addBpmnDiagram() {
         //given
         BpmnDiagram testDiagram = new BpmnDiagram(null,"create bill","capstone.bpmn.billing.create-bill", "create-bill.xml", "first version of billing");
-        when(repository.save(testDiagram)).thenReturn(testDiagram.withId("123"));
+        when(repository.insert(testDiagram)).thenReturn(testDiagram.withId("123"));
         //when
         BpmnDiagram actual = service.addBpmnDiagram(testDiagram);
         BpmnDiagram expected = testDiagram.withId("123");
         //then
-        verify(repository).save(testDiagram);
+        verify(repository).insert(testDiagram);
         assertEquals(expected, actual);
     }
 
@@ -43,11 +43,11 @@ class BpmnDiagramServiceTest {
     void updateBpmnDiagram() {
         //given
         BpmnDiagram testDiagram = new BpmnDiagram("123","create bill","capstone.bpmn.billing.create-bill", "create-bill.xml", "first version of billing");
-        when(repository.insert(testDiagram)).thenReturn(testDiagram);
+        when(repository.save(testDiagram)).thenReturn(testDiagram);
         //when
         BpmnDiagram actual = service.updateBpmnDiagram(testDiagram);
         //then
-        verify(repository).insert(testDiagram);
+        verify(repository).save(testDiagram);
         assertEquals(testDiagram, actual);
     }
     @Test
