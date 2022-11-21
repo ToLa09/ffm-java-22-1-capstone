@@ -47,11 +47,11 @@ h1 {
   margin: 10px;
   padding: 8px;
   border-radius: 10px;
-  background-color: #ececec;
+  background-color: white;
 }
 
 .addFormInputField {
-  background-color: #ececec;
+  background-color: white;
   border-radius: 5px;
 }
 

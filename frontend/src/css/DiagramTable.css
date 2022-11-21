@@ -1,7 +1,7 @@
 .diagramtable {
     table-layout: fixed;
-    border: 1px solid dimgray;
-    background-color: rgb(157, 183, 204);
+    /*border: 1px solid dimgray;*/
+    /*background-color: rgb(157, 183, 204);*/
 }
 .tableHead {
     border-bottom-style: solid;
