@@ -8,7 +8,7 @@ export type Props = {
     fetchDiagrams: () => void
 }
 
-function DiagramLine(props: Props) {
+export default function DiagramTableLine(props: Props) {
 
     const[editMode, setEditMode] = useState<boolean>(false)
     const [name,setName] = useState<string>(props.diagram.name)
@@ -79,5 +79,3 @@ function DiagramLine(props: Props) {
         </tr>
     );
 }
-
-export default DiagramLine;
