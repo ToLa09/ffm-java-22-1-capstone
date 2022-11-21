@@ -36,7 +36,9 @@ export default function DiagramTableRow(props: Props) {
         })
             .then(() => {
                 props.fetchDiagrams()
-                props.setSnackbarUpdateOpen(true)
+                if(name!==props.diagram.name || businessKey!==props.diagram.businessKey || xmlFile!==props.diagram.xmlFile || comment!==props.diagram.comment){
+                    props.setSnackbarUpdateOpen(true)
+                }
             })
             .catch(error => console.error(error))
     }
