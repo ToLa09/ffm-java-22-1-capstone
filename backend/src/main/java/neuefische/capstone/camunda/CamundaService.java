@@ -1,5 +1,7 @@
 package neuefische.capstone.camunda;
 
+import neuefische.capstone.bpmndiagram.BpmnDiagram;
+import neuefische.capstone.bpmndiagram.BpmnDiagramRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -11,19 +13,40 @@ public class CamundaService {
 
     private final WebClient webClient;
 
-    public CamundaService(){
-        webClient = WebClient.create("https://api.github.com/repos/tola09/ffm-java-22-1-camunda-engine/git/trees/main");
+    private final BpmnDiagramRepository repository;
+
+    public CamundaService(BpmnDiagramRepository repository){
+        webClient = WebClient.create("http://ec2-18-196-17-4.eu-central-1.compute.amazonaws.com/engine-rest/process-definition");
+        this.repository=repository;
     }
 
-    public List<CamundaProcessModel> fetchBpmnDiagramsFromRepo(){
+    public void writeCamundaProcessesToDB(){
         ResponseEntity<List<CamundaProcessModel>> responseEntity = webClient.get()
-                .uri("?recursive=1")
+//                .uri("")
                 .retrieve()
                 .toEntityList(CamundaProcessModel.class)
                 .block();
 
+        List<CamundaProcessModel> processList;
+
         if (responseEntity != null) {
-            return responseEntity.getBody();
-        } else throw new GithubResponseException("Response Entity is null");
+            processList = responseEntity.getBody();
+        } else throw new CamundaResponseException("Response Entity is null");
+        if(processList != null){
+            for(CamundaProcessModel camundaProcessModel : processList){
+                BpmnDiagram diagramToInsert = new BpmnDiagram(
+                        camundaProcessModel.id(),
+                        camundaProcessModel.name(),
+                        camundaProcessModel.key(),
+                        camundaProcessModel.resource(),
+                        camundaProcessModel.version(),
+                        null,
+                        null,
+                        null,
+                        null
+                );
+                repository.insert(diagramToInsert);
+            }
+        } else throw new CamundaResponseException("Response Body is null");
     }
 }

@@ -3,6 +3,8 @@ package neuefische.capstone.bpmndiagram;
 import lombok.With;
 
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @With
 public record BpmnDiagram(
@@ -12,13 +14,12 @@ public record BpmnDiagram(
         @NotEmpty
         String businessKey,
         @NotEmpty
-        String xmlFile,
-        String comment
-//        Instant timestamp,
-//        String author,
-//        int revision,
-//        String status,
-//        parents,
-//        childs,
+        String filename,
+        @NotEmpty
+        int version,
+        List<BpmnDiagram> calledProcesses,
+        String commentText,
+        LocalDateTime commentTime,
+        String commentAuthor
 ) {
 }
