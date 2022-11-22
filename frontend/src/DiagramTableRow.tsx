@@ -23,20 +23,20 @@ export default function DiagramTableRow(props: Props) {
     const[editMode, setEditMode] = useState<boolean>(false)
     const [name,setName] = useState<string>(props.diagram.name)
     const [businessKey,setBusinessKey] = useState<string>(props.diagram.businessKey)
-    const [xmlFile,setXmlFile] = useState<string>(props.diagram.xmlFile)
-    const [comment,setComment] = useState<string>(props.diagram.comment)
+    const [filename,setFilename] = useState<string>(props.diagram.filename)
+    const [comment,setComment] = useState<string>(props.diagram.commentText)
 
     const handleUpdate = () => {
         axios.put("/api/bpmndiagrams/"+props.diagram.id, {
             "id": props.diagram.id,
             "name": name,
             "businessKey": businessKey,
-            "xmlFile": xmlFile,
+            "xmlFile": filename,
             "comment":comment
         })
             .then(() => {
                 props.fetchDiagrams()
-                if(name!==props.diagram.name || businessKey!==props.diagram.businessKey || xmlFile!==props.diagram.xmlFile || comment!==props.diagram.comment){
+                if(name!==props.diagram.name || businessKey!==props.diagram.businessKey || filename!==props.diagram.filename || comment!==props.diagram.commentText){
                     props.setSnackbarUpdateOpen(true)
                 }
             })
@@ -47,7 +47,7 @@ export default function DiagramTableRow(props: Props) {
         axios.post("/api/bpmndiagrams", {
                 "name": diagram.name,
                 "businessKey": diagram.businessKey,
-                "xmlFile": diagram.xmlFile,
+                "xmlFile": diagram.filename,
                 "comment": "duplicated"
             })
             .then(() => {
@@ -74,17 +74,17 @@ export default function DiagramTableRow(props: Props) {
             >
                 { editMode ?
                     <>
-                        <TableCell component="th" scope="row"><input placeholder={"name"} value={name} onChange={(event) => setName(event.target.value)}/></TableCell>
+                        <TableCell component="td" scope="row"><input placeholder={"name"} value={name} onChange={(event) => setName(event.target.value)}/></TableCell>
                         <TableCell align="right"><input placeholder={"businessKey"} value={businessKey} onChange={(event) => setBusinessKey(event.target.value)}/></TableCell>
-                        <TableCell align="right"><input placeholder={"xmlFile"} value={xmlFile} onChange={(event) => setXmlFile(event.target.value)}/></TableCell>
+                        <TableCell align="right"><input placeholder={"xmlFile"} value={filename} onChange={(event) => setFilename(event.target.value)}/></TableCell>
                         <TableCell align="right"><input placeholder={"comment"} value={comment} onChange={(event) => setComment(event.target.value)}/></TableCell>
                     </>
                     :
                     <>
-                        <TableCell component="th" scope="row">{props.diagram.name}</TableCell>
-                        <TableCell align="right">{props.diagram.businessKey}</TableCell>
-                        <TableCell align="right">{props.diagram.xmlFile}</TableCell>
-                        <TableCell align="right">{props.diagram.comment}</TableCell>
+                        <TableCell component="td" scope="row">{props.diagram.name}</TableCell>
+                        <TableCell align="right">{props.diagram.filename}</TableCell>
+                        <TableCell align="right">{props.diagram.version}</TableCell>
+                        <TableCell align="right">{props.diagram.commentText}</TableCell>
                     </>
                 }
                 <TableCell component="th" scope="row">

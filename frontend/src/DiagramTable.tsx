@@ -39,8 +39,8 @@ function DiagramTable() {
                     <TableHead>
                         <TableRow>
                             <TableCell sx={{fontWeight: "bold"}} >Name</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="right">Key</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="right">XML-File</TableCell>
+                            <TableCell sx={{fontWeight: "bold"}} align="right">Filename</TableCell>
+                            <TableCell sx={{fontWeight: "bold"}} align="right">version</TableCell>
                             <TableCell sx={{fontWeight: "bold"}} align="right">Comment</TableCell>
                             <TableCell sx={{fontWeight: "bold", width: 120}} align="center">Actions</TableCell>
                         </TableRow>

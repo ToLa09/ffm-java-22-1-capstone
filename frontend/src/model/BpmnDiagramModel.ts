@@ -2,6 +2,9 @@ export type BpmnDiagramModel = {
     id: string
     name: string
     businessKey: string
-    xmlFile: string
-    comment: string
+    filename: string
+    version: number,
+    calledProcesses: BpmnDiagramModel[],
+    commentText: string,
+    commentAuthor: string
 }
