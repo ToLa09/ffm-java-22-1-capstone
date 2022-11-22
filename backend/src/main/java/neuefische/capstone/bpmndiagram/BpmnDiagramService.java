@@ -1,4 +1,4 @@
-package neuefische.capstone;
+package neuefische.capstone.bpmndiagram;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

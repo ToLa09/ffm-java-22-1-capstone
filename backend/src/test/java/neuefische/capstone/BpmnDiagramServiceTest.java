@@ -1,5 +1,8 @@
 package neuefische.capstone;
 
+import neuefische.capstone.bpmndiagram.BpmnDiagram;
+import neuefische.capstone.bpmndiagram.BpmnDiagramRepository;
+import neuefische.capstone.bpmndiagram.BpmnDiagramService;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

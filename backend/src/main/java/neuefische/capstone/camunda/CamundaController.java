@@ -1,4 +1,4 @@
-package capstone.backend;
+package neuefische.capstone.camunda;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
