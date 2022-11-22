@@ -15,23 +15,15 @@ public class CamundaService {
         webClient = WebClient.create("https://api.github.com/repos/tola09/ffm-java-22-1-camunda-engine/git/trees/main");
     }
 
-    public List<BpmnDiagramRepoModel> fetchBpmnDiagramsFromRepo(){
-        ResponseEntity<RepoResponseElement> responseEntity = webClient.get()
+    public List<CamundaProcessModel> fetchBpmnDiagramsFromRepo(){
+        ResponseEntity<List<CamundaProcessModel>> responseEntity = webClient.get()
                 .uri("?recursive=1")
                 .retrieve()
-                .toEntity(RepoResponseElement.class)
+                .toEntityList(CamundaProcessModel.class)
                 .block();
 
-        RepoResponseElement responseBody;
-
-        if (responseEntity != null){
-            responseBody = responseEntity.getBody();
+        if (responseEntity != null) {
+            return responseEntity.getBody();
         } else throw new GithubResponseException("Response Entity is null");
-        if (responseBody != null) {
-            return responseBody.tree()
-                    .stream()
-                    .filter(diagram -> diagram.path().endsWith(".bpmn"))
-                    .toList();
-        } else throw new GithubResponseException("Response Body is null");
     }
 }

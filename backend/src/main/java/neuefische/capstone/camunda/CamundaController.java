@@ -15,7 +15,7 @@ public class CamundaController {
     private final CamundaService service;
 
     @GetMapping()
-    public List<BpmnDiagramRepoModel> getAllModels(){
+    public List<CamundaProcessModel> getAllModels(){
         return service.fetchBpmnDiagramsFromRepo();
     }
 }
