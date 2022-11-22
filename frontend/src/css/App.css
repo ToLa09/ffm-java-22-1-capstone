@@ -40,7 +40,7 @@ h1 {
   border-width: 1px;
   border-style: dashed;
   border-radius: 1pc;
-  background-color: rgb(157, 183, 204);
+  background-color: gray;
 }
 
 .addFormInputWrapper {
