@@ -1,4 +1,4 @@
-package capstone.backend;
+package neuefische.capstone.camunda;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package capstone.backend;
+package neuefische.capstone.camunda;
 
 public class GithubResponseException extends RuntimeException {
     public GithubResponseException(String message) {
