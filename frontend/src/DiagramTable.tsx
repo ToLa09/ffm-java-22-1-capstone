@@ -38,6 +38,7 @@ function DiagramTable() {
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="BPMN-Diagram-table" className="diagramtable">
                     <TableHead>
                         <TableRow>
+                            <TableCell></TableCell>
                             <TableCell sx={{fontWeight: "bold"}} >Name</TableCell>
                             <TableCell sx={{fontWeight: "bold"}} align="right">Filename</TableCell>
                             <TableCell sx={{fontWeight: "bold"}} align="right">version</TableCell>

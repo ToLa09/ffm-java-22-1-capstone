@@ -9,6 +9,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from '@mui/icons-material/Check';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 export type Props = {
     diagram: BpmnDiagramModel
@@ -21,6 +23,7 @@ export type Props = {
 export default function DiagramTableRow(props: Props) {
 
     const[editMode, setEditMode] = useState<boolean>(false)
+    const[unfold, setUnfold] = useState<boolean>(false)
     const [name,setName] = useState<string>(props.diagram.name)
     const [businessKey,setBusinessKey] = useState<string>(props.diagram.businessKey)
     const [filename,setFilename] = useState<string>(props.diagram.filename)
@@ -81,6 +84,15 @@ export default function DiagramTableRow(props: Props) {
                     </>
                     :
                     <>
+                        <TableCell>
+                            <IconButton
+                                aria-label="expand row"
+                                size="small"
+                                onClick={() => setUnfold(!unfold)}
+                            >
+                                {unfold ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
+                            </IconButton>
+                        </TableCell>
                         <TableCell component="td" scope="row">{props.diagram.name}</TableCell>
                         <TableCell align="right">{props.diagram.filename}</TableCell>
                         <TableCell align="right">{props.diagram.version}</TableCell>
