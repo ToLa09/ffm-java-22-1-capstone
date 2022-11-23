@@ -32,7 +32,17 @@ class BpmnDiagramServiceTest {
     @Test
     void addBpmnDiagram() {
         //given
-        BpmnDiagram testDiagram = new BpmnDiagram(null,"create bill","capstone.bpmn.billing.create-bill", "create-bill.xml", "first version of billing");
+        BpmnDiagram testDiagram = new BpmnDiagram(
+                null
+                ,"create bill"
+                ,"capstone.bpmn.billing.create-bill"
+                , "create-bill.xml"
+                , 1
+                ,null
+                ,"first version of billing"
+                ,null
+                ,null
+        );
         when(repository.insert(testDiagram)).thenReturn(testDiagram.withId("123"));
         //when
         BpmnDiagram actual = service.addBpmnDiagram(testDiagram);
@@ -45,7 +55,17 @@ class BpmnDiagramServiceTest {
     @Test
     void updateBpmnDiagram() {
         //given
-        BpmnDiagram testDiagram = new BpmnDiagram("123","create bill","capstone.bpmn.billing.create-bill", "create-bill.xml", "first version of billing");
+        BpmnDiagram testDiagram = new BpmnDiagram(
+                null
+                ,"create bill"
+                ,"capstone.bpmn.billing.create-bill"
+                , "create-bill.xml"
+                , 1
+                ,null
+                ,"first version of billing"
+                ,null
+                ,null
+        );
         when(repository.save(testDiagram)).thenReturn(testDiagram);
         //when
         BpmnDiagram actual = service.updateBpmnDiagram(testDiagram);
