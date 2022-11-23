@@ -43,6 +43,9 @@ function App() {
             secondary: {
                 main: '#336571',
             },
+            background: {
+                default: '#f9ded4',
+            },
         },
     })
 
