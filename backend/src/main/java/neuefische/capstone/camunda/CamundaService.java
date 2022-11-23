@@ -45,7 +45,9 @@ public class CamundaService {
                         null,
                         null
                 );
-                repository.insert(diagramToInsert);
+                if(!repository.existsById(camundaProcessModel.id())){
+                    repository.insert(diagramToInsert);
+                }
             }
         } else throw new CamundaResponseException("Response Body is null");
     }
