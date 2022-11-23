@@ -31,7 +31,7 @@ function DiagramTable(props: DiagramTableProps) {
                             <TableCell sx={{fontWeight: "bold"}} >Name</TableCell>
                             <TableCell sx={{fontWeight: "bold"}} align="left">Filename</TableCell>
                             <TableCell sx={{fontWeight: "bold"}} align="center">latest version</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Comment</TableCell>
+                            <TableCell sx={{fontWeight: "bold"}} align="center">latest comment</TableCell>
                             <TableCell sx={{fontWeight: "bold", width: 120}} align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
