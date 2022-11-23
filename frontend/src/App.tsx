@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './css/App.css';
 import DiagramTable from "./DiagramTable";
 import AddForm from "./AddForm";
@@ -6,11 +6,34 @@ import {AppBar, createTheme, Tab, ThemeProvider, Toolbar, Typography} from "@mui
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import IconButton from "@mui/material/IconButton";
-import MenuButton from "@mui/icons-material/Menu";
+import DiagramDetails from "./DiagramDetails";
+import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
+import axios from "axios";
 
 function App() {
-    const [value, setValue] = useState("Overview")
+    const [tab, setTab] = useState<string>("Overview")
+    const [detailedDiagram, setDetailedDiagram] = useState<BpmnDiagramModel>({
+        id:""
+        ,name: ""
+        ,businessKey: ""
+        ,filename: ""
+        ,version: NaN
+        ,calledProcesses: []
+        ,commentText: ""
+        ,commentAuthor: ""
+    })
+    const [bpmnDiagrams, setBpmnDiagrams] = useState<BpmnDiagramModel[]>([])
+
+    const fetchDiagrams = () => {
+        axios.get("/api/bpmndiagrams")
+            .then(response => response.data)
+            .catch(error => console.error("GET-Error: " + error))
+            .then(setBpmnDiagrams)
+    }
+
+    useEffect(() => {
+        fetchDiagrams()
+    },[])
 
     const theme = createTheme({
         palette: {
@@ -26,22 +49,18 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
         <header>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton>
-                        <MenuButton fontSize="large"/>
-                    </IconButton>
-                    <Typography variant="h2">BPMN-Library</Typography>
-                </Toolbar>
+            <AppBar position="sticky">
+                <Typography variant="h2" color="inherit">BPMN-Library</Typography>
             </AppBar>
         </header>
-            <TabContext value={value}>
-                <AppBar position="static">
+        <main>
+            <TabContext value={tab}>
+                <AppBar position="sticky">
                     <Toolbar >
                         <TabList
-                            textColor="secondary"
+                            textColor="inherit"
                             indicatorColor="secondary"
-                            onChange={ (event, newValue: string) => setValue(newValue)}
+                            onChange={ (event, newValue: string) => setTab(newValue)}
                             aria-label="tabs"
                         >
                             <Tab value="Overview" label="Process Overview" color="primary"/>
@@ -51,13 +70,24 @@ function App() {
                     </Toolbar>
                 </AppBar>
                 <TabPanel value="Overview">
-                    <DiagramTable/>
+                    <DiagramTable
+                        setTab={setTab}
+                        bpmnDiagrams={bpmnDiagrams}
+                        fetchDiagrams={fetchDiagrams}
+                        setDetailedDiagram={setDetailedDiagram}/>
                 </TabPanel>
                 <TabPanel value="Add">
                     <AddForm/>
                 </TabPanel>
-                <TabPanel value="Details">Details</TabPanel>
+                <TabPanel value="Details">
+                    <DiagramDetails
+                        setTab={setTab}
+                        detailedDiagram={detailedDiagram}
+                        fetchDiagrams={fetchDiagrams}
+                    />
+                </TabPanel>
             </TabContext>
+        </main>
     </ThemeProvider>
   );
 }
