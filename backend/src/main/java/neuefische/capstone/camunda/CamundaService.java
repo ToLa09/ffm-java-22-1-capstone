@@ -2,6 +2,7 @@ package neuefische.capstone.camunda;
 
 import neuefische.capstone.bpmndiagram.BpmnDiagram;
 import neuefische.capstone.bpmndiagram.BpmnDiagramRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -15,14 +16,14 @@ public class CamundaService {
 
     private final BpmnDiagramRepository repository;
 
-    public CamundaService(BpmnDiagramRepository repository){
-        webClient = WebClient.create("http://ec2-18-196-17-4.eu-central-1.compute.amazonaws.com/engine-rest/process-definition");
+    public CamundaService(BpmnDiagramRepository repository, @Value("${camunda.api.baseUrl}") String baseUrl){
+        webClient = WebClient.create(baseUrl);
         this.repository=repository;
     }
 
     public void writeCamundaProcessesToDB(){
         ResponseEntity<List<CamundaProcessModel>> responseEntity = webClient.get()
-//                .uri("")
+                .uri("/process-definition")
                 .retrieve()
                 .toEntityList(CamundaProcessModel.class)
                 .block();
