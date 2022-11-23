@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
 import DiagramTableRow from "./DiagramTableRow";
 import './css/DiagramTable.css';
@@ -9,6 +9,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import SyncIcon from '@mui/icons-material/Sync';
+import IconButton from "@mui/material/IconButton";
+import axios from "axios";
+import CloseIcon from "@mui/icons-material/Close";
+import {Snackbar} from "@mui/material";
 
 type DiagramTableProps = {
     setTab: Dispatch<SetStateAction<string>>
@@ -18,12 +23,24 @@ type DiagramTableProps = {
 }
 
 function DiagramTable(props: DiagramTableProps) {
+    const[snackbarRefreshOpen, setSnackbarRefreshOpen] = useState<boolean>(false)
 
-
+    const fetchCamundaDiagrams = () => {
+        axios.get("/api/camundaprocesses")
+            .then(response => {
+                if(response.status === 204){
+                    setSnackbarRefreshOpen(true)
+                }
+            })
+            .catch(error => console.error(error))
+    }
 
 
     return (
         <>
+            <IconButton onClick={fetchCamundaDiagrams}>
+                <SyncIcon/>
+            </IconButton>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="BPMN-Diagram-table" className="diagramtable">
                     <TableHead>
@@ -48,6 +65,13 @@ function DiagramTable(props: DiagramTableProps) {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Snackbar
+                open={snackbarRefreshOpen}
+                autoHideDuration={3000}
+                message="Updated Diagramlist (Fetched Data from Camunda Engine)"
+                onClose={() => setSnackbarRefreshOpen(false)}
+                action={<IconButton onClick={() => setSnackbarRefreshOpen(false)}><CloseIcon/></IconButton>}
+            />
         </>
     );
 }
