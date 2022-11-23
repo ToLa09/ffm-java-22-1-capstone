@@ -38,10 +38,14 @@ class BpmnDiagramIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
-                        "name": "create bill",
-                        "businessKey": "capstone.bpmn.billing.create-bill",
-                        "xmlFile": "create-bill.xml",
-                        "comment": "first version of billing"
+                        "name": "Create_Diagram",
+                        "businessKey": "Process_create-diagram",
+                        "filename": "create-diagram.bpmn",
+                        "version": 1,
+                        "calledProcesses": null,
+                        "commentText": null,
+                        "commentTime": null,
+                        "commentAuthor": null
                     }
                     """))
                 .andExpect(status().isCreated())
@@ -55,10 +59,14 @@ class BpmnDiagramIntegrationTest {
                     [
                         {
                             "id": "<id>",
-                            "name": "create bill",
-                            "businessKey": "capstone.bpmn.billing.create-bill",
-                            "xmlFile": "create-bill.xml",
-                            "comment": "first version of billing"
+                            "name": "Create_Diagram",
+                            "businessKey": "Process_create-diagram",
+                            "filename": "create-diagram.bpmn",
+                            "version": 1,
+                            "calledProcesses": null,
+                            "commentText": null,
+                            "commentTime": null,
+                            "commentAuthor": null
                         }
                     ]
                     """.replace("<id>", responseObject.id())));
@@ -71,10 +79,14 @@ class BpmnDiagramIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                     {
-                        "name": "create bill",
-                        "businessKey": "capstone.bpmn.billing.create-bill",
-                        "xmlFile": "create-bill.xml",
-                        "comment": "first version of billing"
+                        "name": "Create_Diagram",
+                        "businessKey": "Process_create-diagram",
+                        "filename": "create-diagram.bpmn",
+                        "version": 1,
+                        "calledProcesses": null,
+                        "commentText": null,
+                        "commentTime": null,
+                        "commentAuthor": null
                     }
                     """))
                 .andExpect(status().isCreated())
@@ -87,20 +99,28 @@ class BpmnDiagramIntegrationTest {
                 .content("""
                         {
                             "id": "<id>",
-                            "name": "create bill",
-                            "businessKey": "capstone.bpmn.billing.createBill",
-                            "xmlFile": "create-bill.xml",
-                            "comment": "second version of billing"
+                            "name": "test",
+                            "businessKey": "Process_create-diagram",
+                            "filename": "create-diagram.bpmn",
+                            "version": 1,
+                            "calledProcesses": null,
+                            "commentText": null,
+                            "commentTime": null,
+                            "commentAuthor": null
                         }
                     """.replace("<id>",responseObject.id())))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
                             "id": "<id>",
-                            "name": "create bill",
-                            "businessKey": "capstone.bpmn.billing.createBill",
-                            "xmlFile": "create-bill.xml",
-                            "comment": "second version of billing"
+                            "name": "test",
+                            "businessKey": "Process_create-diagram",
+                            "filename": "create-diagram.bpmn",
+                            "version": 1,
+                            "calledProcesses": null,
+                            "commentText": null,
+                            "commentTime": null,
+                            "commentAuthor": null
                         }
                     """.replace("<id>",responseObject.id())));
     }
@@ -113,10 +133,14 @@ class BpmnDiagramIntegrationTest {
                         .content("""
                     {
                         "id": "1111",
-                        "name": "create bill",
-                        "businessKey": "capstone.bpmn.billing.create-bill",
-                        "xmlFile": "create-bill.xml",
-                        "comment": "first version of billing"
+                        "name": "Create_Diagram",
+                        "businessKey": "Process_create-diagram",
+                        "filename": "create-diagram.bpmn",
+                        "version": 1,
+                        "calledProcesses": null,
+                        "commentText": null,
+                        "commentTime": null,
+                        "commentAuthor": null
                     }
                     """))
                 .andExpect(status().isBadRequest())
@@ -130,10 +154,14 @@ class BpmnDiagramIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                     {
-                        "name": "create bill",
-                        "businessKey": "capstone.bpmn.billing.create-bill",
-                        "xmlFile": "create-bill.xml",
-                        "comment": "first version of billing"
+                        "name": "Create_Diagram",
+                        "businessKey": "Process_create-diagram",
+                        "filename": "create-diagram.bpmn",
+                        "version": 1,
+                        "calledProcesses": null,
+                        "commentText": null,
+                        "commentTime": null,
+                        "commentAuthor": null
                     }
                     """))
                 .andExpect(status().isCreated())
