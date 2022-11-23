@@ -66,7 +66,7 @@ function DiagramDetails(props: DiagramDetailsProps) {
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item xs={12}><Button variant="outlined" color="secondary" onClick={() => props.setTab("Overview")}>Back</Button></Grid>
+                <Grid item xs={12}><Button variant="outlined" color="secondary" onClick={() => props.setTab("Overview")}>Back to Overview</Button></Grid>
                 <Grid item xs={6}>
                     <Card>
                         <CardContent>
