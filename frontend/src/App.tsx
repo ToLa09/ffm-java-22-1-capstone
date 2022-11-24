@@ -13,14 +13,15 @@ import axios from "axios";
 function App() {
     const [tab, setTab] = useState<string>("Overview")
     const [detailedDiagram, setDetailedDiagram] = useState<BpmnDiagramModel>({
-        id:""
-        ,name: ""
-        ,businessKey: ""
-        ,filename: ""
-        ,version: NaN
-        ,calledProcesses: []
-        ,commentText: ""
-        ,commentAuthor: ""
+        id: ""
+        , name: "-"
+        , businessKey: "-"
+        , filename: "-"
+        , version: 1
+        , calledProcesses: []
+        , commentText: ""
+        , commentAuthor: ""
+        , customDiagram: true
     })
     const [bpmnDiagrams, setBpmnDiagrams] = useState<BpmnDiagramModel[]>([])
 
@@ -86,6 +87,7 @@ function App() {
                     <DiagramDetails
                         setTab={setTab}
                         detailedDiagram={detailedDiagram}
+                        setDetailedDiagram={setDetailedDiagram}
                         fetchDiagrams={fetchDiagrams}
                     />
                 </TabPanel>
