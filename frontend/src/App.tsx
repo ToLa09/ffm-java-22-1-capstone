@@ -81,7 +81,7 @@ function App() {
                         setDetailedDiagram={setDetailedDiagram}/>
                 </TabPanel>
                 <TabPanel value="Add">
-                    <AddForm/>
+                    <AddForm fetchDiagrams={fetchDiagrams}/>
                 </TabPanel>
                 <TabPanel value="Details">
                     <DiagramDetails

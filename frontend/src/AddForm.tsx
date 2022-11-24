@@ -5,7 +5,11 @@ import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-function AddForm() {
+type AddFormProps = {
+    fetchDiagrams: () => void
+}
+
+function AddForm(props: AddFormProps) {
     const [snackbarAddOpen, setSnackbarAddOpen] = useState<boolean>(false)
     const [snackbarErrorOpen, setSnackbarErrorOpen] = useState<boolean>(false)
 
@@ -41,6 +45,7 @@ function AddForm() {
                     , customDiagram: true
                 })
                 setSnackbarAddOpen(true)
+                props.fetchDiagrams()
             })
             .catch(error => console.error(error))
     }
