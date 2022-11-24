@@ -127,20 +127,6 @@ function DiagramDetails(props: DiagramDetailsProps) {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={6}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h5" color="secondary">Comments</Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={6}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h5" color="secondary">History</Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
             </Grid>
             <Snackbar
                 open={snackbarOpen}
