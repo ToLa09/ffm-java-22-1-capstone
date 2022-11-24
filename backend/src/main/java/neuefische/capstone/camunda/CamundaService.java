@@ -32,9 +32,10 @@ public class CamundaService {
                 .block()
                 ,"Response Entity is null");
 
-        List<CamundaProcessModel> processList = responseEntity.getBody();
 
-        if(processList != null){
+        List<CamundaProcessModel> processList = requireNonNull(responseEntity.getBody(),"Response Body is null");
+
+        if(!processList.isEmpty()){
             for(CamundaProcessModel camundaProcessModel : processList){
                 BpmnDiagram diagramToInsert = new BpmnDiagram(
                         camundaProcessModel.id(),
