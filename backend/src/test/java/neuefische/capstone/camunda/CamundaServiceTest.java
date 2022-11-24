@@ -13,7 +13,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
 class CamundaServiceTest {
@@ -100,13 +101,62 @@ class CamundaServiceTest {
         try {
             service.writeCamundaProcessesToDB();
             fail();
-        } catch (CamundaResponseException e){
+        } catch (CamundaResponseException e) {
             RecordedRequest recordedRequest = mockWebServer.takeRequest();
             HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition");
             //then
-            assertEquals("Response Body is null",e.getMessage());
+            assertEquals("Response Body is null", e.getMessage());
             assertEquals("GET", recordedRequest.getMethod());
-            assertEquals(expectedUrl,recordedRequest.getRequestUrl());
+            assertEquals(expectedUrl, recordedRequest.getRequestUrl());
         }
+    }
+
+    @Test
+    void writeCamundaProcessesToDB_IDexistsAlready() throws InterruptedException {
+        //given
+        BpmnDiagram mockProcess = new BpmnDiagram(
+                "Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0"
+                , "Create_Diagram"
+                , "Process_create-diagram"
+                , "create-diagram.bpmn"
+                , 1
+                , null
+                , null
+                , null
+                , null
+        );
+
+        mockWebServer.enqueue(new MockResponse()
+                .setBody("""
+                        [{
+                            "id": "Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0",
+                            "key": "Process_create-diagram",
+                            "category": "http://bpmn.io/schema/bpmn",
+                            "description": null,
+                            "name": "Create_Diagram",
+                            "version": 1,
+                            "resource": "create-diagram.bpmn",
+                            "deploymentId": "31243ff2-699b-11ed-aa1c-0a424f65c1c0",
+                            "diagram": null,
+                            "suspended": false,
+                            "tenantId": null,
+                            "versionTag": null,
+                            "historyTimeToLive": null,
+                            "startableInTasklist": true
+                          }]
+                        """)
+                .addHeader("Content-Type", "application/json")
+        );
+
+        when(repository.existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0")).thenReturn(true);
+        //when
+        service.writeCamundaProcessesToDB();
+        RecordedRequest recordedRequest = mockWebServer.takeRequest();
+        HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition");
+        //then
+        verify(repository).existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0");
+        verify(repository, never()).insert(mockProcess);
+        assertEquals("GET", recordedRequest.getMethod());
+        assertEquals(expectedUrl, recordedRequest.getRequestUrl());
     }
 }
