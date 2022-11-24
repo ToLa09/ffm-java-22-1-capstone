@@ -29,6 +29,7 @@ class BpmnDiagramServiceTest {
     @Test
     void addBpmnDiagram() {
         //given
+        String testID = "generatedID";
         BpmnDiagram testDiagram = new BpmnDiagram(
                 null
                 , "create bill"
@@ -41,12 +42,15 @@ class BpmnDiagramServiceTest {
                 , null
                 , true
         );
-        when(repository.insert(testDiagram)).thenReturn(testDiagram.withId("123"));
+        BpmnDiagram testDiagramWithId = testDiagram.withId(testID);
+        when(serviceUtils.generateCamundaId(testDiagram.businessKey(), testDiagram.version())).thenReturn(testID);
+        when(repository.insert(testDiagramWithId)).thenReturn(testDiagramWithId);
         //when
         BpmnDiagram actual = service.addBpmnDiagram(testDiagram);
-        BpmnDiagram expected = testDiagram.withId("123");
+        BpmnDiagram expected = testDiagramWithId;
         //then
-        verify(repository).insert(testDiagram);
+        verify(serviceUtils).generateCamundaId(testDiagram.businessKey(), testDiagram.version());
+        verify(repository).insert(testDiagramWithId);
         assertEquals(expected, actual);
     }
 
