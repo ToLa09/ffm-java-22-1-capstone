@@ -126,7 +126,30 @@ class BpmnDiagramIntegrationTest {
                                 "commentAuthor": null,
                                 "customDiagram": true
                             }
-                        """.replace("<id>",responseObject.id())));
+                        """.replace("<id>", responseObject.id())));
+    }
+
+    @Test
+    @DirtiesContext
+    void PUTBpmnDiagram_expect404() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/bpmndiagrams/" + "1234")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                    {
+                                        "id": "1234",
+                                        "name": "test",
+                                        "businessKey": "Process_create-diagram",
+                                        "filename": "create-diagram.bpmn",
+                                        "version": 1,
+                                        "calledProcesses": null,
+                                        "commentText": null,
+                                        "commentTime": null,
+                                        "commentAuthor": null,
+                                        "customDiagram": true
+                                    }
+                                """))
+                .andExpect(status().isNotFound())
+                .andExpect(status().reason("No Element found with this ID"));
     }
 
     @Test
