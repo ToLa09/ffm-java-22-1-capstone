@@ -2,10 +2,11 @@ package neuefische.capstone.camunda;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -16,12 +17,14 @@ public class CamundaController {
     private final CamundaService service;
 
     @GetMapping()
-    @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void writeCamundaProcessesToDB(){
+    public ResponseEntity<String> writeCamundaProcessesToDB(){
         try {
             service.writeCamundaProcessesToDB();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch(CamundaResponseException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch(WebClientResponseException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.getMessage());
         }
     }
 }
