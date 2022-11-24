@@ -10,10 +10,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import SyncIcon from '@mui/icons-material/Sync';
-import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
-import {Snackbar} from "@mui/material";
+import {Snackbar, Typography} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 
 type DiagramTableProps = {
     setTab: Dispatch<SetStateAction<string>>
@@ -23,7 +24,7 @@ type DiagramTableProps = {
 }
 
 function DiagramTable(props: DiagramTableProps) {
-    const[snackbarRefreshOpen, setSnackbarRefreshOpen] = useState<boolean>(false)
+    const [snackbarRefreshOpen, setSnackbarRefreshOpen] = useState<boolean>(false)
 
     const fetchCamundaDiagrams = () => {
         axios.get("/api/camundaprocesses")
@@ -31,6 +32,7 @@ function DiagramTable(props: DiagramTableProps) {
                 if(response.status === 204){
                     setSnackbarRefreshOpen(true)
                 }
+                props.fetchDiagrams()
             })
             .catch(error => console.error(error))
     }
@@ -38,14 +40,14 @@ function DiagramTable(props: DiagramTableProps) {
 
     return (
         <>
-            <IconButton onClick={fetchCamundaDiagrams}>
-                <SyncIcon/>
-            </IconButton>
+            <Button onClick={fetchCamundaDiagrams} color="secondary">
+                <SyncIcon/><Typography>Refresh</Typography>
+            </Button>
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} size="small" aria-label="BPMN-Diagram-table" className="diagramtable">
+                <Table sx={{minWidth: 650}} size="small" aria-label="BPMN-Diagram-table" className="diagramtable">
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} >Name</TableCell>
+                            <TableCell sx={{fontWeight: "bold"}}>Name</TableCell>
                             <TableCell sx={{fontWeight: "bold"}} align="left">Filename</TableCell>
                             <TableCell sx={{fontWeight: "bold"}} align="center">latest version</TableCell>
                             <TableCell sx={{fontWeight: "bold"}} align="center">Custom Diagram (editable)</TableCell>
