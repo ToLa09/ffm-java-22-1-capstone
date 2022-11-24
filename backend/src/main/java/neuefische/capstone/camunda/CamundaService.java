@@ -9,6 +9,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
+
 @Service
 public class CamundaService {
 
@@ -17,22 +19,21 @@ public class CamundaService {
     private final BpmnDiagramRepository repository;
 
     public CamundaService(BpmnDiagramRepository repository, @Value("${camunda.api.baseUrl}") String baseUrl){
-        webClient = WebClient.create(baseUrl);
+        this.webClient = WebClient.create(baseUrl);
         this.repository=repository;
     }
 
     public void writeCamundaProcessesToDB(){
-        ResponseEntity<List<CamundaProcessModel>> responseEntity = webClient.get()
+        ResponseEntity<List<CamundaProcessModel>> responseEntity = requireNonNull(webClient
+                .get()
                 .uri("/process-definition")
                 .retrieve()
                 .toEntityList(CamundaProcessModel.class)
-                .block();
+                .block()
+                ,"Response Entity is null");
 
-        List<CamundaProcessModel> processList;
+        List<CamundaProcessModel> processList = responseEntity.getBody();
 
-        if (responseEntity != null) {
-            processList = responseEntity.getBody();
-        } else throw new CamundaResponseException("Response Entity is null");
         if(processList != null){
             for(CamundaProcessModel camundaProcessModel : processList){
                 BpmnDiagram diagramToInsert = new BpmnDiagram(
