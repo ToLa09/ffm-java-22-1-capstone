@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +24,12 @@ public class BpmnDiagramService {
     }
 
     public BpmnDiagram updateBpmnDiagram(BpmnDiagram updatedBpmnDiagram) {
-        return repository.save(updatedBpmnDiagram);
+        for (BpmnDiagram diagram : getAllDiagrams()) {
+            if (diagram.id().equals(updatedBpmnDiagram.id())) {
+                return repository.save(updatedBpmnDiagram);
+            }
+        }
+        throw new NoSuchElementException("No Element found with this ID");
     }
 
     public void deleteBpmnDiagram(String id) {

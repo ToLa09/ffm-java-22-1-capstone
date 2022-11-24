@@ -7,6 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/bpmndiagrams")
@@ -28,8 +29,12 @@ public class BpmnDiagramController {
 
     @PutMapping("/{id}")
     public BpmnDiagram updateBpmnDiagram(@RequestBody @Valid BpmnDiagram updatedBpmnDiagram, @PathVariable String id) {
-        if(updatedBpmnDiagram.id().equals(id)){
-            return service.updateBpmnDiagram(updatedBpmnDiagram);
+        if(updatedBpmnDiagram.id().equals(id)) {
+            try {
+                return service.updateBpmnDiagram(updatedBpmnDiagram);
+            } catch (NoSuchElementException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            }
         } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Request ID Mismatch");
     }
 
