@@ -40,6 +40,17 @@ function DiagramDetails(props: DiagramDetailsProps) {
                 setSnackbarOpen(true)
                 setSnackbarMessage("Diagram deleted!")
                 props.setTab("Overview")
+                props.setDetailedDiagram({
+                    id: ""
+                    , name: "-"
+                    , businessKey: "-"
+                    , filename: "-"
+                    , version: 1
+                    , calledProcesses: []
+                    , commentText: ""
+                    , commentAuthor: ""
+                    , customDiagram: true
+                })
             })
             .catch(error => console.error(error))
     }
