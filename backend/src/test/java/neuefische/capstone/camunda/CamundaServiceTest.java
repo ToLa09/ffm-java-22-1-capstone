@@ -40,7 +40,7 @@ class CamundaServiceTest {
     }
 
     @Test
-    void writeCamundaProcessesToDB() throws InterruptedException {
+    void writeCamundaProcessesToDB_correctResponse() throws InterruptedException {
         //given
         BpmnDiagram mockProcess = new BpmnDiagram(
                 "Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0"
@@ -82,11 +82,31 @@ class CamundaServiceTest {
         //when
         service.writeCamundaProcessesToDB();
         RecordedRequest recordedRequest = mockWebServer.takeRequest();
+        HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition");
         //then
         verify(repository).existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0");
         verify(repository).insert(mockProcess);
         assertEquals("GET", recordedRequest.getMethod());
-        HttpUrl expected = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition");
-        assertEquals(expected,recordedRequest.getRequestUrl());
+        assertEquals(expectedUrl,recordedRequest.getRequestUrl());
+    }
+
+    @Test
+    void writeCamundaProcessesToDB_BodyNull() throws InterruptedException {
+        //given
+        mockWebServer.enqueue(new MockResponse()
+                .addHeader("Content-Type", "application/json")
+        );
+        //when
+        try {
+            service.writeCamundaProcessesToDB();
+            fail();
+        } catch (CamundaResponseException e){
+            RecordedRequest recordedRequest = mockWebServer.takeRequest();
+            HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition");
+            //then
+            assertEquals("Response Body is null",e.getMessage());
+            assertEquals("GET", recordedRequest.getMethod());
+            assertEquals(expectedUrl,recordedRequest.getRequestUrl());
+        }
     }
 }

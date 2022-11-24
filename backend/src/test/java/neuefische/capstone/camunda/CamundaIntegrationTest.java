@@ -78,6 +78,6 @@ class CamundaIntegrationTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/camundaprocesses"))
                 .andExpect(status().isNotFound())
-                .andExpect(status().reason(""));
+                .andExpect(status().reason("Response Body is null"));
     }
 }
