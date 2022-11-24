@@ -6,5 +6,6 @@ export type BpmnDiagramModel = {
     version: number,
     calledProcesses: BpmnDiagramModel[],
     commentText: string,
-    commentAuthor: string
+    commentAuthor: string,
+    customDiagram: boolean
 }

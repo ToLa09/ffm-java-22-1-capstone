@@ -10,14 +10,15 @@ function AddForm() {
     const [snackbarErrorOpen, setSnackbarErrorOpen] = useState<boolean>(false)
 
     const [newDiagram, setNewDiagram] = useState<BpmnDiagramModel>({
-        id:""
-        ,name: ""
-        ,businessKey: ""
-        ,filename: ""
-        ,version: 1
-        ,calledProcesses: []
-        ,commentText: ""
-        ,commentAuthor: ""
+        id: ""
+        , name: ""
+        , businessKey: ""
+        , filename: ""
+        , version: 1
+        , calledProcesses: []
+        , commentText: ""
+        , commentAuthor: ""
+        , customDiagram: true
     })
 
     const handleSubmit = (event: any) => {
@@ -37,6 +38,7 @@ function AddForm() {
                     , calledProcesses: []
                     , commentText: ""
                     , commentAuthor: ""
+                    , customDiagram: true
                 })
                 setSnackbarAddOpen(true)
             })
