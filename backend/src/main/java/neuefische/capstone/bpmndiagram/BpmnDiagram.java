@@ -21,6 +21,7 @@ public record BpmnDiagram(
         List<BpmnDiagram> calledProcesses,
         String commentText,
         LocalDateTime commentTime,
-        String commentAuthor
+        String commentAuthor,
+        boolean customDiagram
 ) {
 }

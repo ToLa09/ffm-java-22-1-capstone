@@ -46,7 +46,8 @@ public class CamundaService {
                         null,
                         null,
                         null,
-                        null
+                        null,
+                        false
                 );
                 if(!repository.existsById(camundaProcessModel.id())){
                     repository.insert(diagramToInsert);

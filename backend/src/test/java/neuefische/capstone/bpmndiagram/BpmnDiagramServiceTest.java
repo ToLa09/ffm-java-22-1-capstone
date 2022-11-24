@@ -5,15 +5,15 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 
 class BpmnDiagramServiceTest {
 
     private final BpmnDiagramRepository repository = mock(BpmnDiagramRepository.class);
-
-    private final BpmnDiagramService service = new BpmnDiagramService(repository);
+    private final ServiceUtils serviceUtils = mock(ServiceUtils.class);
+    private final BpmnDiagramService service = new BpmnDiagramService(repository, serviceUtils);
 
     @Test
     void getAllDiagrams() {
@@ -31,14 +31,15 @@ class BpmnDiagramServiceTest {
         //given
         BpmnDiagram testDiagram = new BpmnDiagram(
                 null
-                ,"create bill"
-                ,"capstone.bpmn.billing.create-bill"
+                , "create bill"
+                , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
                 , 1
-                ,null
-                ,"first version of billing"
-                ,null
-                ,null
+                , null
+                , "first version of billing"
+                , null
+                , null
+                , true
         );
         when(repository.insert(testDiagram)).thenReturn(testDiagram.withId("123"));
         //when
@@ -54,14 +55,15 @@ class BpmnDiagramServiceTest {
         //given
         BpmnDiagram testDiagram = new BpmnDiagram(
                 null
-                ,"create bill"
-                ,"capstone.bpmn.billing.create-bill"
+                , "create bill"
+                , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
                 , 1
-                ,null
-                ,"first version of billing"
-                ,null
-                ,null
+                , null
+                , "first version of billing"
+                , null
+                , null
+                , true
         );
         when(repository.save(testDiagram)).thenReturn(testDiagram);
         //when
