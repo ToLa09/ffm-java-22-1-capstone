@@ -4,8 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
 
@@ -55,10 +57,10 @@ class BpmnDiagramServiceTest {
     }
 
     @Test
-    void updateBpmnDiagram() {
+    void updateBpmnDiagramWithExistingId() {
         //given
         BpmnDiagram testDiagram = new BpmnDiagram(
-                null
+                "123"
                 , "create bill"
                 , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
@@ -69,13 +71,66 @@ class BpmnDiagramServiceTest {
                 , null
                 , true
         );
-        when(repository.save(testDiagram)).thenReturn(testDiagram);
+        BpmnDiagram updatedDiagram = new BpmnDiagram(
+                "123"
+                , "creation of bill"
+                , "capstone.bpmn.billing.create-bill"
+                , "create-bill.xml"
+                , 2
+                , null
+                , "first version of billing"
+                , null
+                , null
+                , true
+        );
+        when(repository.save(updatedDiagram)).thenReturn(updatedDiagram);
+        when(repository.findAll()).thenReturn(new ArrayList<>(List.of(testDiagram)));
         //when
-        BpmnDiagram actual = service.updateBpmnDiagram(testDiagram);
+        BpmnDiagram actual = service.updateBpmnDiagram(updatedDiagram);
         //then
-        verify(repository).save(testDiagram);
-        assertEquals(testDiagram, actual);
+        verify(repository).save(updatedDiagram);
+        assertEquals(updatedDiagram, actual);
     }
+
+    @Test
+    void updateBpmnDiagramWithNewId() {
+        //given
+        BpmnDiagram testDiagram = new BpmnDiagram(
+                "123"
+                , "create bill"
+                , "capstone.bpmn.billing.create-bill"
+                , "create-bill.xml"
+                , 1
+                , null
+                , "first version of billing"
+                , null
+                , null
+                , true
+        );
+        BpmnDiagram updatedDiagram = new BpmnDiagram(
+                "123456"
+                , "creation of bill"
+                , "capstone.bpmn.billing.create-bill"
+                , "create-bill.xml"
+                , 2
+                , null
+                , "first version of billing"
+                , null
+                , null
+                , true
+        );
+        when(repository.findAll()).thenReturn(new ArrayList<>(List.of(testDiagram)));
+        //when
+        try {
+            service.updateBpmnDiagram(updatedDiagram);
+            fail();
+        } catch (NoSuchElementException e) {
+            //then
+            verify(repository, never()).save(updatedDiagram);
+            verify(repository).findAll();
+        }
+    }
+
     @Test
     void deleteBpmnDiagram() {
         //given
