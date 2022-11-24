@@ -25,7 +25,7 @@ export default function DiagramTableRow(props: Props) {
                 <TableCell component="td" scope="row">{props.diagram.name}</TableCell>
                 <TableCell align="left">{props.diagram.filename}</TableCell>
                 <TableCell align="center">{props.diagram.version}</TableCell>
-                <TableCell align="left">{props.diagram.commentText}</TableCell>
+                <TableCell align="center">{props.diagram.customDiagram ? "yes" : "no"}</TableCell>
                 <TableCell align="center"><Button onClick={handleDetails} color="secondary">Details</Button></TableCell>
             </TableRow>
         </>
