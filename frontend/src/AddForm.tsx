@@ -33,7 +33,7 @@ function AddForm() {
                     , name: ""
                     , businessKey: ""
                     , filename: ""
-                    , version: NaN
+                    , version: 1
                     , calledProcesses: []
                     , commentText: ""
                     , commentAuthor: ""
