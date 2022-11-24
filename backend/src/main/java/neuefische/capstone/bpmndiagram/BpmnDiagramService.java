@@ -18,7 +18,7 @@ public class BpmnDiagramService {
 
     public BpmnDiagram addBpmnDiagram(BpmnDiagram newBpmnDiagram) {
         String id = serviceUtils.generateCamundaId(newBpmnDiagram.businessKey(), newBpmnDiagram.version());
-        BpmnDiagram bpmnDiagramWithId = newBpmnDiagram.withId(id);
+        BpmnDiagram bpmnDiagramWithId = newBpmnDiagram.withId(id).withCustomDiagram(true);
         return repository.insert(bpmnDiagramWithId);
     }
 

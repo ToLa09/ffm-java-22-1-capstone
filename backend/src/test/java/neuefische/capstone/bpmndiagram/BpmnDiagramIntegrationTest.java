@@ -36,17 +36,18 @@ class BpmnDiagramIntegrationTest {
         String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
-                    {
-                        "name": "Create_Diagram",
-                        "businessKey": "Process_create-diagram",
-                        "filename": "create-diagram.bpmn",
-                        "version": 1,
-                        "calledProcesses": null,
-                        "commentText": null,
-                        "commentTime": null,
-                        "commentAuthor": null
-                    }
-                    """))
+                        {
+                            "name": "Create_Diagram",
+                            "businessKey": "Process_create-diagram",
+                            "filename": "create-diagram.bpmn",
+                            "version": 1,
+                            "calledProcesses": null,
+                            "commentText": null,
+                            "commentTime": null,
+                            "commentAuthor": null,
+                            "customDiagram": true
+                        }
+                        """))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
 
@@ -55,20 +56,21 @@ class BpmnDiagramIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/bpmndiagrams"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
-                    [
-                        {
-                            "id": "<id>",
-                            "name": "Create_Diagram",
-                            "businessKey": "Process_create-diagram",
-                            "filename": "create-diagram.bpmn",
-                            "version": 1,
-                            "calledProcesses": null,
-                            "commentText": null,
-                            "commentTime": null,
-                            "commentAuthor": null
-                        }
-                    ]
-                    """.replace("<id>", responseObject.id())));
+                        [
+                            {
+                                "id": "<id>",
+                                "name": "Create_Diagram",
+                                "businessKey": "Process_create-diagram",
+                                "filename": "create-diagram.bpmn",
+                                "version": 1,
+                                "calledProcesses": null,
+                                "commentText": null,
+                                "commentTime": null,
+                                "commentAuthor": null,
+                                "customDiagram": true
+                            }
+                        ]
+                        """.replace("<id>", responseObject.id())));
     }
 
     @Test
@@ -77,17 +79,18 @@ class BpmnDiagramIntegrationTest {
         String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                    {
-                        "name": "Create_Diagram",
-                        "businessKey": "Process_create-diagram",
-                        "filename": "create-diagram.bpmn",
-                        "version": 1,
-                        "calledProcesses": null,
-                        "commentText": null,
-                        "commentTime": null,
-                        "commentAuthor": null
-                    }
-                    """))
+                                {
+                                    "name": "Create_Diagram",
+                                    "businessKey": "Process_create-diagram",
+                                    "filename": "create-diagram.bpmn",
+                                    "version": 1,
+                                    "calledProcesses": null,
+                                    "commentText": null,
+                                    "commentTime": null,
+                                    "commentAuthor": null,
+                                    "customDiagram": true
+                                }
+                                """))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
 
@@ -96,32 +99,34 @@ class BpmnDiagramIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/bpmndiagrams/"+responseObject.id())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
-                        {
-                            "id": "<id>",
-                            "name": "test",
-                            "businessKey": "Process_create-diagram",
-                            "filename": "create-diagram.bpmn",
-                            "version": 1,
-                            "calledProcesses": null,
-                            "commentText": null,
-                            "commentTime": null,
-                            "commentAuthor": null
-                        }
-                    """.replace("<id>",responseObject.id())))
+                            {
+                                "id": "<id>",
+                                "name": "test",
+                                "businessKey": "Process_create-diagram",
+                                "filename": "create-diagram.bpmn",
+                                "version": 1,
+                                "calledProcesses": null,
+                                "commentText": null,
+                                "commentTime": null,
+                                "commentAuthor": null,
+                                "customDiagram": true
+                            }
+                        """.replace("<id>",responseObject.id())))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
-                        {
-                            "id": "<id>",
-                            "name": "test",
-                            "businessKey": "Process_create-diagram",
-                            "filename": "create-diagram.bpmn",
-                            "version": 1,
-                            "calledProcesses": null,
-                            "commentText": null,
-                            "commentTime": null,
-                            "commentAuthor": null
-                        }
-                    """.replace("<id>",responseObject.id())));
+                            {
+                                "id": "<id>",
+                                "name": "test",
+                                "businessKey": "Process_create-diagram",
+                                "filename": "create-diagram.bpmn",
+                                "version": 1,
+                                "calledProcesses": null,
+                                "commentText": null,
+                                "commentTime": null,
+                                "commentAuthor": null,
+                                "customDiagram": true
+                            }
+                        """.replace("<id>",responseObject.id())));
     }
 
     @Test
@@ -130,18 +135,19 @@ class BpmnDiagramIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/bpmndiagrams/1234")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                    {
-                        "id": "1111",
-                        "name": "Create_Diagram",
-                        "businessKey": "Process_create-diagram",
-                        "filename": "create-diagram.bpmn",
-                        "version": 1,
-                        "calledProcesses": null,
-                        "commentText": null,
-                        "commentTime": null,
-                        "commentAuthor": null
-                    }
-                    """))
+                                {
+                                    "id": "1111",
+                                    "name": "Create_Diagram",
+                                    "businessKey": "Process_create-diagram",
+                                    "filename": "create-diagram.bpmn",
+                                    "version": 1,
+                                    "calledProcesses": null,
+                                    "commentText": null,
+                                    "commentTime": null,
+                                    "commentAuthor": null,
+                                    "customDiagram": true
+                                }
+                                """))
                 .andExpect(status().isBadRequest())
                 .andExpect(status().reason("Request ID Mismatch"));
     }
@@ -152,17 +158,18 @@ class BpmnDiagramIntegrationTest {
         String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                    {
-                        "name": "Create_Diagram",
-                        "businessKey": "Process_create-diagram",
-                        "filename": "create-diagram.bpmn",
-                        "version": 1,
-                        "calledProcesses": null,
-                        "commentText": null,
-                        "commentTime": null,
-                        "commentAuthor": null
-                    }
-                    """))
+                                {
+                                    "name": "Create_Diagram",
+                                    "businessKey": "Process_create-diagram",
+                                    "filename": "create-diagram.bpmn",
+                                    "version": 1,
+                                    "calledProcesses": null,
+                                    "commentText": null,
+                                    "commentTime": null,
+                                    "commentAuthor": null,
+                                    "customDiagram": true
+                                }
+                                """))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
 

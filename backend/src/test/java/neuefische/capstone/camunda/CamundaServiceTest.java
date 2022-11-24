@@ -45,14 +45,15 @@ class CamundaServiceTest {
         //given
         BpmnDiagram mockProcess = new BpmnDiagram(
                 "Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0"
-                ,"Create_Diagram"
-                ,"Process_create-diagram"
+                , "Create_Diagram"
+                , "Process_create-diagram"
                 , "create-diagram.bpmn"
                 , 1
-                ,null
-                ,null
-                ,null
-                ,null
+                , null
+                , null
+                , null
+                , null
+                , false
         );
 
         mockWebServer.enqueue(new MockResponse()
@@ -124,6 +125,7 @@ class CamundaServiceTest {
                 , null
                 , null
                 , null
+                , false
         );
 
         mockWebServer.enqueue(new MockResponse()
