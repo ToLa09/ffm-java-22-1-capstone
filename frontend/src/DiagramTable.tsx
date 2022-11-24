@@ -40,7 +40,7 @@ function DiagramTable(props: DiagramTableProps) {
 
     return (
         <>
-            <Button onClick={fetchCamundaDiagrams} color="secondary">
+            <Button onClick={fetchCamundaDiagrams} variant="outlined" color="secondary">
                 <SyncIcon/><Typography>Refresh</Typography>
             </Button>
             <TableContainer component={Paper}>
