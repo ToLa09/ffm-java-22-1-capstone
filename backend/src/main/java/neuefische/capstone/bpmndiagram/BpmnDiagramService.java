@@ -1,6 +1,7 @@
 package neuefische.capstone.bpmndiagram;
 
 import lombok.RequiredArgsConstructor;
+import neuefische.capstone.ServiceUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -58,6 +59,12 @@ public class BpmnDiagramService {
     }
 
     public void deleteBpmnDiagram(String id) {
-        repository.deleteById(id);
+        for (BpmnDiagram diagram : getAllDiagrams()) {
+            if (diagram.id().equals(id) && diagram.customDiagram()) {
+                repository.deleteById(id);
+                return;
+            }
+        }
+        throw new DeleteNotAllowedException("Object can't be deleted because it is synched with Camunda Engine");
     }
 }
