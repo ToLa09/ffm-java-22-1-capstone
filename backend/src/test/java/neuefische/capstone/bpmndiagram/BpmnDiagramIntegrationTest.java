@@ -20,8 +20,7 @@ class BpmnDiagramIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void GETAllDiagrams_expect200() throws Exception {

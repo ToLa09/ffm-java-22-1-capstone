@@ -111,13 +111,6 @@ function AddForm(props: AddFormProps) {
             action={<IconButton onClick={() => setSnackbarErrorOpen(false)}><CloseIcon/></IconButton>}
         ><Alert severity="error">Inputfields must not be empty!</Alert></Snackbar>
         </>
-        // <form className="addForm" onSubmit={handleSubmit}>
-        //     <div className="addFormInputWrapper"><TextField size="small" className="addFormInputField" variant="outlined" label="Name" value={name} onChange={e => setName(e.target.value)}/></div>
-        //     <div className="addFormInputWrapper"><TextField size="small" className="addFormInputField" variant="outlined" label="Businesskey" value={businessKey} onChange={e => setBusinessKey(e.target.value)}/></div>
-        //     <div className="addFormInputWrapper"><TextField size="small" className="addFormInputField" variant="outlined" label="XML-Filename" value={fileName} onChange={e => setFileName(e.target.value)}/></div>
-        //     <div className="addFormInputWrapper"><TextField size="small" className="addFormInputField" variant="outlined" label="Comment" value={comment} onChange={e => setComment(e.target.value)}/></div>
-        //     <Button variant="contained" color="primary" type="submit">Add</Button>
-        // </form>
     );
 }
 
