@@ -43,7 +43,7 @@ class CamundaIntegrationTest {
     }
 
     @Test
-    void GET_fetchCamundaDiagrams_expect204() throws Exception {
+    void POST_fetchCamundaDiagrams_expect204() throws Exception {
         mockWebServer.enqueue(new MockResponse()
                 .setBody("""
                         [{
@@ -66,17 +66,17 @@ class CamundaIntegrationTest {
                 .addHeader("Content-Type", "application/json")
         );
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/camundaprocesses"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/camundaprocesses"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
-    void GET_fetchCamundaDiagrams_expect404() throws Exception {
+    void POST_fetchCamundaDiagrams_expect404() throws Exception {
         mockWebServer.enqueue(new MockResponse()
                 .addHeader("Content-Type", "application/json")
         );
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/camundaprocesses"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/camundaprocesses"))
                 .andExpect(status().isNotFound())
                 .andExpect(status().reason("Response Body is null"));
     }
