@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bpmndiagrams")
@@ -17,9 +18,14 @@ public class BpmnDiagramController {
     private final BpmnDiagramService service;
 
     @GetMapping
-    List<BpmnDiagram> getAllDiagrams() {
-        return service.getAllDiagrams();
+    List<BpmnDiagram> getAllDiagrams(@RequestParam Optional<Boolean> distinct) {
+        if (distinct.orElse(false)) {
+            return service.getLatestDiagrams();
+        } else {
+            return service.getAllDiagrams();
+        }
     }
+
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
