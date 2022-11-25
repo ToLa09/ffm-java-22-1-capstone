@@ -1,9 +1,10 @@
-import React, {ChangeEvent, Dispatch, SetStateAction, useState} from 'react';
+import React, {ChangeEvent, Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
 import {Box, Button, Card, CardContent, Grid, Snackbar, TextField, Typography} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
+import HistoryList from "./HistoryList";
 
 type DiagramDetailsProps = {
     setTab: Dispatch<SetStateAction<string>>
@@ -18,6 +19,8 @@ function DiagramDetails(props: DiagramDetailsProps) {
     const [snackbarMessage, setSnackbarMessage] = useState<string>("")
     const [editMode, setEditMode] = useState<boolean>(false)
     const [updatedDiagram, setUpdatedDiagram] = useState<BpmnDiagramModel>(props.detailedDiagram)
+    const [history, setHistory] = useState<BpmnDiagramModel[]>([])
+
 
     const handleUpdate = () => {
         axios.put("/api/bpmndiagrams/" + props.detailedDiagram.id, updatedDiagram)
@@ -61,6 +64,14 @@ function DiagramDetails(props: DiagramDetailsProps) {
             [event.target.name]: event.target.value
         })
     }
+
+    const fetchHistory = () => {
+        axios.get("/api/bpmndiagrams/history/" + props.detailedDiagram.businessKey)
+            .then(response => response.data)
+            .then(setHistory)
+    }
+
+    useEffect(fetchHistory, [])
 
     return (
         <>
@@ -135,6 +146,15 @@ function DiagramDetails(props: DiagramDetailsProps) {
                                     <Typography>Latest Version: {props.detailedDiagram.version}</Typography>
                                 </>
                             }
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="h5"
+                                        color="secondary">History</Typography>
+                            <HistoryList history={history}/>
                         </CardContent>
                     </Card>
                 </Grid>
