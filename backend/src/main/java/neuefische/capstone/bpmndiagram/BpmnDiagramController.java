@@ -52,6 +52,10 @@ public class BpmnDiagramController {
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteBpmnDiagram(@PathVariable String id) {
-        service.deleteBpmnDiagram(id);
+        try {
+            service.deleteBpmnDiagram(id);
+        } catch (DeleteNotAllowedException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 }
