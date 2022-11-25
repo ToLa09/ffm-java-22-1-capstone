@@ -32,6 +32,16 @@ public class BpmnDiagramService {
         return latestDiagrams.stream().distinct().toList();
     }
 
+    public List<BpmnDiagram> getHistoryByKey(String key) {
+        List<BpmnDiagram> history = new ArrayList<>();
+        for (BpmnDiagram diagram : getAllDiagrams()) {
+            if (diagram.businessKey().equals(key)) {
+                history.add(diagram);
+            }
+        }
+        return history;
+    }
+
     public BpmnDiagram addBpmnDiagram(BpmnDiagram newBpmnDiagram) {
         String id = serviceUtils.generateCamundaId(newBpmnDiagram.businessKey(), newBpmnDiagram.version());
         BpmnDiagram bpmnDiagramWithId = newBpmnDiagram.withId(id).withCustomDiagram(true);
