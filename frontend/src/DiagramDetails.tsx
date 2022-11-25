@@ -36,28 +36,6 @@ function DiagramDetails(props: DiagramDetailsProps) {
         setEditMode(false)
     }
 
-    const handleDelete = () => {
-        axios.delete("/api/bpmndiagrams/" + props.detailedDiagram.id)
-            .then(() => {
-                props.fetchDiagrams()
-                setSnackbarOpen(true)
-                setSnackbarMessage("Diagram deleted!")
-                props.setTab("Overview")
-                props.setDetailedDiagram({
-                    id: ""
-                    , name: "-"
-                    , businessKey: "-"
-                    , filename: "-"
-                    , version: 1
-                    , calledProcesses: []
-                    , commentText: ""
-                    , commentAuthor: ""
-                    , customDiagram: true
-                })
-            })
-            .catch(error => console.error(error))
-    }
-
     function handleChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         setUpdatedDiagram({
             ...updatedDiagram,
@@ -76,15 +54,8 @@ function DiagramDetails(props: DiagramDetailsProps) {
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item xs={11}><Button variant="outlined" color="secondary"
+                <Grid item xs={12}><Button variant="outlined" color="secondary"
                                            onClick={() => props.setTab("Overview")}>Back to Overview</Button></Grid>
-                <Grid item xs={1}>
-                    {props.detailedDiagram.customDiagram ?
-                        <Button variant="outlined" color="error" onClick={handleDelete}>Delete</Button>
-                        :
-                        <Button variant="outlined" color="error" disabled>Delete</Button>
-                    }
-                </Grid>
                 <Grid item xs={6}>
                     <Card>
                         <CardContent>
@@ -154,7 +125,16 @@ function DiagramDetails(props: DiagramDetailsProps) {
                         <CardContent>
                             <Typography variant="h5"
                                         color="secondary">History</Typography>
-                            <HistoryList history={history}/>
+                            <HistoryList
+                                history={history}
+                                customDiagram={props.detailedDiagram.customDiagram}
+                                setSnackbarOpen={setSnackbarOpen}
+                                setSnackbarMessage={setSnackbarMessage}
+                                fetchHistory={fetchHistory}
+                                fetchDiagrams={props.fetchDiagrams}
+                                latestDiagram={props.detailedDiagram}
+                                setTab={props.setTab}
+                            />
                         </CardContent>
                     </Card>
                 </Grid>
