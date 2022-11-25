@@ -1,4 +1,4 @@
-package neuefische.capstone.bpmndiagram;
+package neuefische.capstone;
 
 import org.springframework.stereotype.Service;
 
