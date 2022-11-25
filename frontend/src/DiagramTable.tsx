@@ -27,7 +27,7 @@ function DiagramTable(props: DiagramTableProps) {
     const [snackbarRefreshOpen, setSnackbarRefreshOpen] = useState<boolean>(false)
 
     const fetchCamundaDiagrams = () => {
-        axios.get("/api/camundaprocesses")
+        axios.post("/api/camundaprocesses")
             .then(response => {
                 if(response.status === 204){
                     setSnackbarRefreshOpen(true)

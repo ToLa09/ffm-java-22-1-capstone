@@ -20,7 +20,7 @@ class BpmnDiagramServiceTest {
     @Test
     void getAllDiagrams() {
         //given
-        when(repository.findAll()).thenReturn(new ArrayList<>());
+        when(repository.findAll()).thenReturn(new ArrayList<>(List.of()));
         //when
         List<BpmnDiagram> actual = service.getAllDiagrams();
         //then
@@ -49,11 +49,10 @@ class BpmnDiagramServiceTest {
         when(repository.insert(testDiagramWithId)).thenReturn(testDiagramWithId);
         //when
         BpmnDiagram actual = service.addBpmnDiagram(testDiagram);
-        BpmnDiagram expected = testDiagramWithId;
         //then
         verify(serviceUtils).generateCamundaId(testDiagram.businessKey(), testDiagram.version());
         verify(repository).insert(testDiagramWithId);
-        assertEquals(expected, actual);
+        assertEquals(testDiagramWithId, actual);
     }
 
     @Test
