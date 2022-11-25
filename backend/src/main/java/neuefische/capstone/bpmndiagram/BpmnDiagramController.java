@@ -26,6 +26,11 @@ public class BpmnDiagramController {
         }
     }
 
+    @GetMapping("/history/{key}")
+    List<BpmnDiagram> getHistoryOfDiagram(@PathVariable String key) {
+        return service.getHistoryByKey(key);
+    }
+
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
