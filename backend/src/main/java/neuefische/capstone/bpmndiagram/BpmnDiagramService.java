@@ -35,7 +35,7 @@ public class BpmnDiagramService {
 
     public List<BpmnDiagram> getHistoryByKey(String key) {
         List<BpmnDiagram> history = new ArrayList<>();
-        for (BpmnDiagram diagram : getAllDiagrams()) {
+        for (BpmnDiagram diagram : repository.findAll()) {
             if (diagram.businessKey().equals(key)) {
                 history.add(diagram);
             }
@@ -59,7 +59,7 @@ public class BpmnDiagramService {
     }
 
     public void deleteBpmnDiagram(String id) {
-        for (BpmnDiagram diagram : getAllDiagrams()) {
+        for (BpmnDiagram diagram : repository.findAll()) {
             if (diagram.id().equals(id) && diagram.customDiagram()) {
                 repository.deleteById(id);
                 return;
