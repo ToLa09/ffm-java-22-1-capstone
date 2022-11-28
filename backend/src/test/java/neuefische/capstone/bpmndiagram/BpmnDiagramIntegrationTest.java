@@ -33,6 +33,7 @@ class BpmnDiagramIntegrationTest {
     }
 
     @Test
+    @DirtiesContext
     void GETLatestDiagrams_expect200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
                         .contentType(MediaType.APPLICATION_JSON)
