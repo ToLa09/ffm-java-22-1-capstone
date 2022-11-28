@@ -1,8 +1,8 @@
 package neuefische.capstone.bpmndiagram;
 
+import neuefische.capstone.ServiceUtils;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -18,18 +18,137 @@ class BpmnDiagramServiceTest {
     private final BpmnDiagramService service = new BpmnDiagramService(repository, serviceUtils);
 
     @Test
-    void getAllDiagrams() {
+    void getAllDiagrams_returnsList() {
         //given
-        when(repository.findAll()).thenReturn(new ArrayList<>(List.of()));
+        when(repository.findAll()).thenReturn(List.of());
         //when
         List<BpmnDiagram> actual = service.getAllDiagrams();
         //then
         verify(repository).findAll();
-        assertEquals(new ArrayList<>(), actual);
+        assertEquals(List.of(), actual);
     }
 
     @Test
-    void addBpmnDiagram() {
+    void getLatestDiagram_returnsOnlyLatest() {
+        //given
+        String businessKey = "capstone.order.order-car";
+        BpmnDiagram testDiagram1 = new BpmnDiagram(
+                "1"
+                , "Order Car"
+                , businessKey
+                , "order-car.bpmn"
+                , 1
+                , null
+                , null
+                , null
+                , null
+                , true
+        );
+        BpmnDiagram testDiagram2 = new BpmnDiagram(
+                "2"
+                , "Order New Car"
+                , businessKey
+                , "order-car.bpmn"
+                , 2
+                , null
+                , null
+                , null
+                , null
+                , true
+        );
+        List<BpmnDiagram> diagramList = List.of(testDiagram1, testDiagram2);
+        when(repository.findAll()).thenReturn(diagramList);
+        when(repository.findAllByBusinessKey(businessKey)).thenReturn(diagramList);
+        //when
+        List<BpmnDiagram> actual = service.getLatestDiagrams();
+        //then
+        assertEquals(List.of(testDiagram2), actual);
+        verify(repository, times(2)).findAllByBusinessKey(businessKey);
+        verify(repository).findAll();
+    }
+
+    @Test
+    void getLatestDiagrams_throwsExceptionNoMaxVersion() {
+        //given
+        String businessKey = "capstone.order.order-car";
+        BpmnDiagram testDiagram1 = new BpmnDiagram(
+                "1"
+                , "Order Car"
+                , businessKey
+                , "order-car.bpmn"
+                , 1
+                , null
+                , null
+                , null
+                , null
+                , true
+        );
+        BpmnDiagram testDiagram2 = new BpmnDiagram(
+                "2"
+                , "Order New Car"
+                , businessKey
+                , "order-car.bpmn"
+                , 2
+                , null
+                , null
+                , null
+                , null
+                , true
+        );
+        List<BpmnDiagram> diagramList = List.of(testDiagram1, testDiagram2);
+        when(repository.findAll()).thenReturn(diagramList);
+        when(repository.findAllByBusinessKey(businessKey)).thenReturn(List.of());
+        //when
+        try {
+            service.getLatestDiagrams();
+            fail();
+        } catch (NoSuchElementException e) {
+            //then
+            assertEquals("No max Version", e.getMessage());
+            verify(repository).findAll();
+            verify(repository).findAllByBusinessKey(businessKey);
+        }
+    }
+
+    @Test
+    void getHistory_returnsVersionList() {
+        //given
+        String businessKey = "capstone.order.order-car";
+        BpmnDiagram testDiagram1 = new BpmnDiagram(
+                "1"
+                , "Order Car"
+                , businessKey
+                , "order-car.bpmn"
+                , 1
+                , null
+                , null
+                , null
+                , null
+                , true
+        );
+        BpmnDiagram testDiagram2 = new BpmnDiagram(
+                "2"
+                , "Order New Car"
+                , businessKey
+                , "order-car.bpmn"
+                , 2
+                , null
+                , null
+                , null
+                , null
+                , true
+        );
+        List<BpmnDiagram> diagramList = List.of(testDiagram1, testDiagram2);
+        when(repository.findAll()).thenReturn(diagramList);
+        //when
+        List<BpmnDiagram> actual = service.getHistoryByKey(businessKey);
+        //then
+        assertEquals(diagramList, actual);
+        verify(repository).findAll();
+    }
+
+    @Test
+    void addBpmnDiagram_returnsDiagramWithId() {
         //given
         String testID = "generatedID";
         BpmnDiagram testDiagram = new BpmnDiagram(
@@ -56,7 +175,7 @@ class BpmnDiagramServiceTest {
     }
 
     @Test
-    void updateBpmnDiagramWithExistingId() {
+    void updateBpmnDiagramWithExistingId_returnsDiagram() {
         //given
         BpmnDiagram testDiagram = new BpmnDiagram(
                 "123"
@@ -83,7 +202,7 @@ class BpmnDiagramServiceTest {
                 , true
         );
         when(repository.save(updatedDiagram)).thenReturn(updatedDiagram);
-        when(repository.findAll()).thenReturn(new ArrayList<>(List.of(testDiagram)));
+        when(repository.findAll()).thenReturn(List.of(testDiagram));
         //when
         BpmnDiagram actual = service.updateBpmnDiagram(updatedDiagram);
         //then
@@ -92,7 +211,7 @@ class BpmnDiagramServiceTest {
     }
 
     @Test
-    void updateBpmnDiagramWithNewId() {
+    void updateBpmnDiagramWithNewId_throwsException() {
         //given
         BpmnDiagram testDiagram = new BpmnDiagram(
                 "123"
@@ -118,7 +237,7 @@ class BpmnDiagramServiceTest {
                 , null
                 , true
         );
-        when(repository.findAll()).thenReturn(new ArrayList<>(List.of(testDiagram)));
+        when(repository.findAll()).thenReturn(List.of(testDiagram));
         //when
         try {
             service.updateBpmnDiagram(updatedDiagram);
@@ -131,13 +250,55 @@ class BpmnDiagramServiceTest {
     }
 
     @Test
-    void deleteBpmnDiagram() {
+    void deleteBpmnCustomDiagram_returnsVoid() {
         //given
         String id = "123";
+        BpmnDiagram testDiagram = new BpmnDiagram(
+                id
+                , "create bill"
+                , "capstone.bpmn.billing.create-bill"
+                , "create-bill.xml"
+                , 1
+                , null
+                , "first version of billing"
+                , null
+                , null
+                , true
+        );
+        when(repository.findAll()).thenReturn(List.of(testDiagram));
         doNothing().when(repository).deleteById(id);
         //when
         service.deleteBpmnDiagram(id);
         //then
         verify(repository).deleteById(id);
+    }
+
+    @Test
+    void deleteCamundaBpmnDiagram_throwsException() {
+        //given
+        String id = "123";
+        BpmnDiagram testDiagram = new BpmnDiagram(
+                id
+                , "create bill"
+                , "capstone.bpmn.billing.create-bill"
+                , "create-bill.xml"
+                , 1
+                , null
+                , "first version of billing"
+                , null
+                , null
+                , false
+        );
+        when(repository.findAll()).thenReturn(List.of(testDiagram));
+        //when
+        try {
+            service.deleteBpmnDiagram(id);
+            fail();
+        } catch (DeleteNotAllowedException e) {
+            //then
+            assertEquals("Object can't be deleted because it is synched with Camunda Engine", e.getMessage());
+            verify(repository, never()).deleteById(id);
+            verify(repository).findAll();
+        }
     }
 }
