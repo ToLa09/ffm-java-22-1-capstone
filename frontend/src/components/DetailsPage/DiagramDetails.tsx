@@ -49,7 +49,7 @@ function DiagramDetails(props: DiagramDetailsProps) {
             .then(setHistory)
     }
 
-    useEffect(fetchHistory, [])
+    useEffect(fetchHistory, [props.detailedDiagram.businessKey])
 
     return (
         <>
