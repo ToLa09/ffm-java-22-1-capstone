@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import './css/App.css';
-import DiagramTable from "./DiagramTable";
-import AddForm from "./AddForm";
+import DiagramTable from "./components/OverviewPage/DiagramTable";
+import AddForm from "./components/AddPage/AddForm";
 import {AppBar, createTheme, Tab, ThemeProvider, Toolbar, Typography} from "@mui/material";
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import DiagramDetails from "./DiagramDetails";
+import DiagramDetails from "./components/DetailsPage/DiagramDetails";
 import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
 import axios from "axios";
 

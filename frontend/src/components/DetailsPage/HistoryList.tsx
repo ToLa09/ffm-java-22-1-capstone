@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
+import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
-import HistoryListRow from "./model/HistoryListRow";
+import HistoryListRow from "./HistoryListRow";
 
 type HistoryListProps = {
     history: BpmnDiagramModel[]

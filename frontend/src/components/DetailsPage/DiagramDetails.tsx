@@ -1,5 +1,5 @@
 import React, {ChangeEvent, Dispatch, SetStateAction, useEffect, useState} from 'react';
-import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
+import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
 import {Box, Button, Card, CardContent, Grid, Snackbar, TextField, Typography} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";

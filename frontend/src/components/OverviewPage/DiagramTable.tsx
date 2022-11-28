@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
-import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
+import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
 import DiagramTableRow from "./DiagramTableRow";
-import './css/DiagramTable.css';
+import '../../css/DiagramTable.css';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -41,7 +41,7 @@ function DiagramTable(props: DiagramTableProps) {
     return (
         <>
             <Button onClick={fetchCamundaDiagrams} variant="outlined" color="secondary">
-                <SyncIcon/><Typography>Refresh</Typography>
+                <SyncIcon/><Typography>Sync With Camunda</Typography>
             </Button>
             <TableContainer component={Paper}>
                 <Table sx={{minWidth: 650}} size="small" aria-label="BPMN-Diagram-table" className="diagramtable">
