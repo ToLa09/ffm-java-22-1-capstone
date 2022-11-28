@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -177,18 +178,6 @@ class BpmnDiagramServiceTest {
     @Test
     void updateBpmnDiagramWithExistingId_returnsDiagram() {
         //given
-        BpmnDiagram testDiagram = new BpmnDiagram(
-                "123"
-                , "create bill"
-                , "capstone.bpmn.billing.create-bill"
-                , "create-bill.xml"
-                , 1
-                , null
-                , "first version of billing"
-                , null
-                , null
-                , true
-        );
         BpmnDiagram updatedDiagram = new BpmnDiagram(
                 "123"
                 , "creation of bill"
@@ -202,7 +191,7 @@ class BpmnDiagramServiceTest {
                 , true
         );
         when(repository.save(updatedDiagram)).thenReturn(updatedDiagram);
-        when(repository.findAll()).thenReturn(List.of(testDiagram));
+        when(repository.existsById(updatedDiagram.id())).thenReturn(true);
         //when
         BpmnDiagram actual = service.updateBpmnDiagram(updatedDiagram);
         //then
@@ -213,18 +202,6 @@ class BpmnDiagramServiceTest {
     @Test
     void updateBpmnDiagramWithNewId_throwsException() {
         //given
-        BpmnDiagram testDiagram = new BpmnDiagram(
-                "123"
-                , "create bill"
-                , "capstone.bpmn.billing.create-bill"
-                , "create-bill.xml"
-                , 1
-                , null
-                , "first version of billing"
-                , null
-                , null
-                , true
-        );
         BpmnDiagram updatedDiagram = new BpmnDiagram(
                 "123456"
                 , "creation of bill"
@@ -237,7 +214,7 @@ class BpmnDiagramServiceTest {
                 , null
                 , true
         );
-        when(repository.findAll()).thenReturn(List.of(testDiagram));
+        when(repository.existsById(updatedDiagram.id())).thenReturn(false);
         //when
         try {
             service.updateBpmnDiagram(updatedDiagram);
@@ -245,7 +222,6 @@ class BpmnDiagramServiceTest {
         } catch (NoSuchElementException e) {
             //then
             verify(repository, never()).save(updatedDiagram);
-            verify(repository).findAll();
         }
     }
 
@@ -265,7 +241,7 @@ class BpmnDiagramServiceTest {
                 , null
                 , true
         );
-        when(repository.findAll()).thenReturn(List.of(testDiagram));
+        when(repository.findById(id)).thenReturn(Optional.of(testDiagram));
         doNothing().when(repository).deleteById(id);
         //when
         service.deleteBpmnDiagram(id);
@@ -289,7 +265,7 @@ class BpmnDiagramServiceTest {
                 , null
                 , false
         );
-        when(repository.findAll()).thenReturn(List.of(testDiagram));
+        when(repository.findById(id)).thenReturn(Optional.of(testDiagram));
         //when
         try {
             service.deleteBpmnDiagram(id);
@@ -298,7 +274,22 @@ class BpmnDiagramServiceTest {
             //then
             assertEquals("Object can't be deleted because it is synched with Camunda Engine", e.getMessage());
             verify(repository, never()).deleteById(id);
-            verify(repository).findAll();
+        }
+    }
+
+    @Test
+    void deleteCustomBpmnDiagram_throwsException() {
+        //given
+        String id = "123";
+        when(repository.findById(id)).thenReturn(Optional.empty());
+        //when
+        try {
+            service.deleteBpmnDiagram(id);
+            fail();
+        } catch (NoSuchElementException e) {
+            //then
+            assertEquals("No Element found with this ID", e.getMessage());
+            verify(repository, never()).deleteById(id);
         }
     }
 }
