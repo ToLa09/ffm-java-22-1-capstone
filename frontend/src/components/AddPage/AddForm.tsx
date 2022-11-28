@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useState} from 'react';
 import {Alert, Box, Button, Snackbar, TextField} from "@mui/material";
 import axios from "axios";
-import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
+import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 

@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction} from 'react';
 import {IconButton, TableCell, TableRow} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {BpmnDiagramModel} from "./BpmnDiagramModel";
+import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
 import axios from "axios";
 
 type HistoryListRowProps = {
