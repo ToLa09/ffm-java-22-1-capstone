@@ -50,21 +50,16 @@ public class BpmnDiagramService {
     }
 
     public BpmnDiagram updateBpmnDiagram(BpmnDiagram updatedBpmnDiagram) {
-        for (BpmnDiagram diagram : getAllDiagrams()) {
-            if (diagram.id().equals(updatedBpmnDiagram.id())) {
-                return repository.save(updatedBpmnDiagram);
-            }
+        if (!repository.existsById(updatedBpmnDiagram.id())) {
+            throw new NoSuchElementException("No Element found with this ID");
         }
-        throw new NoSuchElementException("No Element found with this ID");
+        return repository.save(updatedBpmnDiagram);
     }
 
     public void deleteBpmnDiagram(String id) {
-        for (BpmnDiagram diagram : repository.findAll()) {
-            if (diagram.id().equals(id) && diagram.customDiagram()) {
-                repository.deleteById(id);
-                return;
-            }
-        }
-        throw new DeleteNotAllowedException("Object can't be deleted because it is synched with Camunda Engine");
+        BpmnDiagram diagramToDelete = repository.findById(id).orElseThrow(() -> new NoSuchElementException("No Element found with this ID"));
+        if (diagramToDelete.customDiagram()) {
+            repository.deleteById(id);
+        } else throw new DeleteNotAllowedException("Object can't be deleted because it is synched with Camunda Engine");
     }
 }
