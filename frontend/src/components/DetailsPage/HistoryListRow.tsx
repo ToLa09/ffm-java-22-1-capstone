@@ -1,10 +1,9 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
-import {IconButton, TableCell, TableRow, Typography} from "@mui/material";
+import React, {Dispatch, SetStateAction} from 'react';
+import {IconButton, TableCell, TableRow} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
 import axios from "axios";
-import {CommentModel} from "../../model/CommentModel";
-import moment from "moment";
+import CommentListSimple from "../CommentListSimple";
 
 type HistoryListRowProps = {
     diagram: BpmnDiagramModel
@@ -16,8 +15,6 @@ type HistoryListRowProps = {
 
 function HistoryListRow(props: HistoryListRowProps) {
 
-    const [commentList, setCommentList] = useState<CommentModel[]>([])
-
     const handleDelete = () => {
         axios.delete("/api/bpmndiagrams/" + props.diagram.id)
             .then(() => {
@@ -28,31 +25,13 @@ function HistoryListRow(props: HistoryListRowProps) {
             })
     }
 
-    const fetchComments = () => {
-        axios.get("/api/comments/" + props.diagram.id)
-            .then(response => response.data)
-            .then(setCommentList)
-    }
-
-    useEffect(fetchComments, [props.diagram.id])
-
     return (
         <TableRow key={props.diagram.businessKey}>
             <TableCell>{props.diagram.name}</TableCell>
             <TableCell align="center">{props.diagram.businessKey}</TableCell>
             <TableCell align="center">{props.diagram.version}</TableCell>
             <TableCell align="left">
-                {commentList
-                    .sort((comment1, comment2) => {
-                        if (comment1.time > comment2.time) {
-                            return -1
-                        } else return 1
-                    })
-                    .map(comment => {
-                        return <Typography key={comment.id}
-                                           variant="body2">{moment(comment.time).format("DD.MM.YYYY")} from {comment.author}: {comment.content}</Typography>
-                    })
-                }
+                <CommentListSimple diagram={props.diagram}/>
             </TableCell>
             {props.diagram.customDiagram &&
                 <TableCell align="right">

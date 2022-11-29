@@ -49,6 +49,7 @@ function DiagramTable(props: DiagramTableProps) {
                             <TableCell>Name</TableCell>
                             <TableCell align="left">Filename</TableCell>
                             <TableCell align="center">latest version</TableCell>
+                            <TableCell align="center">latest comment</TableCell>
                             <TableCell align="center">Custom Diagram (editable)</TableCell>
                             <TableCell sx={{width: 120}} align="center">Actions</TableCell>
                         </TableRow>
