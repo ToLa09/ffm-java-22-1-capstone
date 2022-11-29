@@ -23,6 +23,7 @@ function HistoryListRow(props: HistoryListRowProps) {
                     props.setTab("Overview")
                 } else props.fetchHistory()
             })
+        axios.delete("/api/comments/diagramid/" + props.diagram.id)
     }
 
     return (
