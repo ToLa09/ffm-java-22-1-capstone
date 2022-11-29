@@ -49,8 +49,8 @@ function HistoryListRow(props: HistoryListRowProps) {
                         } else return 1
                     })
                     .map(comment => {
-                        return <Typography
-                            variant="body2">{moment(comment.time).format("DD.MM.YYYY")} from {comment.author}: {comment.content}</Typography>
+                        return <Typography key={comment.id}
+                                           variant="body2">{moment(comment.time).format("DD.MM.YYYY")} from {comment.author}: {comment.content}</Typography>
                     })
                 }
             </TableCell>
