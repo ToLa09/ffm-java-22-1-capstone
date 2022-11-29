@@ -28,4 +28,9 @@ public class CommentService {
     public void deleteCommentById(String id) {
         repository.deleteById(id);
     }
+
+    public void deleteCommentsByDiagramId(String diagramId) {
+        List<Comment> commentsToDelete = repository.findAllByDiagramId(diagramId);
+        repository.deleteAll(commentsToDelete);
+    }
 }
