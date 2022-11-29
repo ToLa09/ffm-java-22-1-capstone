@@ -33,21 +33,34 @@ function HistoryList(props: HistoryListProps) {
                     <TableRow>
                         <TableCell>Name</TableCell>
                         <TableCell align="center">Filename</TableCell>
-                        <TableCell align="center">version</TableCell>
+                        <TableCell align="center">Version</TableCell>
+                        <TableCell align="center">Comments</TableCell>
                         {props.latestDiagram.customDiagram &&
                             <TableCell align="right">Delete</TableCell>
                         }
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {history.map(diagram => <HistoryListRow
-                        key={diagram.id}
-                        diagram={diagram}
-                        fetchHistory={fetchHistory}
-                        fetchDiagrams={props.fetchDiagrams}
-                        latestDiagram={props.latestDiagram}
-                        setTab={props.setTab}
-                    />)}
+                    {history
+                        .sort((diagram1, diagram2) => {
+                            if (diagram1.version > diagram2.version) {
+                                return -1
+                            } else return 1
+                        })
+                        .map(diagram => {
+                                if (diagram.id === props.latestDiagram.id) {
+                                    return <></>
+                                }
+                                return <HistoryListRow
+                                    key={diagram.id}
+                                    diagram={diagram}
+                                    fetchHistory={fetchHistory}
+                                    fetchDiagrams={props.fetchDiagrams}
+                                    latestDiagram={props.latestDiagram}
+                                    setTab={props.setTab}
+                                />
+                            }
+                        )}
                 </TableBody>
             </Table>
         </CardContent>
