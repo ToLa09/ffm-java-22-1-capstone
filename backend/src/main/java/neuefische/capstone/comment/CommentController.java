@@ -26,4 +26,9 @@ public class CommentController {
     void deleteCommentById(@PathVariable String id) {
         service.deleteCommentById(id);
     }
+
+    @DeleteMapping("/diagramid/{diagramId}")
+    void deleteCommentsByDiagramId(@PathVariable String diagramId) {
+        service.deleteCommentsByDiagramId(diagramId);
+    }
 }
