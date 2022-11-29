@@ -34,7 +34,7 @@ function HistoryList(props: HistoryListProps) {
                         <TableCell>Name</TableCell>
                         <TableCell align="center">Filename</TableCell>
                         <TableCell align="center">Version</TableCell>
-                        <TableCell align="center">Comments</TableCell>
+                        <TableCell align="left">Comments</TableCell>
                         {props.latestDiagram.customDiagram &&
                             <TableCell align="right">Delete</TableCell>
                         }

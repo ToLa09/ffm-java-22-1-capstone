@@ -4,6 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
 import axios from "axios";
 import {CommentModel} from "../../model/CommentModel";
+import moment from "moment";
 
 type HistoryListRowProps = {
     diagram: BpmnDiagramModel
@@ -40,10 +41,17 @@ function HistoryListRow(props: HistoryListRowProps) {
             <TableCell>{props.diagram.name}</TableCell>
             <TableCell align="center">{props.diagram.businessKey}</TableCell>
             <TableCell align="center">{props.diagram.version}</TableCell>
-            <TableCell align="center">
-                {commentList.map(comment => {
-                    return <Typography variant="body1">{comment.author}: {comment.content}</Typography>
-                })
+            <TableCell align="left">
+                {commentList
+                    .sort((comment1, comment2) => {
+                        if (comment1.time > comment2.time) {
+                            return -1
+                        } else return 1
+                    })
+                    .map(comment => {
+                        return <Typography
+                            variant="body2">{moment(comment.time).format("DD.MM.YYYY")} from {comment.author}: {comment.content}</Typography>
+                    })
                 }
             </TableCell>
             {props.diagram.customDiagram &&
