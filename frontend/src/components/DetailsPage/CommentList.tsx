@@ -86,15 +86,21 @@ function CommentList(props: CommentListProps) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {commentList.map(comment => {
-                            return <TableRow key={comment.id}>
-                                <TableCell>{comment.content}</TableCell>
-                                <TableCell>{comment.author}</TableCell>
-                                <TableCell>{moment(comment.time).locale("de").format("DD.MM.YYYY, HH:mm")}</TableCell>
-                                <TableCell><IconButton size="small" color="error"
-                                                       onClick={() => handleDelete(comment.id)}><DeleteIcon/></IconButton></TableCell>
-                            </TableRow>
-                        })
+                        {commentList
+                            .sort((comment1, comment2) => {
+                                if (comment1.time > comment2.time) {
+                                    return -1
+                                } else return 1
+                            })
+                            .map(comment => {
+                                return <TableRow key={comment.id}>
+                                    <TableCell>{comment.content}</TableCell>
+                                    <TableCell>{comment.author}</TableCell>
+                                    <TableCell>{moment(comment.time).locale("de").format("DD.MM.YYYY, HH:mm")}</TableCell>
+                                    <TableCell><IconButton size="small" color="error"
+                                                           onClick={() => handleDelete(comment.id)}><DeleteIcon/></IconButton></TableCell>
+                                </TableRow>
+                            })
                         }
                     </TableBody>
                 </Table>
