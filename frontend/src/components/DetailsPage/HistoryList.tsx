@@ -1,45 +1,56 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
-import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
+import {CardContent, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@mui/material";
 import HistoryListRow from "./HistoryListRow";
+import axios from "axios";
 
 type HistoryListProps = {
-    history: BpmnDiagramModel[]
     latestDiagram: BpmnDiagramModel
-    customDiagram: boolean
     setSnackbarOpen: Dispatch<SetStateAction<boolean>>
     setSnackbarMessage: Dispatch<SetStateAction<string>>
-    fetchHistory: () => void
     fetchDiagrams: () => void
     setTab: Dispatch<SetStateAction<string>>
 }
 
 function HistoryList(props: HistoryListProps) {
 
+    const [history, setHistory] = useState<BpmnDiagramModel[]>([])
+
+    const fetchHistory = () => {
+        axios.get("/api/bpmndiagrams/history/" + props.latestDiagram.businessKey)
+            .then(response => response.data)
+            .then(setHistory)
+    }
+
+    useEffect(fetchHistory, [props.latestDiagram.businessKey])
 
     return (
-        <Table size="small">
-            <TableHead>
-                <TableRow>
-                    <TableCell sx={{fontWeight: "bold"}}>Name</TableCell>
-                    <TableCell sx={{fontWeight: "bold"}} align="center">Filename</TableCell>
-                    <TableCell sx={{fontWeight: "bold"}} align="center">version</TableCell>
-                    {props.customDiagram &&
-                        <TableCell sx={{fontWeight: "bold"}} align="right">Delete</TableCell>
-                    }
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {props.history.map(diagram => <HistoryListRow
-                    key={diagram.id}
-                    diagram={diagram}
-                    fetchHistory={props.fetchHistory}
-                    fetchDiagrams={props.fetchDiagrams}
-                    latestDiagram={props.latestDiagram}
-                    setTab={props.setTab}
-                />)}
-            </TableBody>
-        </Table>
+        <CardContent>
+            <Typography variant="h5"
+                        color="secondary">History</Typography>
+            <Table size="small">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell align="center">Filename</TableCell>
+                        <TableCell align="center">version</TableCell>
+                        {props.latestDiagram.customDiagram &&
+                            <TableCell align="right">Delete</TableCell>
+                        }
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {history.map(diagram => <HistoryListRow
+                        key={diagram.id}
+                        diagram={diagram}
+                        fetchHistory={fetchHistory}
+                        fetchDiagrams={props.fetchDiagrams}
+                        latestDiagram={props.latestDiagram}
+                        setTab={props.setTab}
+                    />)}
+                </TableBody>
+            </Table>
+        </CardContent>
     );
 }
 
