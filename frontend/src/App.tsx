@@ -64,12 +64,14 @@ function App() {
                         <TabList
                             textColor="inherit"
                             indicatorColor="secondary"
-                            onChange={ (event, newValue: string) => setTab(newValue)}
+                            onChange={(event, newValue: string) => setTab(newValue)}
                             aria-label="tabs"
                         >
                             <Tab value="Overview" label="Process Overview" color="primary"/>
-                            <Tab value="Add" label="Add Process" />
-                            <Tab value="Details" label="Process Details" />
+                            <Tab value="Add" label="Add Process"/>
+                            {detailedDiagram.id !== "" &&
+                                <Tab value="Details" label="Process Details"/>
+                            }
                         </TabList>
                     </Toolbar>
                 </AppBar>

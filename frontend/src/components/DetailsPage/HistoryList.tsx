@@ -48,17 +48,16 @@ function HistoryList(props: HistoryListProps) {
                             } else return 1
                         })
                         .map(diagram => {
-                                if (diagram.id === props.latestDiagram.id) {
-                                    return <></>
-                                }
-                                return <HistoryListRow
-                                    key={diagram.id}
-                                    diagram={diagram}
-                                    fetchHistory={fetchHistory}
-                                    fetchDiagrams={props.fetchDiagrams}
-                                    latestDiagram={props.latestDiagram}
-                                    setTab={props.setTab}
-                                />
+                                if (diagram.id !== props.latestDiagram.id) {
+                                    return <HistoryListRow
+                                        key={diagram.id}
+                                        diagram={diagram}
+                                        fetchHistory={fetchHistory}
+                                        fetchDiagrams={props.fetchDiagrams}
+                                        latestDiagram={props.latestDiagram}
+                                        setTab={props.setTab}
+                                    />
+                                } else return null
                             }
                         )}
                 </TableBody>
