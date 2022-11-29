@@ -9,6 +9,7 @@ import {
     DialogContentText,
     DialogTitle,
     Grid,
+    IconButton,
     Table,
     TableBody,
     TableCell,
@@ -20,6 +21,8 @@ import {
 import axios from "axios";
 import {CommentModel} from "../../model/CommentModel";
 import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
+import moment from "moment";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 type CommentListProps = {
     detailedDiagram: BpmnDiagramModel
@@ -60,6 +63,11 @@ function CommentList(props: CommentListProps) {
         })
     }
 
+    const handleDelete = (id: string) => {
+        axios.delete("/api/comments/" + id)
+            .then(() => fetchComments())
+    }
+
     return (
         <Card>
             <CardContent>
@@ -72,8 +80,9 @@ function CommentList(props: CommentListProps) {
                     <TableHead>
                         <TableRow>
                             <TableCell>Comment</TableCell>
-                            <TableCell align="center">Author</TableCell>
-                            <TableCell align="center">Time</TableCell>
+                            <TableCell>Author</TableCell>
+                            <TableCell>Time</TableCell>
+                            <TableCell>Delete</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -81,7 +90,9 @@ function CommentList(props: CommentListProps) {
                             return <TableRow key={comment.id}>
                                 <TableCell>{comment.content}</TableCell>
                                 <TableCell>{comment.author}</TableCell>
-                                <TableCell>{comment.time}</TableCell>
+                                <TableCell>{moment(comment.time).locale("de").format("DD.MM.YYYY, HH:mm")}</TableCell>
+                                <TableCell><IconButton size="small" color="error"
+                                                       onClick={() => handleDelete(comment.id)}><DeleteIcon/></IconButton></TableCell>
                             </TableRow>
                         })
                         }

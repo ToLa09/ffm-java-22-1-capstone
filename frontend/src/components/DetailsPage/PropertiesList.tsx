@@ -40,12 +40,12 @@ function PropertiesList(props: PropertiesListProps) {
         <Card>
             <CardContent>
                 <Grid container spacing={0}>
-                    <Grid item xs={10}><Typography variant="h5"
-                                                   color="secondary">Properties</Typography></Grid>
+                    <Grid item xs><Typography variant="h5"
+                                              color="secondary">Properties</Typography></Grid>
                     {editMode ?
                         <Button variant="outlined" color="secondary" onClick={handleUpdate}>Update</Button>
                         :
-                        <Grid item xs>
+                        <Grid item xs="auto">
                             {props.detailedDiagram.customDiagram ?
                                 <Button variant="outlined" color="secondary"
                                         onClick={() => setEditMode(true)}>Edit</Button>

@@ -31,7 +31,7 @@ function DiagramDetails(props: DiagramDetailsProps) {
                         Back to Overview
                     </Button>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                     <PropertiesList
                         detailedDiagram={props.detailedDiagram}
                         fetchDiagrams={props.fetchDiagrams}
@@ -40,7 +40,7 @@ function DiagramDetails(props: DiagramDetailsProps) {
                         setDetailedDiagram={props.setDetailedDiagram}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs>
                     <Card>
                         <CommentList
                             detailedDiagram={props.detailedDiagram}
