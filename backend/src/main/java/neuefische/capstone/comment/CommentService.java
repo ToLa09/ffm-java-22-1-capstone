@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,9 @@ public class CommentService {
     }
 
     public void deleteCommentById(String id) {
+        if (!repository.existsById(id)) {
+            throw new NoSuchElementException("No Element found with this ID");
+        }
         repository.deleteById(id);
     }
 
