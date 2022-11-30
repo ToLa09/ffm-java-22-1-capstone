@@ -40,13 +40,14 @@ public class BpmnDiagramController {
 
     @PutMapping("/{id}")
     public BpmnDiagram updateBpmnDiagram(@RequestBody @Valid BpmnDiagram updatedBpmnDiagram, @PathVariable String id) {
-        if(updatedBpmnDiagram.id().equals(id)) {
-            try {
-                return service.updateBpmnDiagram(updatedBpmnDiagram);
-            } catch (NoSuchElementException e) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-            }
-        } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Request ID Mismatch");
+        if (!updatedBpmnDiagram.id().equals(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request ID Mismatch");
+        }
+        try {
+            return service.updateBpmnDiagram(updatedBpmnDiagram);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

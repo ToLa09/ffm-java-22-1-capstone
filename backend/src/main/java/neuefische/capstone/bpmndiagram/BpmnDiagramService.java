@@ -2,6 +2,7 @@ package neuefische.capstone.bpmndiagram;
 
 import lombok.RequiredArgsConstructor;
 import neuefische.capstone.ServiceUtils;
+import neuefische.capstone.comment.CommentService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class BpmnDiagramService {
 
     private final BpmnDiagramRepository repository;
     private final ServiceUtils serviceUtils;
+
+    private final CommentService commentService;
 
     public List<BpmnDiagram> getAllDiagrams() {
         return repository.findAll();
@@ -58,8 +61,10 @@ public class BpmnDiagramService {
 
     public void deleteBpmnDiagram(String id) {
         BpmnDiagram diagramToDelete = repository.findById(id).orElseThrow(() -> new NoSuchElementException("No Element found with this ID"));
-        if (diagramToDelete.customDiagram()) {
-            repository.deleteById(id);
-        } else throw new DeleteNotAllowedException("Object can't be deleted because it is synched with Camunda Engine");
+        if (!diagramToDelete.customDiagram()) {
+            throw new DeleteNotAllowedException("Object can't be deleted because it is synched with Camunda Engine");
+        }
+        commentService.deleteCommentsByDiagramId(diagramToDelete.id());
+        repository.deleteById(id);
     }
 }

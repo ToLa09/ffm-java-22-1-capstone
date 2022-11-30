@@ -1,9 +1,13 @@
 package neuefische.capstone.comment;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/comments")
@@ -18,17 +22,18 @@ public class CommentController {
     }
 
     @PostMapping
-    Comment addComment(@RequestBody Comment newComment) {
+    @ResponseStatus(code = HttpStatus.CREATED)
+    Comment addComment(@RequestBody @Valid Comment newComment) {
         return service.addComment(newComment);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     void deleteCommentById(@PathVariable String id) {
-        service.deleteCommentById(id);
-    }
-
-    @DeleteMapping("/diagramid/{diagramId}")
-    void deleteCommentsByDiagramId(@PathVariable String diagramId) {
-        service.deleteCommentsByDiagramId(diagramId);
+        try {
+            service.deleteCommentById(id);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 }
