@@ -1,6 +1,7 @@
 package neuefische.capstone.bpmndiagram;
 
 import neuefische.capstone.ServiceUtils;
+import neuefische.capstone.comment.CommentService;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,8 +16,9 @@ import static org.mockito.Mockito.*;
 class BpmnDiagramServiceTest {
 
     private final BpmnDiagramRepository repository = mock(BpmnDiagramRepository.class);
+    private final CommentService commentService = mock(CommentService.class);
     private final ServiceUtils serviceUtils = mock(ServiceUtils.class);
-    private final BpmnDiagramService service = new BpmnDiagramService(repository, serviceUtils);
+    private final BpmnDiagramService service = new BpmnDiagramService(repository, serviceUtils, commentService);
 
     @Test
     void getAllDiagrams_returnsList() {
@@ -243,6 +245,7 @@ class BpmnDiagramServiceTest {
         );
         when(repository.findById(id)).thenReturn(Optional.of(testDiagram));
         doNothing().when(repository).deleteById(id);
+        doNothing().when(commentService).deleteCommentsByDiagramId(id);
         //when
         service.deleteBpmnDiagram(id);
         //then

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import neuefische.capstone.ServiceUtils;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -22,7 +21,7 @@ public class CommentService {
     public Comment addComment(Comment newComment) {
         Comment newCommentWithId = newComment
                 .withId(serviceUtils.generateUUID())
-                .withTime(LocalDateTime.now());
+                .withTime(serviceUtils.generateCurrentTime());
         return repository.insert(newCommentWithId);
     }
 

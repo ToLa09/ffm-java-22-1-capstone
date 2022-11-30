@@ -2,6 +2,7 @@ package neuefische.capstone;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -13,5 +14,9 @@ public class ServiceUtils {
 
     public String generateUUID() {
         return UUID.randomUUID().toString();
+    }
+
+    public LocalDateTime generateCurrentTime() {
+        return LocalDateTime.now();
     }
 }
