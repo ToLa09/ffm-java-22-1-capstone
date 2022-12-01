@@ -28,8 +28,9 @@ export default function DiagramTableRow(props: Props) {
                 <TableCell align="center">
                     <CommentListSimple diagram={props.diagram}/>
                 </TableCell>
-                <TableCell align="center">{props.diagram.customDiagram ? "yes" : "no"}</TableCell>
-                <TableCell align="center"><Button onClick={handleDetails} color="secondary">Details</Button></TableCell>
+                <TableCell align="center">{props.diagram.customDiagram ? "changeable" : "immutable"}</TableCell>
+                <TableCell align="center"><Button onClick={handleDetails} color="secondary">Show
+                    Details</Button></TableCell>
             </TableRow>
         </>
     );

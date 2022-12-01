@@ -18,15 +18,15 @@ public class BpmnDiagramController {
     private final BpmnDiagramService service;
 
     @GetMapping
-    List<BpmnDiagram> getAllDiagrams(@RequestParam Optional<Boolean> distinct) {
-        if (distinct.orElse(false)) {
+    List<BpmnDiagram> getAllDiagrams(@RequestParam Optional<Boolean> onlylatestversions) {
+        if (onlylatestversions.orElse(false)) {
             return service.getLatestDiagrams();
         } else {
             return service.getAllDiagrams();
         }
     }
 
-    @GetMapping("/history/{key}")
+    @GetMapping("/{key}/history")
     List<BpmnDiagram> getHistoryOfDiagram(@PathVariable String key) {
         return service.getHistoryByKey(key);
     }

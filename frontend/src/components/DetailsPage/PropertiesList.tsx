@@ -43,14 +43,14 @@ function PropertiesList(props: PropertiesListProps) {
                     <Grid item xs><Typography variant="h5"
                                               color="secondary">Properties</Typography></Grid>
                     {editMode ?
-                        <Button variant="outlined" color="secondary" onClick={handleUpdate}>Update</Button>
+                        <Button variant="outlined" color="secondary" onClick={handleUpdate}>Update Properties</Button>
                         :
                         <Grid item xs="auto">
                             {props.detailedDiagram.customDiagram ?
                                 <Button variant="outlined" color="secondary"
-                                        onClick={() => setEditMode(true)}>Edit</Button>
+                                        onClick={() => setEditMode(true)}>Edit Properties</Button>
                                 :
-                                <Button variant="outlined" color="secondary" disabled>Edit</Button>
+                                <Button variant="outlined" color="secondary" disabled>Edit Properties</Button>
                             }
                         </Grid>
                     }

@@ -17,7 +17,7 @@ function HistoryList(props: HistoryListProps) {
     const [history, setHistory] = useState<BpmnDiagramModel[]>([])
 
     const fetchHistory = () => {
-        axios.get("/api/bpmndiagrams/history/" + props.latestDiagram.businessKey)
+        axios.get("/api/bpmndiagrams/" + props.latestDiagram.businessKey + "/history")
             .then(response => response.data)
             .then(setHistory)
             .catch(error => console.error("Error fetching History: " + error))

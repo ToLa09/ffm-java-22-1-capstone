@@ -75,9 +75,10 @@ function CommentList(props: CommentListProps) {
         <Card>
             <CardContent>
                 <Grid container>
-                    <Grid item xs={10}><Typography variant="h5" color="secondary">Comments</Typography></Grid>
-                    <Grid item><Button variant="outlined" color="secondary"
-                                       onClick={() => setOpenAddCommentDialog(true)}>Add</Button></Grid>
+                    <Grid item xs><Typography variant="h5" color="secondary">Comments</Typography></Grid>
+                    <Grid item xs="auto"><Button variant="outlined" color="secondary"
+                                                 onClick={() => setOpenAddCommentDialog(true)}>Create New
+                        Comment</Button></Grid>
                 </Grid>
                 <Table size="small">
                     <TableHead>
