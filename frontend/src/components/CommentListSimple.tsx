@@ -31,7 +31,7 @@ function CommentListSimple(props: CommentListProps) {
                 })
                 .map(comment => {
                     return <Typography key={comment.id}
-                                       variant="body2">{moment(comment.time).format("DD.MM.YYYY")} from {comment.author}: {comment.content}</Typography>
+                                       variant="body2">{moment(comment.time).format("DD.MM.YYYY HH:MM")} from {comment.author}: {comment.content}</Typography>
                 })
             }
         </>

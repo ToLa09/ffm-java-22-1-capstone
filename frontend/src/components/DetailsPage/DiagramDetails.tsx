@@ -28,7 +28,7 @@ function DiagramDetails(props: DiagramDetailsProps) {
                         color="secondary"
                         onClick={() => props.setTab("Overview")}
                     >
-                        Back to Overview
+                        Go back to Overview
                     </Button>
                 </Grid>
                 <Grid item xs={4}>

@@ -36,11 +36,10 @@ function DiagramTable(props: DiagramTableProps) {
             .catch(error => console.error(error))
     }
 
-
     return (
         <>
             <Button onClick={fetchCamundaDiagrams} variant="outlined" color="secondary">
-                <SyncIcon/><Typography>Sync With Camunda</Typography>
+                <SyncIcon/><Typography>Fetch Diagrams from Camunda</Typography>
             </Button>
             <TableContainer component={Paper}>
                 <Table sx={{minWidth: 650}} size="small" aria-label="BPMN-Diagram-table" className="diagramtable">
@@ -48,10 +47,10 @@ function DiagramTable(props: DiagramTableProps) {
                         <TableRow>
                             <TableCell>Name</TableCell>
                             <TableCell align="left">Filename</TableCell>
-                            <TableCell align="center">latest version</TableCell>
-                            <TableCell align="center">latest comment</TableCell>
-                            <TableCell align="center">Custom Diagram (editable)</TableCell>
-                            <TableCell sx={{width: 120}} align="center">Actions</TableCell>
+                            <TableCell align="center">latest Version</TableCell>
+                            <TableCell align="center">latest Comment</TableCell>
+                            <TableCell align="center">Changeability</TableCell>
+                            <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

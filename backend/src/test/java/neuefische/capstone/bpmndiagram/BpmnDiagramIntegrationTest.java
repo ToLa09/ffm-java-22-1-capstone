@@ -26,13 +26,6 @@ class BpmnDiagramIntegrationTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void GETAllDiagrams_expect200() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/bpmndiagrams"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("[]"));
-    }
-
-    @Test
     @DirtiesContext
     void GETLatestDiagrams_expect200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
@@ -50,8 +43,7 @@ class BpmnDiagramIntegrationTest {
                                     "customDiagram": true
                                 }
                                 """))
-                .andExpect(status().isCreated())
-                .andReturn().getResponse().getContentAsString();
+                .andExpect(status().isCreated());
 
         String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -73,7 +65,7 @@ class BpmnDiagramIntegrationTest {
 
         BpmnDiagram responseObject = objectMapper.readValue(responseBody, BpmnDiagram.class);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/bpmndiagrams?distinct=true"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/bpmndiagrams?onlylatestversions=true"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         [{
@@ -148,7 +140,7 @@ class BpmnDiagramIntegrationTest {
 
         BpmnDiagram responseObject1 = objectMapper.readValue(responseBody, BpmnDiagram.class);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/bpmndiagrams/history/" + responseObject1.businessKey()))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/bpmndiagrams/" + responseObject1.businessKey() + "/history"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         [{
@@ -168,17 +160,17 @@ class BpmnDiagramIntegrationTest {
 
     @Test
     @DirtiesContext
-    void POSTBpmnDiagram_expect201() throws Exception {
+    void POSTandGETBpmnDiagram_expect201and200() throws Exception {
         String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {
-                                    "name": "Create_Diagram",
-                                    "businessKey": "Process_create-diagram",
-                            "filename": "create-diagram.bpmn",
-                            "version": 1,
-                            "calledProcesses": null,
-                            "commentText": null,
+                                        {
+                                            "name": "Create_Diagram",
+                                            "businessKey": "Process_create-diagram",
+                                    "filename": "create-diagram.bpmn",
+                                    "version": 1,
+                                    "calledProcesses": null,
+                                    "commentText": null,
                             "commentTime": null,
                             "commentAuthor": null,
                             "customDiagram": true
