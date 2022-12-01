@@ -1,10 +1,10 @@
 package neuefische.capstone.bpmndiagram;
 
 import lombok.With;
+import neuefische.capstone.comment.Comment;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @With
@@ -18,10 +18,7 @@ public record BpmnDiagram(
         String filename,
         @NotNull
         int version,
-        List<BpmnDiagram> calledProcesses,
-        String commentText,
-        LocalDateTime commentTime,
-        String commentAuthor,
+        List<Comment> comments,
         boolean customDiagram
 ) {
 }
