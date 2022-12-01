@@ -3,10 +3,8 @@ package neuefische.capstone.bpmndiagram;
 import lombok.RequiredArgsConstructor;
 import neuefische.capstone.ServiceUtils;
 import neuefische.capstone.comment.Comment;
-import neuefische.capstone.comment.CommentService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -18,8 +16,6 @@ public class BpmnDiagramService {
 
     private final BpmnDiagramRepository repository;
     private final ServiceUtils serviceUtils;
-
-    private final CommentService commentService;
 
     public List<BpmnDiagram> getAllDiagrams() {
         return repository.findAll();
@@ -67,19 +63,18 @@ public class BpmnDiagramService {
         if (!diagramToDelete.customDiagram()) {
             throw new DeleteNotAllowedException("Object can't be deleted because it is synched with Camunda Engine");
         }
-        commentService.deleteCommentsByDiagramId(diagramToDelete.id());
         repository.deleteById(id);
     }
 
     public List<Comment> getCommentsByDiagramId(String id) {
         return repository
                 .findById(id)
-                .orElseThrow(() -> new NoSuchElementException("No Diagram with this Id found"))
+                .orElseThrow(() -> new NoSuchElementException("No diagram with this ID found"))
                 .comments();
     }
 
     public Comment addCommentToDiagram(String diagramId, Comment newComment) {
-        Comment newCommentWithIdAndTime = newComment.withId(serviceUtils.generateUUID()).withTime(LocalDateTime.now());
+        Comment newCommentWithIdAndTime = newComment.withId(serviceUtils.generateUUID()).withTime(serviceUtils.generateCurrentTime());
 
         BpmnDiagram currentDiagram = repository.findById(diagramId).orElseThrow(() -> new NoSuchElementException("No diagram found with this ID"));
         List<Comment> commentList = currentDiagram.comments();

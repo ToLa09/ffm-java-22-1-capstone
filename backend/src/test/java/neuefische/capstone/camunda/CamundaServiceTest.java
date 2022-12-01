@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -49,10 +50,7 @@ class CamundaServiceTest {
                 , "Process_create-diagram"
                 , "create-diagram.bpmn"
                 , 1
-                , null
-                , null
-                , null
-                , null
+                , new ArrayList<>()
                 , false
         );
 
@@ -121,10 +119,7 @@ class CamundaServiceTest {
                 , "Process_create-diagram"
                 , "create-diagram.bpmn"
                 , 1
-                , null
-                , null
-                , null
-                , null
+                , new ArrayList<>()
                 , false
         );
 

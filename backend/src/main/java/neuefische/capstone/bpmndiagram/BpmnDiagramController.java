@@ -32,28 +32,10 @@ public class BpmnDiagramController {
         return service.getHistoryByKey(key);
     }
 
-    @GetMapping("/{diagramId}/comments")
-    List<Comment> getCommentsByDiagramId(@PathVariable String diagramId) {
-        try {
-            return service.getCommentsByDiagramId(diagramId);
-        } catch (NoSuchElementException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-    }
-
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     BpmnDiagram addBpmnDiagram(@RequestBody @Valid BpmnDiagram newBpmnDiagram) {
         return service.addBpmnDiagram(newBpmnDiagram);
-    }
-
-    @PostMapping("/{diagramId}/comments")
-    Comment addCommentToDiagram(@PathVariable String diagramId, @RequestBody Comment newComment) {
-        try {
-            return service.addCommentToDiagram(diagramId, newComment);
-        } catch (NoSuchElementException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
     }
 
     @PutMapping("/{diagramId}")
@@ -78,12 +60,32 @@ public class BpmnDiagramController {
         }
     }
 
+    @GetMapping("/{diagramId}/comments")
+    List<Comment> getCommentsByDiagramId(@PathVariable String diagramId) {
+        try {
+            return service.getCommentsByDiagramId(diagramId);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PostMapping("/{diagramId}/comments")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    Comment addCommentToDiagram(@PathVariable String diagramId, @RequestBody @Valid Comment newComment) {
+        try {
+            return service.addCommentToDiagram(diagramId, newComment);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{diagramId}/comments/{commentId}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     void deleteCommentFromDiagram(@PathVariable String diagramId, @PathVariable String commentId) {
         try {
             service.deleteComment(diagramId, commentId);
         } catch (NoSuchElementException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 }
