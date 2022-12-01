@@ -1,7 +1,6 @@
 package neuefische.capstone.bpmndiagram;
 
 import neuefische.capstone.ServiceUtils;
-import neuefische.capstone.comment.Comment;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;

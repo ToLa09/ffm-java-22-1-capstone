@@ -2,7 +2,6 @@ package neuefische.capstone.bpmndiagram;
 
 import lombok.RequiredArgsConstructor;
 import neuefische.capstone.ServiceUtils;
-import neuefische.capstone.comment.Comment;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
