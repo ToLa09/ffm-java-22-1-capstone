@@ -1,4 +1,4 @@
-package capstone.backend;
+package neuefische.capstone;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
