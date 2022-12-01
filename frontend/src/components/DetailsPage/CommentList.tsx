@@ -44,6 +44,7 @@ function CommentList(props: CommentListProps) {
         axios.get("/api/comments/" + props.detailedDiagram.id)
             .then(response => response.data)
             .then(setCommentList)
+            .catch(error => console.error("Error fetching comments: " + error))
     }
 
     useEffect(fetchComments, [props.detailedDiagram.id])
@@ -54,6 +55,7 @@ function CommentList(props: CommentListProps) {
                 setOpenAddCommentDialog(false)
                 fetchComments()
             })
+            .catch(error => console.error("Error adding comment: " + error))
     }
 
     function handleChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -66,6 +68,7 @@ function CommentList(props: CommentListProps) {
     const handleDelete = (id: string) => {
         axios.delete("/api/comments/" + id)
             .then(() => fetchComments())
+            .catch(error => console.error("Error deleting comment: " + error))
     }
 
     return (
@@ -86,7 +89,7 @@ function CommentList(props: CommentListProps) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {commentList
+                        {[...commentList]
                             .sort((comment1, comment2) => {
                                 if (comment1.time > comment2.time) {
                                     return -1
