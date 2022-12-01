@@ -2,9 +2,11 @@ package neuefische.capstone.bpmndiagram;
 
 import lombok.RequiredArgsConstructor;
 import neuefische.capstone.ServiceUtils;
+import neuefische.capstone.comment.Comment;
 import neuefische.capstone.comment.CommentService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -67,5 +69,39 @@ public class BpmnDiagramService {
         }
         commentService.deleteCommentsByDiagramId(diagramToDelete.id());
         repository.deleteById(id);
+    }
+
+    public List<Comment> getCommentsByDiagramId(String id) {
+        return repository
+                .findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No Diagram with this Id found"))
+                .comments();
+    }
+
+    public Comment addCommentToDiagram(String diagramId, Comment newComment) {
+        Comment newCommentWithIdAndTime = newComment.withId(serviceUtils.generateUUID()).withTime(LocalDateTime.now());
+
+        BpmnDiagram currentDiagram = repository.findById(diagramId).orElseThrow(() -> new NoSuchElementException("No diagram found with this ID"));
+        List<Comment> commentList = currentDiagram.comments();
+        commentList.add(newCommentWithIdAndTime);
+        BpmnDiagram diagramWithNewComment = currentDiagram.withComments(commentList);
+
+        repository.save(diagramWithNewComment);
+
+        return newCommentWithIdAndTime;
+    }
+
+    public void deleteComment(String diagramId, String commentId) {
+        BpmnDiagram currentDiagram = repository.findById(diagramId).orElseThrow(() -> new NoSuchElementException("No diagram found with this ID"));
+        List<Comment> commentList = currentDiagram.comments();
+        for (Comment comment : commentList) {
+            if (comment.id().equals(commentId)) {
+                commentList.remove(comment);
+                BpmnDiagram diagramWithoutCommentToDelete = currentDiagram.withComments(commentList);
+                repository.save(diagramWithoutCommentToDelete);
+                return;
+            }
+        }
+        throw new NoSuchElementException("No comment found with this Id to this diagramId");
     }
 }
