@@ -41,7 +41,7 @@ function CommentList(props: CommentListProps) {
     })
 
     const fetchComments = () => {
-        axios.get("/api/comments/" + props.detailedDiagram.id)
+        axios.get("/api/bpmndiagrams/" + props.detailedDiagram.id + "/comments")
             .then(response => response.data)
             .then(setCommentList)
             .catch(error => console.error("Error fetching comments: " + error))
@@ -50,7 +50,7 @@ function CommentList(props: CommentListProps) {
     useEffect(fetchComments, [props.detailedDiagram.id])
 
     const handleAddComment = () => {
-        axios.post("/api/comments", newComment)
+        axios.post("/api/bpmndiagrams/" + props.detailedDiagram.id + "/comments", newComment)
             .then(() => {
                 setOpenAddCommentDialog(false)
                 fetchComments()
@@ -66,7 +66,7 @@ function CommentList(props: CommentListProps) {
     }
 
     const handleDelete = (id: string) => {
-        axios.delete("/api/comments/" + id)
+        axios.delete("/api/bpmndiagrams/" + props.detailedDiagram.id + "/comments/" + id)
             .then(() => fetchComments())
             .catch(error => console.error("Error deleting comment: " + error))
     }

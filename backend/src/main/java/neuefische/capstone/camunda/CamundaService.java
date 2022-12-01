@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -46,10 +47,7 @@ public class CamundaService {
                     camundaProcessModel.key(),
                     camundaProcessModel.resource(),
                     camundaProcessModel.version(),
-                    null,
-                    null,
-                    null,
-                    null,
+                    new ArrayList<>(),
                     false
             );
             if (!repository.existsById(camundaProcessModel.id())) {
