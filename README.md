@@ -7,8 +7,8 @@ It's a library for BPMN-Diagrams from a Camunda Engine. You can fetch them from 
 
 Requirements to run:
 
-MongoDB on Port 8080
+- MongoDB on Port 8080
 
-MongoDB Database name "BpmnLibrary"
+- MongoDB Database name "BpmnLibrary"
 
-Camunda Engine needs URL to Rest-API in property camunda.api.baseUrl=".../engine-rest"
+- Camunda Engine needs URL to Rest-API in property camunda.api.baseUrl=".../engine-rest"
