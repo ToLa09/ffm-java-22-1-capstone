@@ -37,7 +37,6 @@ function CommentList(props: CommentListProps) {
         content: "",
         author: "",
         time: "",
-        diagramId: props.detailedDiagram.id
     })
 
     const fetchComments = () => {

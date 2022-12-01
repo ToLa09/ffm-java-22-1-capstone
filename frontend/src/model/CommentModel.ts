@@ -3,5 +3,4 @@ export type CommentModel = {
     content: string
     author: string
     time: string
-    diagramId: string
 }

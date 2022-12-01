@@ -12,8 +12,6 @@ public record Comment(
         String content,
         @NotEmpty
         String author,
-        LocalDateTime time,
-        @NotEmpty
-        String diagramId
+        LocalDateTime time
 ) {
 }
