@@ -37,12 +37,13 @@ public class BpmnDiagramService {
     }
 
     public List<BpmnDiagram> getHistoryByKey(String key) {
-        List<BpmnDiagram> history = new ArrayList<>();
-        for (BpmnDiagram diagram : repository.findAll()) {
-            if (diagram.businessKey().equals(key)) {
-                history.add(diagram);
-            }
-        }
+        List<BpmnDiagram> history = new ArrayList<>(repository.findAllByBusinessKey(key));
+        history.sort((diagram1, diagram2) -> {
+            if (diagram1.version() > diagram2.version()) {
+                return -1;
+            } else return 0;
+        });
+        history.remove(0);
         return history;
     }
 

@@ -20,6 +20,7 @@ function HistoryList(props: HistoryListProps) {
         axios.get("/api/bpmndiagrams/history/" + props.latestDiagram.businessKey)
             .then(response => response.data)
             .then(setHistory)
+            .catch(error => console.error("Error fetching History: " + error))
     }
 
     useEffect(fetchHistory, [props.latestDiagram.businessKey])
@@ -42,22 +43,15 @@ function HistoryList(props: HistoryListProps) {
                 </TableHead>
                 <TableBody>
                     {history
-                        .sort((diagram1, diagram2) => {
-                            if (diagram1.version > diagram2.version) {
-                                return -1
-                            } else return 1
-                        })
                         .map(diagram => {
-                                if (diagram.id !== props.latestDiagram.id) {
-                                    return <HistoryListRow
-                                        key={diagram.id}
-                                        diagram={diagram}
-                                        fetchHistory={fetchHistory}
-                                        fetchDiagrams={props.fetchDiagrams}
-                                        latestDiagram={props.latestDiagram}
-                                        setTab={props.setTab}
-                                    />
-                                } else return null
+                                return <HistoryListRow
+                                    key={diagram.id}
+                                    diagram={diagram}
+                                    fetchHistory={fetchHistory}
+                                    fetchDiagrams={props.fetchDiagrams}
+                                    latestDiagram={props.latestDiagram}
+                                    setTab={props.setTab}
+                                />
                             }
                         )}
                 </TableBody>
