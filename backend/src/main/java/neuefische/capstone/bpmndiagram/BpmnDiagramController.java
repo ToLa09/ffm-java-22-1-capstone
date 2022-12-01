@@ -1,7 +1,6 @@
 package neuefische.capstone.bpmndiagram;
 
 import lombok.RequiredArgsConstructor;
-import neuefische.capstone.comment.Comment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;

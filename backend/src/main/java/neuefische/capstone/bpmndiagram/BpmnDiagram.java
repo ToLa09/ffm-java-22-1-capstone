@@ -1,7 +1,6 @@
 package neuefische.capstone.bpmndiagram;
 
 import lombok.With;
-import neuefische.capstone.comment.Comment;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
