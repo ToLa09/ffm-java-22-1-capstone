@@ -142,12 +142,12 @@ class BpmnDiagramServiceTest {
                 , true
         );
         List<BpmnDiagram> diagramList = List.of(testDiagram1, testDiagram2);
-        when(repository.findAll()).thenReturn(diagramList);
+        when(repository.findAllByBusinessKey(businessKey)).thenReturn(diagramList);
         //when
         List<BpmnDiagram> actual = service.getHistoryByKey(businessKey);
         //then
-        assertEquals(diagramList, actual);
-        verify(repository).findAll();
+        assertEquals(List.of(testDiagram1), actual);
+        verify(repository).findAllByBusinessKey(businessKey);
     }
 
     @Test

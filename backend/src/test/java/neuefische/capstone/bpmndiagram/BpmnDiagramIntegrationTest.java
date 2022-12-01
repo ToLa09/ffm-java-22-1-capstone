@@ -94,7 +94,7 @@ class BpmnDiagramIntegrationTest {
     @Test
     @DirtiesContext
     void GETHistoryByKey_expect200() throws Exception {
-        String responseBody1 = mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
+        String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -112,7 +112,7 @@ class BpmnDiagramIntegrationTest {
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
 
-        String responseBody2 = mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -127,18 +127,32 @@ class BpmnDiagramIntegrationTest {
                                     "customDiagram": true
                                 }
                                 """))
-                .andExpect(status().isCreated())
-                .andReturn().getResponse().getContentAsString();
+                .andExpect(status().isCreated());
 
-        BpmnDiagram responseObject1 = objectMapper.readValue(responseBody1, BpmnDiagram.class);
-        BpmnDiagram responseObject2 = objectMapper.readValue(responseBody2, BpmnDiagram.class);
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/bpmndiagrams")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "Another Diagram",
+                                    "businessKey": "test",
+                                    "filename": "test.bpmn",
+                                    "version": 1,
+                                    "calledProcesses": null,
+                                    "commentText": null,
+                                    "commentTime": null,
+                                    "commentAuthor": null,
+                                    "customDiagram": true
+                                }
+                                """))
+                .andExpect(status().isCreated());
+
+        BpmnDiagram responseObject1 = objectMapper.readValue(responseBody, BpmnDiagram.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/bpmndiagrams/history/" + responseObject1.businessKey()))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
-                        [
-                        {
-                            "id": "<id1>",
+                        [{
+                            "id": "<id>",
                             "name": "Create_Diagram",
                             "businessKey": "create-diagram",
                             "filename": "create-diagram.bpmn",
@@ -148,20 +162,8 @@ class BpmnDiagramIntegrationTest {
                             "commentTime": null,
                             "commentAuthor": null,
                             "customDiagram": true
-                        },
-                        {
-                            "id": "<id2>",
-                            "name": "Create New Diagram",
-                            "businessKey": "create-diagram",
-                            "filename": "create-new-diagram.bpmn",
-                            "version": 2,
-                            "calledProcesses": null,
-                            "commentText": null,
-                            "commentTime": null,
-                            "commentAuthor": null,
-                            "customDiagram": true
                         }]
-                        """.replace("<id1>", responseObject1.id()).replace("<id2>", responseObject2.id())));
+                        """.replace("<id>", responseObject1.id())));
     }
 
     @Test
