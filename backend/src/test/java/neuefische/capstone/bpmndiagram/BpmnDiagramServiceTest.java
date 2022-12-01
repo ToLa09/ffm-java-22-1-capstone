@@ -1,12 +1,11 @@
 package neuefische.capstone.bpmndiagram;
 
 import neuefische.capstone.ServiceUtils;
-import neuefische.capstone.comment.CommentService;
+import neuefische.capstone.comment.Comment;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -16,9 +15,8 @@ import static org.mockito.Mockito.*;
 class BpmnDiagramServiceTest {
 
     private final BpmnDiagramRepository repository = mock(BpmnDiagramRepository.class);
-    private final CommentService commentService = mock(CommentService.class);
     private final ServiceUtils serviceUtils = mock(ServiceUtils.class);
-    private final BpmnDiagramService service = new BpmnDiagramService(repository, serviceUtils, commentService);
+    private final BpmnDiagramService service = new BpmnDiagramService(repository, serviceUtils);
 
     @Test
     void getAllDiagrams_returnsList() {
@@ -41,10 +39,7 @@ class BpmnDiagramServiceTest {
                 , businessKey
                 , "order-car.bpmn"
                 , 1
-                , null
-                , null
-                , null
-                , null
+                , new ArrayList<>()
                 , true
         );
         BpmnDiagram testDiagram2 = new BpmnDiagram(
@@ -53,10 +48,7 @@ class BpmnDiagramServiceTest {
                 , businessKey
                 , "order-car.bpmn"
                 , 2
-                , null
-                , null
-                , null
-                , null
+                , new ArrayList<>()
                 , true
         );
         List<BpmnDiagram> diagramList = List.of(testDiagram1, testDiagram2);
@@ -80,10 +72,7 @@ class BpmnDiagramServiceTest {
                 , businessKey
                 , "order-car.bpmn"
                 , 1
-                , null
-                , null
-                , null
-                , null
+                , new ArrayList<>()
                 , true
         );
         BpmnDiagram testDiagram2 = new BpmnDiagram(
@@ -92,10 +81,7 @@ class BpmnDiagramServiceTest {
                 , businessKey
                 , "order-car.bpmn"
                 , 2
-                , null
-                , null
-                , null
-                , null
+                , new ArrayList<>()
                 , true
         );
         List<BpmnDiagram> diagramList = List.of(testDiagram1, testDiagram2);
@@ -123,10 +109,7 @@ class BpmnDiagramServiceTest {
                 , businessKey
                 , "order-car.bpmn"
                 , 1
-                , null
-                , null
-                , null
-                , null
+                , new ArrayList<>()
                 , true
         );
         BpmnDiagram testDiagram2 = new BpmnDiagram(
@@ -135,10 +118,7 @@ class BpmnDiagramServiceTest {
                 , businessKey
                 , "order-car.bpmn"
                 , 2
-                , null
-                , null
-                , null
-                , null
+                , new ArrayList<>()
                 , true
         );
         List<BpmnDiagram> diagramList = List.of(testDiagram1, testDiagram2);
@@ -160,10 +140,7 @@ class BpmnDiagramServiceTest {
                 , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
                 , 1
-                , null
-                , "first version of billing"
-                , null
-                , null
+                , new ArrayList<>()
                 , true
         );
         BpmnDiagram testDiagramWithId = testDiagram.withId(testID);
@@ -186,10 +163,7 @@ class BpmnDiagramServiceTest {
                 , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
                 , 2
-                , null
-                , "first version of billing"
-                , null
-                , null
+                , new ArrayList<>()
                 , true
         );
         when(repository.save(updatedDiagram)).thenReturn(updatedDiagram);
@@ -210,10 +184,7 @@ class BpmnDiagramServiceTest {
                 , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
                 , 2
-                , null
-                , "first version of billing"
-                , null
-                , null
+                , new ArrayList<>()
                 , true
         );
         when(repository.existsById(updatedDiagram.id())).thenReturn(false);
@@ -237,15 +208,11 @@ class BpmnDiagramServiceTest {
                 , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
                 , 1
-                , null
-                , "first version of billing"
-                , null
-                , null
+                , new ArrayList<>()
                 , true
         );
         when(repository.findById(id)).thenReturn(Optional.of(testDiagram));
         doNothing().when(repository).deleteById(id);
-        doNothing().when(commentService).deleteCommentsByDiagramId(id);
         //when
         service.deleteBpmnDiagram(id);
         //then
@@ -262,10 +229,7 @@ class BpmnDiagramServiceTest {
                 , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
                 , 1
-                , null
-                , "first version of billing"
-                , null
-                , null
+                , new ArrayList<>()
                 , false
         );
         when(repository.findById(id)).thenReturn(Optional.of(testDiagram));
@@ -293,6 +257,114 @@ class BpmnDiagramServiceTest {
             //then
             assertEquals("No Element found with this ID", e.getMessage());
             verify(repository, never()).deleteById(id);
+        }
+    }
+
+
+    @Test
+    void getCommentsByDiagramId() {
+        //given
+        String diagramId = "1";
+        BpmnDiagram testDiagram = new BpmnDiagram(
+                diagramId
+                , "create bill"
+                , "capstone.bpmn.billing.create-bill"
+                , "create-bill.xml"
+                , 1
+                , new ArrayList<>()
+                , false
+        );
+        when(repository.findById(diagramId)).thenReturn(Optional.of(testDiagram));
+        //when
+        List<Comment> actual = service.getCommentsByDiagramId(diagramId);
+        //then
+        assertEquals(List.of(), actual);
+        verify(repository).findById(diagramId);
+    }
+
+    @Test
+    void addComment() {
+        //given
+        String diagramId = "1";
+        Comment testComment = new Comment(
+                null,
+                "test",
+                "author",
+                null
+        );
+        BpmnDiagram testDiagram = new BpmnDiagram(
+                diagramId
+                , "create bill"
+                , "capstone.bpmn.billing.create-bill"
+                , "create-bill.xml"
+                , 1
+                , new ArrayList<>()
+                , false
+        );
+        Comment testCommentWithIdAndDate = testComment.withId("1").withTime(LocalDateTime.of(2022, 11, 30, 1, 1));
+        when(serviceUtils.generateUUID()).thenReturn("1");
+        when(serviceUtils.generateCurrentTime()).thenReturn(LocalDateTime.of(2022, 11, 30, 1, 1));
+        when(repository.findById(diagramId)).thenReturn(Optional.of(testDiagram));
+        //when
+        Comment actual = service.addCommentToDiagram(diagramId, testComment);
+        //then
+        assertEquals(testCommentWithIdAndDate, actual);
+        verify(repository).save(testDiagram.withComments(List.of(testCommentWithIdAndDate)));
+    }
+
+    @Test
+    void deleteCommentById_successful() {
+        //given
+        String commentId = "1";
+        String diagramId = "100";
+        Comment testComment = new Comment(
+                commentId,
+                "test",
+                "author",
+                null
+        );
+        List<Comment> commentList = new ArrayList<>(Collections.singleton(testComment));
+        BpmnDiagram testDiagram = new BpmnDiagram(
+                diagramId
+                , "create bill"
+                , "capstone.bpmn.billing.create-bill"
+                , "create-bill.xml"
+                , 1
+                , commentList
+                , false
+        );
+        BpmnDiagram testDiagramWithoutComment = testDiagram.withComments(List.of());
+        when(repository.findById(diagramId)).thenReturn(Optional.of(testDiagram));
+        when(repository.save(testDiagramWithoutComment)).thenReturn(testDiagramWithoutComment);
+        //when
+        service.deleteComment(diagramId, commentId);
+        //then
+        verify(repository).findById(diagramId);
+        verify(repository).save(any());
+    }
+
+    @Test
+    void deleteCommentWithWrongIdThrowsException() {
+        //given
+        String diagramId = "1";
+        BpmnDiagram testDiagram = new BpmnDiagram(
+                diagramId
+                , "create bill"
+                , "capstone.bpmn.billing.create-bill"
+                , "create-bill.xml"
+                , 1
+                , new ArrayList<>()
+                , false
+        );
+        when(repository.findById(diagramId)).thenReturn(Optional.of(testDiagram));
+        //when
+        try {
+            service.deleteComment(diagramId, "123");
+            fail();
+        } catch (NoSuchElementException e) {
+            //then
+            verify(repository).findById(diagramId);
+            verify(repository, never()).save(any());
         }
     }
 }
