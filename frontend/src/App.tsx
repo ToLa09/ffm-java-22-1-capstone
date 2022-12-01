@@ -26,7 +26,7 @@ function App() {
     const [bpmnDiagrams, setBpmnDiagrams] = useState<BpmnDiagramModel[]>([])
 
     const fetchDiagrams = () => {
-        axios.get("/api/bpmndiagrams?onlylatestversions=true")
+        axios.get("/api/bpmndiagrams/?onlylatestversions=true")
             .then(response => response.data)
             .catch(error => console.error("GET-Error: " + error))
             .then(setBpmnDiagrams)

@@ -14,7 +14,7 @@ function CommentListSimple(props: CommentListProps) {
     const [commentList, setCommentList] = useState<CommentModel[]>([])
 
     const fetchComments = () => {
-        axios.get("/api/comments/" + props.diagram.id)
+        axios.get("/api/bpmndiagrams/" + props.diagram.id + "/comments")
             .then(response => response.data)
             .then(setCommentList)
     }
@@ -24,11 +24,11 @@ function CommentListSimple(props: CommentListProps) {
     return (
         <>
             {commentList
-                .sort((comment1, comment2) => {
-                    if (comment1.time > comment2.time) {
-                        return -1
-                    } else return 1
-                })
+                // .sort((comment1, comment2) => {
+                //     if (comment1.time > comment2.time) {
+                //         return -1
+                //     } else return 0
+                // })
                 .map(comment => {
                     return <Typography key={comment.id}
                                        variant="body2">{moment(comment.time).format("DD.MM.YYYY HH:MM")} from {comment.author}: {comment.content}</Typography>
