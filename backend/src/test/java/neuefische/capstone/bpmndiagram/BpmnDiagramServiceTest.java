@@ -61,50 +61,11 @@ class BpmnDiagramServiceTest {
         );
         List<BpmnDiagram> diagramList = List.of(testDiagram1, testDiagram2);
         when(repository.findAll()).thenReturn(diagramList);
-        when(repository.findAllByBusinessKey(businessKey)).thenReturn(diagramList);
         //when
         List<BpmnDiagram> actual = service.getLatestDiagrams();
         //then
         assertEquals(List.of(testDiagram2), actual);
-        verify(repository, times(2)).findAllByBusinessKey(businessKey);
         verify(repository).findAll();
-    }
-
-    @Test
-    void getLatestDiagrams_throwsExceptionNoMaxVersion() {
-        //given
-        String businessKey = "capstone.order.order-car";
-        BpmnDiagram testDiagram1 = new BpmnDiagram(
-                "1"
-                , "Order Car"
-                , businessKey
-                , "order-car.bpmn"
-                , 1
-                , new ArrayList<>()
-                , true
-        );
-        BpmnDiagram testDiagram2 = new BpmnDiagram(
-                "2"
-                , "Order New Car"
-                , businessKey
-                , "order-car.bpmn"
-                , 2
-                , new ArrayList<>()
-                , true
-        );
-        List<BpmnDiagram> diagramList = List.of(testDiagram1, testDiagram2);
-        when(repository.findAll()).thenReturn(diagramList);
-        when(repository.findAllByBusinessKey(businessKey)).thenReturn(List.of());
-        //when
-        try {
-            service.getLatestDiagrams();
-            fail();
-        } catch (NoSuchElementException e) {
-            //then
-            assertEquals("No max Version", e.getMessage());
-            verify(repository).findAll();
-            verify(repository).findAllByBusinessKey(businessKey);
-        }
     }
 
     @Test
