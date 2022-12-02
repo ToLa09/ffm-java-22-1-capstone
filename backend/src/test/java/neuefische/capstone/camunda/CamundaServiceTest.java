@@ -101,9 +101,9 @@ class CamundaServiceTest {
             service.writeCamundaProcessesToDB();
             fail();
         } catch (CamundaResponseException e) {
+            //then
             RecordedRequest recordedRequest = mockWebServer.takeRequest();
             HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition");
-            //then
             assertEquals("Response Body is null", e.getMessage());
             assertEquals("GET", recordedRequest.getMethod());
             assertEquals(expectedUrl, recordedRequest.getRequestUrl());
@@ -148,9 +148,9 @@ class CamundaServiceTest {
         when(repository.existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0")).thenReturn(true);
         //when
         service.writeCamundaProcessesToDB();
+        //then
         RecordedRequest recordedRequest = mockWebServer.takeRequest();
         HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition");
-        //then
         verify(repository).existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0");
         verify(repository, never()).insert(mockProcess);
         assertEquals("GET", recordedRequest.getMethod());
