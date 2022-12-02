@@ -66,7 +66,7 @@ function CommentList(props: CommentListProps) {
 
     const handleDelete = (id: string) => {
         axios.delete("/api/bpmndiagrams/" + props.detailedDiagram.id + "/comments/" + id)
-            .then(() => fetchComments())
+            .then(fetchComments)
             .catch(error => console.error("Error deleting comment: " + error))
     }
 
