@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.IOException;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -68,6 +69,13 @@ class CamundaIntegrationTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/camundaprocesses"))
                 .andExpect(status().isNoContent());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/bpmndiagrams"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].name").value("Create_Diagram"))
+                .andExpect(jsonPath("$.[0].version").value(1))
+                .andExpect(jsonPath("$.[0].businessKey").value("Process_create-diagram"))
+                .andExpect(jsonPath("$.[0].filename").value("create-diagram.bpmn"));
     }
 
     @Test

@@ -20,12 +20,21 @@ class BpmnDiagramServiceTest {
     @Test
     void getAllDiagrams_returnsList() {
         //given
-        when(repository.findAll()).thenReturn(List.of());
+        BpmnDiagram testDiagram = new BpmnDiagram(
+                "1"
+                , "Order Car"
+                , "camunda.orders.car"
+                , "order-car.bpmn"
+                , 1
+                , new ArrayList<>()
+                , true
+        );
+        when(repository.findAll()).thenReturn(List.of(testDiagram));
         //when
         List<BpmnDiagram> actual = service.getAllDiagrams();
         //then
         verify(repository).findAll();
-        assertEquals(List.of(), actual);
+        assertEquals(List.of(testDiagram), actual);
     }
 
     @Test
@@ -244,7 +253,7 @@ class BpmnDiagramServiceTest {
     }
 
     @Test
-    void deleteCustomBpmnDiagram_throwsException() {
+    void deleteNonExistingCustomBpmnDiagram_throwsException() {
         //given
         String id = "123";
         when(repository.findById(id)).thenReturn(Optional.empty());
@@ -258,7 +267,6 @@ class BpmnDiagramServiceTest {
             verify(repository, never()).deleteById(id);
         }
     }
-
 
     @Test
     void getCommentsByDiagramId() {
