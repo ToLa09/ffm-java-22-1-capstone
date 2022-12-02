@@ -10,8 +10,8 @@ type AddFormProps = {
 }
 
 function AddForm(props: AddFormProps) {
-    const [snackbarAddOpen, setSnackbarAddOpen] = useState<boolean>(false)
-    const [snackbarErrorOpen, setSnackbarErrorOpen] = useState<boolean>(false)
+    const [snackbarAddOpen, setSnackbarAddOpen] = useState(false)
+    const [snackbarErrorOpen, setSnackbarErrorOpen] = useState(false)
 
     const [newDiagram, setNewDiagram] = useState<BpmnDiagramModel>({
         id: ""
@@ -27,11 +27,11 @@ function AddForm(props: AddFormProps) {
 
     const handleSubmit = (event: any) => {
         event.preventDefault()
-        if(newDiagram.name==="" || newDiagram.businessKey==="" || newDiagram.filename==="" ){
+        if (!newDiagram.name || !newDiagram.businessKey || !newDiagram.filename) {
             setSnackbarErrorOpen(true)
             return
         }
-        axios.post("/api/bpmndiagrams",newDiagram)
+        axios.post("/api/bpmndiagrams", newDiagram)
             .then(() => {
                 setNewDiagram({
                     id: ""
@@ -59,15 +59,14 @@ function AddForm(props: AddFormProps) {
 
     return (
         <>
-        <Box
-            component="form"
-            sx={{
-                '& .MuiTextField-root': { m: 1, width: '25ch' },
-            }}
-            noValidate
-            autoComplete="off"
-        >
-            <div>
+            <Box
+                component="form"
+                sx={{
+                    '& .MuiTextField-root': {m: 1, width: '25ch'},
+                }}
+                noValidate
+                autoComplete="off"
+            >
                 <TextField
                     variant="outlined"
                     label="Name"
@@ -92,24 +91,23 @@ function AddForm(props: AddFormProps) {
                     name="version"
                     value={newDiagram.version}
                     onChange={handleChange}/>
-            </div>
-        </Box>
-        <Box>
-            <Button variant="contained" color="primary" type="submit" onClick={handleSubmit}>Add</Button>
-        </Box>
-        <Snackbar
-            open={snackbarAddOpen}
-            autoHideDuration={3000}
-            message="Diagram added!"
-            onClose={() => setSnackbarAddOpen(false)}
-            action={<IconButton onClick={() => setSnackbarAddOpen(false)}><CloseIcon/></IconButton>}
-        />
-        <Snackbar
-            open={snackbarErrorOpen}
-            autoHideDuration={3000}
-            onClose={() => setSnackbarErrorOpen(false)}
-            action={<IconButton onClick={() => setSnackbarErrorOpen(false)}><CloseIcon/></IconButton>}
-        ><Alert severity="error">Inputfields must not be empty!</Alert></Snackbar>
+            </Box>
+            <Box>
+                <Button variant="contained" color="primary" type="submit" onClick={handleSubmit}>Add</Button>
+            </Box>
+            <Snackbar
+                open={snackbarAddOpen}
+                autoHideDuration={3000}
+                message="Diagram added!"
+                onClose={() => setSnackbarAddOpen(false)}
+                action={<IconButton onClick={() => setSnackbarAddOpen(false)}><CloseIcon/></IconButton>}
+            />
+            <Snackbar
+                open={snackbarErrorOpen}
+                autoHideDuration={3000}
+                onClose={() => setSnackbarErrorOpen(false)}
+                action={<IconButton onClick={() => setSnackbarErrorOpen(false)}><CloseIcon/></IconButton>}
+            ><Alert severity="error">Inputfields must not be empty!</Alert></Snackbar>
         </>
     );
 }

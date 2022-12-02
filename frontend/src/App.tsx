@@ -34,7 +34,7 @@ function App() {
 
     useEffect(() => {
         fetchDiagrams()
-    },[])
+    }, [])
 
     const theme = createTheme({
         palette: {
@@ -50,53 +50,53 @@ function App() {
         },
     })
 
-  return (
-    <ThemeProvider theme={theme}>
-        <header>
-            <AppBar position="sticky">
-                <Typography variant="h2" color="inherit">BPMN-Library</Typography>
-            </AppBar>
-        </header>
-        <main>
-            <TabContext value={tab}>
+    return (
+        <ThemeProvider theme={theme}>
+            <header>
                 <AppBar position="sticky">
-                    <Toolbar >
-                        <TabList
-                            textColor="inherit"
-                            indicatorColor="secondary"
-                            onChange={(event, newValue: string) => setTab(newValue)}
-                            aria-label="tabs"
-                        >
-                            <Tab value="Overview" label="Process Overview" color="primary"/>
-                            <Tab value="Add" label="Add Process"/>
-                            {detailedDiagram.id !== "" &&
-                                <Tab value="Details" label="Process Details"/>
-                            }
-                        </TabList>
-                    </Toolbar>
+                    <Typography variant="h2" color="inherit">BPMN-Library</Typography>
                 </AppBar>
-                <TabPanel value="Overview">
-                    <DiagramTable
-                        setTab={setTab}
-                        bpmnDiagrams={bpmnDiagrams}
-                        fetchDiagrams={fetchDiagrams}
-                        setDetailedDiagram={setDetailedDiagram}/>
-                </TabPanel>
-                <TabPanel value="Add">
-                    <AddForm fetchDiagrams={fetchDiagrams}/>
-                </TabPanel>
-                <TabPanel value="Details">
-                    <DiagramDetails
-                        setTab={setTab}
-                        detailedDiagram={detailedDiagram}
-                        setDetailedDiagram={setDetailedDiagram}
-                        fetchDiagrams={fetchDiagrams}
-                    />
-                </TabPanel>
-            </TabContext>
-        </main>
-    </ThemeProvider>
-  );
+            </header>
+            <main>
+                <TabContext value={tab}>
+                    <AppBar position="sticky">
+                        <Toolbar>
+                            <TabList
+                                textColor="inherit"
+                                indicatorColor="secondary"
+                                onChange={(event, newValue: string) => setTab(newValue)}
+                                aria-label="tabs"
+                            >
+                                <Tab value="Overview" label="Process Overview" color="primary"/>
+                                <Tab value="Add" label="Add Process"/>
+                                {detailedDiagram.id !== "" &&
+                                    <Tab value="Details" label="Process Details"/>
+                                }
+                            </TabList>
+                        </Toolbar>
+                    </AppBar>
+                    <TabPanel value="Overview">
+                        <DiagramTable
+                            setTab={setTab}
+                            bpmnDiagrams={bpmnDiagrams}
+                            fetchDiagrams={fetchDiagrams}
+                            setDetailedDiagram={setDetailedDiagram}/>
+                    </TabPanel>
+                    <TabPanel value="Add">
+                        <AddForm fetchDiagrams={fetchDiagrams}/>
+                    </TabPanel>
+                    <TabPanel value="Details">
+                        <DiagramDetails
+                            setTab={setTab}
+                            detailedDiagram={detailedDiagram}
+                            setDetailedDiagram={setDetailedDiagram}
+                            fetchDiagrams={fetchDiagrams}
+                        />
+                    </TabPanel>
+                </TabContext>
+            </main>
+        </ThemeProvider>
+    );
 }
 
 export default App;
