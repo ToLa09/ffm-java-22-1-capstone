@@ -402,7 +402,6 @@ class BpmnDiagramIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/bpmndiagrams/" + responseDiagram.id() + "/comments"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].id").value(responseComment.id()))
-                .andExpect(jsonPath("$.[0].content").value("test comment"))
                 .andExpect(jsonPath("$.[0].author").value("testauthor"));
     }
 

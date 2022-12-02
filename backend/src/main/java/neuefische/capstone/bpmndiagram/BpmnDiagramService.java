@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import neuefische.capstone.ServiceUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,16 +18,15 @@ public class BpmnDiagramService {
     }
 
     public List<BpmnDiagram> getLatestDiagrams() {
-        List<BpmnDiagram> allDiagrams = repository.findAll();
-        List<BpmnDiagram> latestDiagrams = new ArrayList<>();
-
-        for (BpmnDiagram diagram : allDiagrams) {
-            BpmnDiagram latestVersion = repository.findAllByBusinessKey(diagram.businessKey()).stream()
-                    .max(Comparator.comparing(BpmnDiagram::version))
-                    .orElseThrow(() -> new NoSuchElementException("No max Version"));
-            latestDiagrams.add(latestVersion);
+        Map<String, BpmnDiagram> latestDiagramMap = new HashMap<>();
+        for (BpmnDiagram diagram : repository.findAll()) {
+            if (latestDiagramMap.containsKey(diagram.businessKey())) {
+                if (latestDiagramMap.get(diagram.businessKey()).version() < diagram.version()) {
+                    latestDiagramMap.put(diagram.businessKey(), diagram);
+                }
+            } else latestDiagramMap.put(diagram.businessKey(), diagram);
         }
-        return latestDiagrams.stream().distinct().toList();
+        return latestDiagramMap.values().stream().toList();
     }
 
     public List<BpmnDiagram> getHistoryByKey(String key) {
