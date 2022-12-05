@@ -18,9 +18,7 @@ function App() {
         , businessKey: "-"
         , filename: "-"
         , version: 1
-        , calledProcesses: []
-        , commentText: ""
-        , commentAuthor: ""
+        , comments: []
         , customDiagram: true
     })
     const [bpmnDiagrams, setBpmnDiagrams] = useState<BpmnDiagramModel[]>([])
