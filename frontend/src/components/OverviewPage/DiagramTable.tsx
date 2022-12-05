@@ -89,10 +89,7 @@ function DiagramTable(props: DiagramTableProps) {
                     <TableBody>
                         {props.bpmnDiagrams
                             .filter(diagram => {
-                                let filterRegExp: RegExp
-                                if (filterValue === "") {
-                                    filterRegExp = new RegExp('^.*$')
-                                } else filterRegExp = new RegExp('^.*' + filterValue.replace(/\*/g, '.*') + '.*$')
+                                const filterRegExp = new RegExp('^.*' + filterValue.replace(/\*/g, '.*') + '.*$')
 
                                 switch (filterProperty) {
                                     case "name":
