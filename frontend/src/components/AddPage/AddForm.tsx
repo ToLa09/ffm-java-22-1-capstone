@@ -92,7 +92,7 @@ function AddForm(props: AddFormProps) {
                     value={newDiagram.version}
                     onChange={handleChange}/>
             </Box>
-            <Box>
+            <Box sx={{m: 1}}>
                 <Button variant="contained" color="primary" type="submit" onClick={handleSubmit}>Add</Button>
             </Box>
             <Snackbar
