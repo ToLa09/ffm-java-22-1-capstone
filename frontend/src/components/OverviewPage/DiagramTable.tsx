@@ -12,7 +12,7 @@ import SyncIcon from '@mui/icons-material/Sync';
 import Button from "@mui/material/Button";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
-import {Snackbar, Typography} from "@mui/material";
+import {Box, Snackbar, Typography} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 
 type DiagramTableProps = {
@@ -38,9 +38,12 @@ function DiagramTable(props: DiagramTableProps) {
 
     return (
         <>
-            <Button onClick={fetchCamundaDiagrams} variant="outlined" color="secondary">
-                <SyncIcon/><Typography>Fetch Diagrams from Camunda</Typography>
-            </Button>
+            <Box mb={3}>
+                <Button onClick={fetchCamundaDiagrams} variant="outlined" color="secondary">
+                    <SyncIcon/><Typography>Fetch Diagrams from Camunda</Typography>
+                </Button>
+            </Box>
+
             <TableContainer component={Paper}>
                 <Table sx={{minWidth: 650}} size="small" aria-label="BPMN-Diagram-table" className="diagramtable">
                     <TableHead>
