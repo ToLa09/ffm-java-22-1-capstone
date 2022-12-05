@@ -31,7 +31,7 @@ function DiagramDetails(props: DiagramDetailsProps) {
                         Go back to Overview
                     </Button>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={5}>
                     <PropertiesList
                         detailedDiagram={props.detailedDiagram}
                         fetchDiagrams={props.fetchDiagrams}
