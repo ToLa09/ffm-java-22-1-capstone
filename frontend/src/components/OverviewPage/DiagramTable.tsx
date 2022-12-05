@@ -12,7 +12,7 @@ import SyncIcon from '@mui/icons-material/Sync';
 import Button from "@mui/material/Button";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
-import {Box, Snackbar, Typography} from "@mui/material";
+import {Box, Snackbar, TextField, Typography} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 
 type DiagramTableProps = {
@@ -24,6 +24,7 @@ type DiagramTableProps = {
 
 function DiagramTable(props: DiagramTableProps) {
     const [snackbarRefreshOpen, setSnackbarRefreshOpen] = useState<boolean>(false)
+    const [nameFilter, setNameFilter] = useState<string>("")
 
     const fetchCamundaDiagrams = () => {
         axios.post("/api/camundaprocesses")
@@ -43,7 +44,13 @@ function DiagramTable(props: DiagramTableProps) {
                     <SyncIcon/><Typography>Fetch Diagrams from Camunda</Typography>
                 </Button>
             </Box>
-
+            <TextField
+                fullWidth
+                label="Filter BPMN Diagrams by Name"
+                id="filterDiagrams"
+                value={nameFilter}
+                onChange={(event) => setNameFilter(event.target.value)}
+            />
             <TableContainer component={Paper}>
                 <Table sx={{minWidth: 650}} size="small" aria-label="BPMN-Diagram-table" className="diagramtable">
                     <TableHead>
@@ -57,15 +64,17 @@ function DiagramTable(props: DiagramTableProps) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.bpmnDiagrams.map(diagram => (
-                            <DiagramTableRow
-                                key={diagram.id}
-                                diagram={diagram}
-                                fetchDiagrams={props.fetchDiagrams}
-                                setDetailedDiagram={props.setDetailedDiagram}
-                                setValue={props.setTab}
-                            ></DiagramTableRow>
-                        ))}
+                        {props.bpmnDiagrams
+                            .filter(diagram => diagram.name.includes(nameFilter))
+                            .map(diagram => (
+                                <DiagramTableRow
+                                    key={diagram.id}
+                                    diagram={diagram}
+                                    fetchDiagrams={props.fetchDiagrams}
+                                    setDetailedDiagram={props.setDetailedDiagram}
+                                    setValue={props.setTab}
+                                ></DiagramTableRow>
+                            ))}
                     </TableBody>
                 </Table>
             </TableContainer>
