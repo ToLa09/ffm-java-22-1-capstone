@@ -24,12 +24,13 @@ type DiagramTableProps = {
 
 function DiagramTable(props: DiagramTableProps) {
     const [snackbarRefreshOpen, setSnackbarRefreshOpen] = useState<boolean>(false)
-    const [filter, setFilter] = useState<string>("")
+    const [filterValue, setFilterValue] = useState<string>("")
+    const [filterProperty, setFilterProperty] = useState<string>("name")
 
     const fetchCamundaDiagrams = () => {
         axios.post("/api/camundaprocesses")
             .then(response => {
-                if(response.status === 204){
+                if (response.status === 204) {
                     setSnackbarRefreshOpen(true)
                 }
                 props.fetchDiagrams()
@@ -49,23 +50,25 @@ function DiagramTable(props: DiagramTableProps) {
                     <Grid item xs>
                         <TextField
                             fullWidth
-                            label="Filter BPMN Diagrams by Selected Attribute"
+                            label="Filter BPMN Diagrams"
                             id="filterDiagrams"
-                            value={filter}
-                            onChange={(event) => setFilter(event.target.value)}
+                            value={filterValue}
+                            onChange={(event) => setFilterValue(event.target.value)}
                         />
                     </Grid>
                     <Grid item xs={4}>
                         <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                            <InputLabel id="select-filter">Filter by</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                label="Age"
+                                labelId="select-filter"
+                                id="select-filter"
+                                label="Filter by"
+                                value={filterProperty}
+                                onChange={(event) => setFilterProperty(event.target.value)}
                             >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
+                                <MenuItem value={"name"}>Name</MenuItem>
+                                <MenuItem value={"filename"}>Filename</MenuItem>
+                                <MenuItem value={"comments"}>Comments</MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>
@@ -78,14 +81,29 @@ function DiagramTable(props: DiagramTableProps) {
                             <TableCell>Name</TableCell>
                             <TableCell align="left">Filename</TableCell>
                             <TableCell align="center">latest Version</TableCell>
-                            <TableCell align="center">latest Comment</TableCell>
+                            <TableCell align="center">latest Comments</TableCell>
                             <TableCell align="center">Changeability</TableCell>
                             <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {props.bpmnDiagrams
-                            .filter(diagram => diagram.name.includes(filter))
+                            .filter(diagram => {
+                                let filterRegExp: RegExp
+                                if (filterValue === "") {
+                                    filterRegExp = new RegExp('^.*$')
+                                } else filterRegExp = new RegExp('^.*' + filterValue.replace(/\*/g, '.*') + '.*$')
+
+                                switch (filterProperty) {
+                                    case "name":
+                                        return filterRegExp.test(diagram.name)
+                                    case "filename":
+                                        return filterRegExp.test(diagram.filename)
+                                    case "comments":
+                                        return filterRegExp.test(JSON.stringify(diagram.comments))
+                                }
+                                return diagram;
+                            })
                             .map(diagram => (
                                 <DiagramTableRow
                                     key={diagram.id}
