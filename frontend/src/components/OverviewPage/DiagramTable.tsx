@@ -12,7 +12,7 @@ import SyncIcon from '@mui/icons-material/Sync';
 import Button from "@mui/material/Button";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
-import {Box, Snackbar, TextField, Typography} from "@mui/material";
+import {Box, FormControl, Grid, InputLabel, MenuItem, Select, Snackbar, TextField, Typography} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 
 type DiagramTableProps = {
@@ -24,7 +24,7 @@ type DiagramTableProps = {
 
 function DiagramTable(props: DiagramTableProps) {
     const [snackbarRefreshOpen, setSnackbarRefreshOpen] = useState<boolean>(false)
-    const [nameFilter, setNameFilter] = useState<string>("")
+    const [filter, setFilter] = useState<string>("")
 
     const fetchCamundaDiagrams = () => {
         axios.post("/api/camundaprocesses")
@@ -44,13 +44,33 @@ function DiagramTable(props: DiagramTableProps) {
                     <SyncIcon/><Typography>Fetch Diagrams from Camunda</Typography>
                 </Button>
             </Box>
-            <TextField
-                fullWidth
-                label="Filter BPMN Diagrams by Name"
-                id="filterDiagrams"
-                value={nameFilter}
-                onChange={(event) => setNameFilter(event.target.value)}
-            />
+            <Box mb={3}>
+                <Grid container spacing={2}>
+                    <Grid item xs>
+                        <TextField
+                            fullWidth
+                            label="Filter BPMN Diagrams by Selected Attribute"
+                            id="filterDiagrams"
+                            value={filter}
+                            onChange={(event) => setFilter(event.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                label="Age"
+                            >
+                                <MenuItem value={10}>Ten</MenuItem>
+                                <MenuItem value={20}>Twenty</MenuItem>
+                                <MenuItem value={30}>Thirty</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+            </Box>
             <TableContainer component={Paper}>
                 <Table sx={{minWidth: 650}} size="small" aria-label="BPMN-Diagram-table" className="diagramtable">
                     <TableHead>
@@ -65,7 +85,7 @@ function DiagramTable(props: DiagramTableProps) {
                     </TableHead>
                     <TableBody>
                         {props.bpmnDiagrams
-                            .filter(diagram => diagram.name.includes(nameFilter))
+                            .filter(diagram => diagram.name.includes(filter))
                             .map(diagram => (
                                 <DiagramTableRow
                                     key={diagram.id}
