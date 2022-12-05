@@ -11,7 +11,7 @@ function CommentListSimple(props: CommentListProps) {
 
     return (
         <>
-            {props.diagram.comments
+            {[...props.diagram.comments]
                 .sort((comment1, comment2) => {
                     if (comment1.time > comment2.time) {
                         return -1
