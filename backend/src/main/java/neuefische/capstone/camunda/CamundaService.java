@@ -53,6 +53,14 @@ public class CamundaService {
             if (!repository.existsById(camundaProcessModel.id())) {
                 repository.insert(diagramToInsert);
             }
+            for (BpmnDiagram diagram : repository.findAllByCustomDiagram(false)) {
+                for (CamundaProcessModel process : processList) {
+                    if (diagram.id().equals(process.id())) {
+                        return;
+                    }
+                    repository.delete(diagram);
+                }
+            }
         }
     }
 }
