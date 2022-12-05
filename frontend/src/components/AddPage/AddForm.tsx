@@ -19,9 +19,7 @@ function AddForm(props: AddFormProps) {
         , businessKey: ""
         , filename: ""
         , version: 1
-        , calledProcesses: []
-        , commentText: ""
-        , commentAuthor: ""
+        , comments: []
         , customDiagram: true
     })
 
@@ -39,9 +37,7 @@ function AddForm(props: AddFormProps) {
                     , businessKey: ""
                     , filename: ""
                     , version: 1
-                    , calledProcesses: []
-                    , commentText: ""
-                    , commentAuthor: ""
+                    , comments: []
                     , customDiagram: true
                 })
                 setSnackbarAddOpen(true)
