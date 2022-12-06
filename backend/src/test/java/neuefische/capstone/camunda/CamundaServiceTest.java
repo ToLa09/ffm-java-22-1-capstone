@@ -213,4 +213,23 @@ class CamundaServiceTest {
         verify(repository).delete(mockDiagramToDelete);
         verify(repository, never()).insert(any(BpmnDiagram.class));
     }
+
+    @Test
+    void getXmlByDiagramId() {
+        //given
+        String diagramId = "create-user:2:c29dba0b-6a5e-11ed-aa1c-0a424f65c1c0";
+        mockWebServer.enqueue(new MockResponse()
+                .setBody("""
+                        {
+                            "id": "create-user:2:c29dba0b-6a5e-11ed-aa1c-0a424f65c1c0",
+                            "bpmn20Xml": "<?xml><bpmn:definitions><bpmn:process id=\\"create-user\\" name=\\"create-user\\" isExecutable=\\"true\\"></bpmn:definitions>"
+                        }
+                        """)
+                .addHeader("Content-Type", "application/json"));
+        //when
+        String actual = service.getXmlFileByDiagramId(diagramId);
+        String expected = "<?xml><bpmn:definitions>/n</bpmn:definitions>";
+        //then
+        assertEquals(expected, actual);
+    }
 }
