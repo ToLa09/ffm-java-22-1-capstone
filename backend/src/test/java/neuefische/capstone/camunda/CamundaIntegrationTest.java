@@ -15,8 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.IOException;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -87,5 +86,23 @@ class CamundaIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/camundaprocesses"))
                 .andExpect(status().isNotFound())
                 .andExpect(status().reason("Response Body is null"));
+    }
+
+    @Test
+    void GET_getXmlByDiagramId_expect200() throws Exception {
+        String diagramId = "create-user:2:c29dba0b-6a5e-11ed-aa1c-0a424f65c1c0";
+
+        mockWebServer.enqueue(new MockResponse()
+                .setBody("""
+                        {
+                            "id": "create-user:2:c29dba0b-6a5e-11ed-aa1c-0a424f65c1c0",
+                            "bpmn20Xml": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><bpmn><process></process></bpmn>"
+                        }
+                        """)
+                .addHeader("Content-Type", "application/json"));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/camundaprocesses/" + diagramId + "/xml"))
+                .andExpect(status().isOk())
+                .andExpect(xpath("/bpmn/process").nodeCount(1));
     }
 }
