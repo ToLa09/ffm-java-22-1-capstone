@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -155,5 +156,61 @@ class CamundaServiceTest {
         verify(repository, never()).insert(mockProcess);
         assertEquals("GET", recordedRequest.getMethod());
         assertEquals(expectedUrl, recordedRequest.getRequestUrl());
+    }
+
+    @Test
+    void deleteProcessesWhichAreDeletedInCamundaEngine() {
+        //given
+        BpmnDiagram mockDiagramToDelete = new BpmnDiagram(
+                "Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0"
+                , "Create_Diagram"
+                , "Process_create-diagram"
+                , "create-diagram.bpmn"
+                , 1
+                , new ArrayList<>()
+                , false
+        );
+        BpmnDiagram mockDiagram = new BpmnDiagram(
+                "ReviewInvoice:1:49eb58c6-6994-11ed-996b-0a424f65c1c0"
+                , "Review Invoice"
+                , "ReviewInvoice"
+                , "reviewInvoice.bpmn"
+                , 1
+                , new ArrayList<>()
+                , false
+        );
+
+        List<BpmnDiagram> mockDiagramList = List.of(mockDiagramToDelete, mockDiagram);
+
+        mockWebServer.enqueue(new MockResponse()
+                .setBody("""
+                        [{
+                             "id": "ReviewInvoice:1:49eb58c6-6994-11ed-996b-0a424f65c1c0",
+                             "key": "ReviewInvoice",
+                             "category": "http://bpmn.io/schema/bpmn",
+                             "description": null,
+                             "name": "Review Invoice",
+                             "version": 1,
+                             "resource": "reviewInvoice.bpmn",
+                             "deploymentId": "49856b00-6994-11ed-996b-0a424f65c1c0",
+                             "diagram": null,
+                             "suspended": false,
+                             "tenantId": null,
+                             "versionTag": null,
+                             "historyTimeToLive": 45,
+                             "startableInTasklist": false
+                        }]
+                        """)
+                .addHeader("Content-Type", "application/json")
+        );
+
+        when(repository.findAllByCustomDiagram(false)).thenReturn(mockDiagramList);
+        when(repository.existsById(mockDiagram.id())).thenReturn(true);
+        doNothing().when(repository).delete(mockDiagramToDelete);
+        //when
+        service.writeCamundaProcessesToDB();
+        //then
+        verify(repository).delete(mockDiagramToDelete);
+        verify(repository, never()).insert(any(BpmnDiagram.class));
     }
 }
