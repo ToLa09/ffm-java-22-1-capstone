@@ -22,7 +22,7 @@ public class CamundaController {
         }
     }
 
-    @GetMapping("/{diagramId}")
+    @GetMapping("/{diagramId}/xml")
     public BpmnDiagramXML getXmlFileByDiagramId(@PathVariable String diagramId) {
         return service.getXmlFileByDiagramId(diagramId);
     }
