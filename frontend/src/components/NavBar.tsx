@@ -22,7 +22,7 @@ function NavBar(props: NavBarProps) {
         if (location.pathname === "/add") {
             setTab("Add")
         }
-        if (new RegExp("^/.*.{39}$").test(location.pathname)) {
+        if (location.pathname.match("^/.*.{39}$")) {
             setTab("Details")
         }
     }
