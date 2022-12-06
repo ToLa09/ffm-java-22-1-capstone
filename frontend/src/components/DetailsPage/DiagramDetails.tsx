@@ -1,11 +1,12 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
 import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
-import {Button, Card, Grid, Snackbar,} from "@mui/material";
+import {Button, Grid, Snackbar,} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import HistoryList from "./HistoryList";
 import CommentList from "./CommentList";
 import PropertiesList from "./PropertiesList";
+import BpmnViewer from "./BpmnViewer";
 
 type DiagramDetailsProps = {
     setTab: Dispatch<SetStateAction<string>>
@@ -41,22 +42,21 @@ function DiagramDetails(props: DiagramDetailsProps) {
                     />
                 </Grid>
                 <Grid item xs>
-                    <Card>
-                        <CommentList
-                            detailedDiagram={props.detailedDiagram}
-                        />
-                    </Card>
+                    <CommentList
+                        detailedDiagram={props.detailedDiagram}
+                    />
                 </Grid>
                 <Grid item xs={12}>
-                    <Card>
-                        <HistoryList
-                            latestDiagram={props.detailedDiagram}
-                            setSnackbarOpen={setSnackbarOpen}
-                            setSnackbarMessage={setSnackbarMessage}
-                            fetchDiagrams={props.fetchDiagrams}
-                            setTab={props.setTab}
-                        />
-                    </Card>
+                    <HistoryList
+                        latestDiagram={props.detailedDiagram}
+                        setSnackbarOpen={setSnackbarOpen}
+                        setSnackbarMessage={setSnackbarMessage}
+                        fetchDiagrams={props.fetchDiagrams}
+                        setTab={props.setTab}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <BpmnViewer diagram={props.detailedDiagram}/>
                 </Grid>
             </Grid>
             <Snackbar

@@ -66,7 +66,7 @@ public class CamundaService {
         }
     }
 
-    public BpmnDiagramXML getXmlFileByDiagramId(String diagramId) {
+    public String getXmlFileByDiagramId(String diagramId) {
         ResponseEntity<BpmnDiagramXML> responseEntity = requireNonNull(webClient
                         .get()
                         .uri("/process-definition/" + diagramId + "/xml")
@@ -75,6 +75,6 @@ public class CamundaService {
                         .block()
                 , "Response Entity is null");
 
-        return requireNonNull(responseEntity.getBody(), ERROR_MESSAGE);
+        return requireNonNull(responseEntity.getBody(), ERROR_MESSAGE).xml();
     }
 }
