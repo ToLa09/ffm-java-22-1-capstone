@@ -44,6 +44,7 @@ function DiagramDetails(props: DiagramDetailsProps) {
                 <Grid item xs>
                     <CommentList
                         detailedDiagram={props.detailedDiagram}
+                        fetchDiagrams={props.fetchDiagrams}
                     />
                 </Grid>
                 <Grid item xs={12}>
