@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import {
     Button,
     Card,
@@ -26,12 +26,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 type CommentListProps = {
     detailedDiagram: BpmnDiagramModel
+    fetchDiagrams: () => void
 }
 
 function CommentList(props: CommentListProps) {
 
     const [openAddCommentDialog, setOpenAddCommentDialog] = useState<boolean>(false)
-    const [commentList, setCommentList] = useState<CommentModel[]>([])
+    const [commentList, setCommentList] = useState<CommentModel[]>(props.detailedDiagram.comments)
     const [newComment, setNewComment] = useState<CommentModel>({
         id: "",
         content: "",
@@ -46,13 +47,12 @@ function CommentList(props: CommentListProps) {
             .catch(error => console.error("Error fetching comments: " + error))
     }
 
-    useEffect(fetchComments, [props.detailedDiagram.id])
-
     const handleAddComment = () => {
         axios.post("/api/bpmndiagrams/" + props.detailedDiagram.id + "/comments", newComment)
             .then(() => {
                 setOpenAddCommentDialog(false)
                 fetchComments()
+                props.fetchDiagrams()
             })
             .catch(error => console.error("Error adding comment: " + error))
     }
@@ -66,7 +66,10 @@ function CommentList(props: CommentListProps) {
 
     const handleDelete = (id: string) => {
         axios.delete("/api/bpmndiagrams/" + props.detailedDiagram.id + "/comments/" + id)
-            .then(fetchComments)
+            .then(() => {
+                fetchComments()
+                props.fetchDiagrams()
+            })
             .catch(error => console.error("Error deleting comment: " + error))
     }
 
