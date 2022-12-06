@@ -228,7 +228,7 @@ class CamundaServiceTest {
                 .addHeader("Content-Type", "application/json"));
         //when
         String actual = service.getXmlFileByDiagramId(diagramId);
-        String expected = "<?xml><bpmn:definitions>/n</bpmn:definitions>";
+        String expected = "<?xml><bpmn:definitions><bpmn:process id=\"create-user\" name=\"create-user\" isExecutable=\"true\"></bpmn:definitions>";
         //then
         assertEquals(expected, actual);
     }
