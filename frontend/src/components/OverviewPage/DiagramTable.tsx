@@ -42,7 +42,7 @@ function DiagramTable(props: DiagramTableProps) {
         <>
             <Box mb={3}>
                 <Button onClick={fetchCamundaDiagrams} variant="outlined" color="secondary">
-                    <SyncIcon/><Typography>Fetch Diagrams from Camunda</Typography>
+                    <SyncIcon/><Typography>Get diagrams from Camunda</Typography>
                 </Button>
             </Box>
             <Box mb={3}>
