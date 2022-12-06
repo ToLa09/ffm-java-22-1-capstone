@@ -1,33 +1,45 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
-import {Button, Grid, Snackbar,} from "@mui/material";
+import {Box, Button, Grid, Snackbar,} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import HistoryList from "./HistoryList";
 import CommentList from "./CommentList";
 import PropertiesList from "./PropertiesList";
 import BpmnViewer from "./BpmnViewer";
+import {useNavigate, useParams} from "react-router-dom";
 
 type DiagramDetailsProps = {
-    setTab: Dispatch<SetStateAction<string>>
     detailedDiagram: BpmnDiagramModel
     setDetailedDiagram: Dispatch<SetStateAction<BpmnDiagramModel>>
     fetchDiagrams: () => void
+    bpmnDiagrams: BpmnDiagramModel[]
 }
 
 function DiagramDetails(props: DiagramDetailsProps) {
+    const {id} = useParams()
+    const navigate = useNavigate()
 
     const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
     const [snackbarMessage, setSnackbarMessage] = useState<string>("")
 
+    useEffect(() => {
+        props.bpmnDiagrams.forEach(diagram => {
+            if (id === diagram.id) {
+                props.setDetailedDiagram(diagram)
+            }
+        })
+    }, [id, props])
+
+
     return (
-        <>
+        <Box m={5}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Button
                         variant="outlined"
                         color="secondary"
-                        onClick={() => props.setTab("Overview")}
+                        onClick={() => navigate("/")}
                     >
                         Go back to Overview
                     </Button>
@@ -53,7 +65,6 @@ function DiagramDetails(props: DiagramDetailsProps) {
                         setSnackbarOpen={setSnackbarOpen}
                         setSnackbarMessage={setSnackbarMessage}
                         fetchDiagrams={props.fetchDiagrams}
-                        setTab={props.setTab}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -67,8 +78,7 @@ function DiagramDetails(props: DiagramDetailsProps) {
                 onClose={() => setSnackbarOpen(false)}
                 action={<IconButton onClick={() => setSnackbarOpen(false)}><CloseIcon/></IconButton>}
             />
-
-        </>
+        </Box>
     );
 }
 

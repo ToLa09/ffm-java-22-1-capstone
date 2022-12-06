@@ -9,7 +9,6 @@ type HistoryListProps = {
     setSnackbarOpen: Dispatch<SetStateAction<boolean>>
     setSnackbarMessage: Dispatch<SetStateAction<string>>
     fetchDiagrams: () => void
-    setTab: Dispatch<SetStateAction<string>>
 }
 
 function HistoryList(props: HistoryListProps) {
@@ -51,7 +50,6 @@ function HistoryList(props: HistoryListProps) {
                                         fetchHistory={fetchHistory}
                                         fetchDiagrams={props.fetchDiagrams}
                                         latestDiagram={props.latestDiagram}
-                                        setTab={props.setTab}
                                     />
                                 }
                             )}

@@ -16,7 +16,6 @@ import {Box, FormControl, Grid, InputLabel, MenuItem, Select, Snackbar, TextFiel
 import IconButton from "@mui/material/IconButton";
 
 type DiagramTableProps = {
-    setTab: Dispatch<SetStateAction<string>>
     setDetailedDiagram: Dispatch<SetStateAction<BpmnDiagramModel>>
     bpmnDiagrams: BpmnDiagramModel[]
     fetchDiagrams: () => void
@@ -39,7 +38,7 @@ function DiagramTable(props: DiagramTableProps) {
     }
 
     return (
-        <>
+        <Box m={5}>
             <Box mb={3}>
                 <Button onClick={fetchCamundaDiagrams} variant="outlined" color="secondary">
                     <SyncIcon/><Typography>Get diagrams from Camunda</Typography>
@@ -107,7 +106,6 @@ function DiagramTable(props: DiagramTableProps) {
                                     diagram={diagram}
                                     fetchDiagrams={props.fetchDiagrams}
                                     setDetailedDiagram={props.setDetailedDiagram}
-                                    setValue={props.setTab}
                                 ></DiagramTableRow>
                             ))}
                     </TableBody>
@@ -120,7 +118,7 @@ function DiagramTable(props: DiagramTableProps) {
                 onClose={() => setSnackbarRefreshOpen(false)}
                 action={<IconButton onClick={() => setSnackbarRefreshOpen(false)}><CloseIcon/></IconButton>}
             />
-        </>
+        </Box>
     );
 }
 
