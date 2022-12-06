@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
-import {CardContent, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@mui/material";
+import {Card, CardContent, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@mui/material";
 import HistoryListRow from "./HistoryListRow";
 import axios from "axios";
 
@@ -26,37 +26,39 @@ function HistoryList(props: HistoryListProps) {
     useEffect(fetchHistory, [props.latestDiagram.businessKey])
 
     return (
-        <CardContent>
-            <Typography variant="h5"
-                        color="secondary">History</Typography>
-            <Table size="small">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell align="center">Filename</TableCell>
-                        <TableCell align="center">Version</TableCell>
-                        <TableCell align="left">Comments</TableCell>
-                        {props.latestDiagram.customDiagram &&
-                            <TableCell align="right">Delete</TableCell>
-                        }
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {history
-                        .map(diagram => {
-                                return <HistoryListRow
-                                    key={diagram.id}
-                                    diagram={diagram}
-                                    fetchHistory={fetchHistory}
-                                    fetchDiagrams={props.fetchDiagrams}
-                                    latestDiagram={props.latestDiagram}
-                                    setTab={props.setTab}
-                                />
+        <Card>
+            <CardContent>
+                <Typography variant="h5"
+                            color="secondary">History</Typography>
+                <Table size="small">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Name</TableCell>
+                            <TableCell align="center">Filename</TableCell>
+                            <TableCell align="center">Version</TableCell>
+                            <TableCell align="left">Comments</TableCell>
+                            {props.latestDiagram.customDiagram &&
+                                <TableCell align="right">Delete</TableCell>
                             }
-                        )}
-                </TableBody>
-            </Table>
-        </CardContent>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {history
+                            .map(diagram => {
+                                    return <HistoryListRow
+                                        key={diagram.id}
+                                        diagram={diagram}
+                                        fetchHistory={fetchHistory}
+                                        fetchDiagrams={props.fetchDiagrams}
+                                        latestDiagram={props.latestDiagram}
+                                        setTab={props.setTab}
+                                    />
+                                }
+                            )}
+                    </TableBody>
+                </Table>
+            </CardContent>
+        </Card>
     );
 }
 
