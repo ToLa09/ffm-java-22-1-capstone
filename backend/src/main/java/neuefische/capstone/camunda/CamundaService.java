@@ -69,7 +69,7 @@ public class CamundaService {
     public BpmnDiagramXML getXmlFileByDiagramId(String diagramId) {
         ResponseEntity<BpmnDiagramXML> responseEntity = requireNonNull(webClient
                         .get()
-                        .uri("/process-definition" + diagramId + "/xml")
+                        .uri("/process-definition/" + diagramId + "/xml")
                         .retrieve()
                         .toEntity(BpmnDiagramXML.class)
                         .block()
