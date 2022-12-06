@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {
     Button,
     Card,
@@ -46,6 +46,8 @@ function CommentList(props: CommentListProps) {
             .then(setCommentList)
             .catch(error => console.error("Error fetching comments: " + error))
     }
+
+    useEffect(fetchComments, [props.detailedDiagram.id])
 
     const handleAddComment = () => {
         axios.post("/api/bpmndiagrams/" + props.detailedDiagram.id + "/comments", newComment)

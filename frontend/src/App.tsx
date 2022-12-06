@@ -2,16 +2,16 @@ import React, {useEffect, useState} from 'react';
 import './css/App.css';
 import DiagramTable from "./components/OverviewPage/DiagramTable";
 import AddForm from "./components/AddPage/AddForm";
-import {AppBar, createTheme, Tab, ThemeProvider, Toolbar, Typography} from "@mui/material";
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
+import {AppBar, createTheme, IconButton, ThemeProvider, Toolbar, Typography} from "@mui/material";
 import DiagramDetails from "./components/DetailsPage/DiagramDetails";
 import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
 import axios from "axios";
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import NavBar from "./components/NavBar";
 
 function App() {
-    const [tab, setTab] = useState<string>("Overview")
+
     const [detailedDiagram, setDetailedDiagram] = useState<BpmnDiagramModel>({
         id: ""
         , name: "-"
@@ -50,49 +50,63 @@ function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <header>
-                <AppBar position="sticky">
-                    <Typography variant="h2" color="inherit">BPMN-Library</Typography>
-                </AppBar>
-            </header>
-            <main>
-                <TabContext value={tab}>
+            <BrowserRouter>
+                <header>
                     <AppBar position="sticky">
                         <Toolbar>
-                            <TabList
-                                textColor="inherit"
-                                indicatorColor="secondary"
-                                onChange={(event, newValue: string) => setTab(newValue)}
-                                aria-label="tabs"
-                            >
-                                <Tab value="Overview" label="Process Overview" color="primary"/>
-                                <Tab value="Add" label="Add Process"/>
-                                {detailedDiagram.id !== "" &&
-                                    <Tab value="Details" label="Process Details"/>
-                                }
-                            </TabList>
+                            <IconButton size="large" edge="start" color="inherit" aria-label="logo">
+                                <AccountTreeIcon fontSize="large"/>
+                            </IconButton>
+                            <Typography variant="h2" color="inherit">BPMN-Library</Typography>
                         </Toolbar>
                     </AppBar>
-                    <TabPanel value="Overview">
-                        <DiagramTable
-                            setTab={setTab}
-                            bpmnDiagrams={bpmnDiagrams}
-                            fetchDiagrams={fetchDiagrams}
-                            setDetailedDiagram={setDetailedDiagram}/>
-                    </TabPanel>
-                    <TabPanel value="Add">
-                        <AddForm fetchDiagrams={fetchDiagrams}/>
-                    </TabPanel>
-                    <TabPanel value="Details">
-                        <DiagramDetails
-                            setTab={setTab}
-                            detailedDiagram={detailedDiagram}
-                            setDetailedDiagram={setDetailedDiagram}
-                            fetchDiagrams={fetchDiagrams}
-                        />
-                    </TabPanel>
-                </TabContext>
-            </main>
+                </header>
+                <main>
+                    {/*<TabContext value={tab}>*/}
+                    <NavBar
+                        detailedDiagram={detailedDiagram}
+                    />
+                    <Routes>
+                        <Route path="/" element={
+                            <DiagramTable
+                                setDetailedDiagram={setDetailedDiagram}
+                                bpmnDiagrams={bpmnDiagrams}
+                                fetchDiagrams={fetchDiagrams}
+                            />
+                        }/>
+                        <Route path="/:id" element={
+                            <DiagramDetails
+                                detailedDiagram={detailedDiagram}
+                                setDetailedDiagram={setDetailedDiagram}
+                                fetchDiagrams={fetchDiagrams}
+                                bpmnDiagrams={bpmnDiagrams}
+                            />
+                        }/>
+                        <Route path="/add" element={
+                            <AddForm fetchDiagrams={fetchDiagrams}/>
+                        }/>
+                    </Routes>
+                    {/*<TabPanel value="Overview">*/}
+                    {/*    <DiagramTable*/}
+                    {/*        setTab={setTab}*/}
+                    {/*        bpmnDiagrams={bpmnDiagrams}*/}
+                    {/*        fetchDiagrams={fetchDiagrams}*/}
+                    {/*        setDetailedDiagram={setDetailedDiagram}/>*/}
+                    {/*</TabPanel>*/}
+                    {/*<TabPanel value="Add">*/}
+                    {/*    <AddForm fetchDiagrams={fetchDiagrams}/>*/}
+                    {/*</TabPanel>*/}
+                    {/*<TabPanel value="Details">*/}
+                    {/*    <DiagramDetails*/}
+                    {/*        setTab={setTab}*/}
+                    {/*        detailedDiagram={detailedDiagram}*/}
+                    {/*        setDetailedDiagram={setDetailedDiagram}*/}
+                    {/*        fetchDiagrams={fetchDiagrams}*/}
+                    {/*    />*/}
+                    {/*</TabPanel>*/}
+                    {/*</TabContext>*/}
+                </main>
+            </BrowserRouter>
         </ThemeProvider>
     );
 }

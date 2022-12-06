@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React from 'react';
 import {IconButton, TableCell, TableRow} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
@@ -10,19 +10,14 @@ type HistoryListRowProps = {
     latestDiagram: BpmnDiagramModel
     fetchHistory: () => void
     fetchDiagrams: () => void
-    setTab: Dispatch<SetStateAction<string>>
 }
 
 function HistoryListRow(props: HistoryListRowProps) {
 
     const handleDelete = () => {
         axios.delete("/api/bpmndiagrams/" + props.diagram.id)
-            .then(() => {
-                if (props.diagram.id === props.latestDiagram.id) {
-                    props.fetchDiagrams()
-                    props.setTab("Overview")
-                } else props.fetchHistory()
-            })
+            .then(props.fetchHistory)
+            .catch(error => console.error(error))
     }
 
     return (

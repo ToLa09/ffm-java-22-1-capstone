@@ -54,7 +54,7 @@ function AddForm(props: AddFormProps) {
     }
 
     return (
-        <>
+        <Box m={5}>
             <Box
                 component="form"
                 sx={{
@@ -104,7 +104,7 @@ function AddForm(props: AddFormProps) {
                 onClose={() => setSnackbarErrorOpen(false)}
                 action={<IconButton onClick={() => setSnackbarErrorOpen(false)}><CloseIcon/></IconButton>}
             ><Alert severity="error">Inputfields must not be empty!</Alert></Snackbar>
-        </>
+        </Box>
     );
 }
 

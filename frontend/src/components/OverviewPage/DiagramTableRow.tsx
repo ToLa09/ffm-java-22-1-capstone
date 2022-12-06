@@ -4,19 +4,20 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import {Button} from "@mui/material";
 import CommentListSimple from "../CommentListSimple";
+import {useNavigate} from "react-router-dom";
 
 export type Props = {
     diagram: BpmnDiagramModel
     fetchDiagrams: () => void
-    setValue: Dispatch<SetStateAction<string>>
     setDetailedDiagram: Dispatch<SetStateAction<BpmnDiagramModel>>
 }
 
 export default function DiagramTableRow(props: Props) {
+    const navigate = useNavigate()
 
     const handleDetails = () => {
-        props.setValue("Details")
         props.setDetailedDiagram(props.diagram)
+        navigate("/" + props.diagram.id)
     }
 
     return (
