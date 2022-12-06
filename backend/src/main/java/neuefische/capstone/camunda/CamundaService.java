@@ -19,6 +19,8 @@ public class CamundaService {
 
     private final BpmnDiagramRepository repository;
 
+    private static final String ERROR_MESSAGE = "Response Body is null";
+
     public CamundaService(BpmnDiagramRepository repository, @Value("${camunda.api.baseUrl}") String baseUrl) {
         this.webClient = WebClient.create(baseUrl);
         this.repository = repository;
@@ -34,10 +36,10 @@ public class CamundaService {
                 , "Response Entity is null");
 
 
-        List<CamundaProcessModel> processList = requireNonNull(responseEntity.getBody(), "Response Body is null");
+        List<CamundaProcessModel> processList = requireNonNull(responseEntity.getBody(), ERROR_MESSAGE);
 
         if (processList.isEmpty()) {
-            throw new CamundaResponseException("Response Body is null");
+            throw new CamundaResponseException(ERROR_MESSAGE);
         }
 
         for (CamundaProcessModel camundaProcessModel : processList) {
@@ -62,5 +64,17 @@ public class CamundaService {
                 repository.delete(diagram);
             }
         }
+    }
+
+    public BpmnDiagramXML getXmlFileByDiagramId(String diagramId) {
+        ResponseEntity<BpmnDiagramXML> responseEntity = requireNonNull(webClient
+                        .get()
+                        .uri("/process-definition" + diagramId + "/xml")
+                        .retrieve()
+                        .toEntity(BpmnDiagramXML.class)
+                        .block()
+                , "Response Entity is null");
+
+        return requireNonNull(responseEntity.getBody(), ERROR_MESSAGE);
     }
 }
