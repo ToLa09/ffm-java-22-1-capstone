@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import './css/App.css';
 import DiagramTable from "./components/OverviewPage/DiagramTable";
 import AddForm from "./components/AddPage/AddForm";
@@ -14,16 +14,16 @@ function App() {
     const [bpmnDiagrams, setBpmnDiagrams] = useState<BpmnDiagramModel[]>([])
     const [detailedDiagramId, setDetailedDiagramId] = useState<string>("")
 
-    const fetchDiagrams = () => {
+    const fetchDiagrams = useCallback(() => {
         axios.get("/api/bpmndiagrams/?onlylatestversions=true")
             .then(response => response.data)
             .catch(error => console.error("GET-Error: " + error))
             .then(setBpmnDiagrams)
-    }
+    }, [])
 
     useEffect(() => {
         fetchDiagrams()
-    }, [])
+    }, [fetchDiagrams])
 
     const theme = createTheme({
         palette: {
