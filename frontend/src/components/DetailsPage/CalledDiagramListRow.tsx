@@ -1,6 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {TableCell, TableRow, Typography} from "@mui/material";
+import {IconButton, TableCell, TableRow, Typography} from "@mui/material";
 import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
+import {useNavigate} from "react-router-dom";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 type CalledDiagramListRowProps = {
     calledDiagramId: string
@@ -9,6 +11,8 @@ type CalledDiagramListRowProps = {
 }
 
 function CalledDiagramListRow(props: CalledDiagramListRowProps) {
+    const navigate = useNavigate()
+
     const [diagram, setDiagram] = useState<BpmnDiagramModel>({
         id: ""
         , name: "-"
@@ -39,6 +43,11 @@ function CalledDiagramListRow(props: CalledDiagramListRowProps) {
                 {props.calledFromActivities.map((activity) => {
                     return <Typography key={activity} variant="body2">{activity}</Typography>
                 })}
+            </TableCell>
+            <TableCell align="center">
+                <IconButton onClick={() => navigate("/" + props.calledDiagramId)}>
+                    <ArrowForwardIcon color="secondary"/>
+                </IconButton>
             </TableCell>
         </TableRow>
     )
