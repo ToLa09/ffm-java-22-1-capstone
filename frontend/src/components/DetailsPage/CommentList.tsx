@@ -40,20 +40,12 @@ function CommentList(props: CommentListProps) {
         time: "",
     })
 
-    const fetchComments = () => {
-        axios.get("/api/bpmndiagrams/" + props.detailedDiagram.id + "/comments")
-            .then(response => response.data)
-            .then(setCommentList)
-            .catch(error => console.error("Error fetching comments: " + error))
-    }
-
-    useEffect(fetchComments, [props.detailedDiagram.id])
+    useEffect(() => setCommentList(props.detailedDiagram.comments), [props.detailedDiagram.comments])
 
     const handleAddComment = () => {
         axios.post("/api/bpmndiagrams/" + props.detailedDiagram.id + "/comments", newComment)
             .then(() => {
                 setOpenAddCommentDialog(false)
-                fetchComments()
                 props.fetchDiagrams()
             })
             .catch(error => console.error("Error adding comment: " + error))
@@ -69,7 +61,6 @@ function CommentList(props: CommentListProps) {
     const handleDelete = (id: string) => {
         axios.delete("/api/bpmndiagrams/" + props.detailedDiagram.id + "/comments/" + id)
             .then(() => {
-                fetchComments()
                 props.fetchDiagrams()
             })
             .catch(error => console.error("Error deleting comment: " + error))
@@ -94,7 +85,7 @@ function CommentList(props: CommentListProps) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {[...commentList]
+                        {commentList
                             .sort((comment1, comment2) => {
                                 if (comment1.time > comment2.time) {
                                     return -1
