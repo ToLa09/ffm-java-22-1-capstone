@@ -16,7 +16,7 @@ import {Box, FormControl, Grid, InputLabel, MenuItem, Select, Snackbar, TextFiel
 import IconButton from "@mui/material/IconButton";
 
 type DiagramTableProps = {
-    setDetailedDiagram: Dispatch<SetStateAction<BpmnDiagramModel>>
+    setDetailedDiagramId: Dispatch<SetStateAction<string>>
     bpmnDiagrams: BpmnDiagramModel[]
     fetchDiagrams: () => void
 }
@@ -105,7 +105,7 @@ function DiagramTable(props: DiagramTableProps) {
                                     key={diagram.id}
                                     diagram={diagram}
                                     fetchDiagrams={props.fetchDiagrams}
-                                    setDetailedDiagram={props.setDetailedDiagram}
+                                    setDetailedDiagramId={props.setDetailedDiagramId}
                                 ></DiagramTableRow>
                             ))}
                     </TableBody>

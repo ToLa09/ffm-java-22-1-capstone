@@ -10,10 +10,10 @@ import BpmnViewer from "./BpmnViewer";
 import {useNavigate, useParams} from "react-router-dom";
 
 type DiagramDetailsProps = {
-    detailedDiagram: BpmnDiagramModel
-    setDetailedDiagram: Dispatch<SetStateAction<BpmnDiagramModel>>
-    fetchDiagrams: () => void
+    detailedDiagramId: string
+    setDetailedDiagramId: Dispatch<SetStateAction<string>>
     bpmnDiagrams: BpmnDiagramModel[]
+    fetchDiagrams: () => void
 }
 
 function DiagramDetails(props: DiagramDetailsProps) {
@@ -22,14 +22,26 @@ function DiagramDetails(props: DiagramDetailsProps) {
 
     const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
     const [snackbarMessage, setSnackbarMessage] = useState<string>("")
+    const [diagram, setDiagram] = useState<BpmnDiagramModel>({
+        id: ""
+        , name: "-"
+        , businessKey: "-"
+        , filename: "-"
+        , version: 1
+        , comments: []
+        , customDiagram: true
+    })
 
-    useEffect(() => {
+    const getDiagramFromListById = () => {
         props.bpmnDiagrams.forEach(diagram => {
             if (id === diagram.id) {
-                props.setDetailedDiagram(diagram)
+                props.setDetailedDiagramId(id)
+                setDiagram(diagram)
             }
         })
-    }, [id, props])
+    }
+
+    useEffect(getDiagramFromListById, [id, props])
 
 
     return (
@@ -46,29 +58,29 @@ function DiagramDetails(props: DiagramDetailsProps) {
                 </Grid>
                 <Grid item xs={5}>
                     <PropertiesList
-                        detailedDiagram={props.detailedDiagram}
+                        detailedDiagram={diagram}
+                        setDetailedDiagram={setDiagram}
                         fetchDiagrams={props.fetchDiagrams}
                         setSnackbarOpen={setSnackbarOpen}
                         setSnackbarMessage={setSnackbarMessage}
-                        setDetailedDiagram={props.setDetailedDiagram}
                     />
                 </Grid>
                 <Grid item xs>
                     <CommentList
-                        detailedDiagram={props.detailedDiagram}
+                        detailedDiagram={diagram}
                         fetchDiagrams={props.fetchDiagrams}
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <HistoryList
-                        latestDiagram={props.detailedDiagram}
+                        latestDiagram={diagram}
                         setSnackbarOpen={setSnackbarOpen}
                         setSnackbarMessage={setSnackbarMessage}
                         fetchDiagrams={props.fetchDiagrams}
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <BpmnViewer diagram={props.detailedDiagram}/>
+                    <BpmnViewer diagram={diagram}/>
                 </Grid>
             </Grid>
             <Snackbar

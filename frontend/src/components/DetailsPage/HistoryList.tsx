@@ -16,13 +16,15 @@ function HistoryList(props: HistoryListProps) {
     const [history, setHistory] = useState<BpmnDiagramModel[]>([])
 
     const fetchHistory = () => {
-        axios.get("/api/bpmndiagrams/" + props.latestDiagram.businessKey + "/history")
-            .then(response => response.data)
-            .then(setHistory)
-            .catch(error => console.error("Error fetching History: " + error))
+        if (props.latestDiagram.businessKey !== "-") {
+            axios.get("/api/bpmndiagrams/" + props.latestDiagram.businessKey + "/history")
+                .then(response => response.data)
+                .then(setHistory)
+                .catch(error => console.error("Error fetching History: " + error))
+        }
     }
 
-    useEffect(fetchHistory, [props.latestDiagram.businessKey])
+    useEffect(fetchHistory, [props.latestDiagram])
 
     return (
         <Card>

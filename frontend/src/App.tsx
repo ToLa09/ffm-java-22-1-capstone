@@ -11,17 +11,8 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import NavBar from "./components/NavBar";
 
 function App() {
-
-    const [detailedDiagram, setDetailedDiagram] = useState<BpmnDiagramModel>({
-        id: ""
-        , name: "-"
-        , businessKey: "-"
-        , filename: "-"
-        , version: 1
-        , comments: []
-        , customDiagram: true
-    })
     const [bpmnDiagrams, setBpmnDiagrams] = useState<BpmnDiagramModel[]>([])
+    const [detailedDiagramId, setDetailedDiagramId] = useState<string>("")
 
     const fetchDiagrams = () => {
         axios.get("/api/bpmndiagrams/?onlylatestversions=true")
@@ -42,9 +33,6 @@ function App() {
             secondary: {
                 main: '#336571',
             },
-            background: {
-                default: '#f9ded4',
-            },
         },
     })
 
@@ -62,22 +50,21 @@ function App() {
                     </AppBar>
                 </header>
                 <main>
-                    {/*<TabContext value={tab}>*/}
                     <NavBar
-                        detailedDiagram={detailedDiagram}
+                        detailedDiagramId={detailedDiagramId}
                     />
                     <Routes>
                         <Route path="/" element={
                             <DiagramTable
-                                setDetailedDiagram={setDetailedDiagram}
+                                setDetailedDiagramId={setDetailedDiagramId}
                                 bpmnDiagrams={bpmnDiagrams}
                                 fetchDiagrams={fetchDiagrams}
                             />
                         }/>
                         <Route path="/:id" element={
                             <DiagramDetails
-                                detailedDiagram={detailedDiagram}
-                                setDetailedDiagram={setDetailedDiagram}
+                                detailedDiagramId={detailedDiagramId}
+                                setDetailedDiagramId={setDetailedDiagramId}
                                 fetchDiagrams={fetchDiagrams}
                                 bpmnDiagrams={bpmnDiagrams}
                             />
@@ -86,25 +73,6 @@ function App() {
                             <AddForm fetchDiagrams={fetchDiagrams}/>
                         }/>
                     </Routes>
-                    {/*<TabPanel value="Overview">*/}
-                    {/*    <DiagramTable*/}
-                    {/*        setTab={setTab}*/}
-                    {/*        bpmnDiagrams={bpmnDiagrams}*/}
-                    {/*        fetchDiagrams={fetchDiagrams}*/}
-                    {/*        setDetailedDiagram={setDetailedDiagram}/>*/}
-                    {/*</TabPanel>*/}
-                    {/*<TabPanel value="Add">*/}
-                    {/*    <AddForm fetchDiagrams={fetchDiagrams}/>*/}
-                    {/*</TabPanel>*/}
-                    {/*<TabPanel value="Details">*/}
-                    {/*    <DiagramDetails*/}
-                    {/*        setTab={setTab}*/}
-                    {/*        detailedDiagram={detailedDiagram}*/}
-                    {/*        setDetailedDiagram={setDetailedDiagram}*/}
-                    {/*        fetchDiagrams={fetchDiagrams}*/}
-                    {/*    />*/}
-                    {/*</TabPanel>*/}
-                    {/*</TabContext>*/}
                 </main>
             </BrowserRouter>
         </ThemeProvider>

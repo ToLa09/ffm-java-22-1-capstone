@@ -9,14 +9,14 @@ import {useNavigate} from "react-router-dom";
 export type Props = {
     diagram: BpmnDiagramModel
     fetchDiagrams: () => void
-    setDetailedDiagram: Dispatch<SetStateAction<BpmnDiagramModel>>
+    setDetailedDiagramId: Dispatch<SetStateAction<string>>
 }
 
 export default function DiagramTableRow(props: Props) {
     const navigate = useNavigate()
 
     const handleDetails = () => {
-        props.setDetailedDiagram(props.diagram)
+        props.setDetailedDiagramId(props.diagram.id)
         navigate("/" + props.diagram.id)
     }
 

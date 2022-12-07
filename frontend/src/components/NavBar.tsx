@@ -2,11 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {AppBar, Tab, Toolbar} from "@mui/material";
 import TabList from "@mui/lab/TabList";
 import {useLocation, useNavigate} from "react-router-dom";
-import {BpmnDiagramModel} from "../model/BpmnDiagramModel";
 import {TabContext} from "@mui/lab";
 
 type NavBarProps = {
-    detailedDiagram: BpmnDiagramModel
+    detailedDiagramId: string
 }
 
 function NavBar(props: NavBarProps) {
@@ -41,8 +40,8 @@ function NavBar(props: NavBarProps) {
                     >
                         <Tab onClick={() => navigate("/")} value="Overview" label="Process Overview" color="primary"/>
                         <Tab onClick={() => navigate("/add")} value="Add" label="Add Process"/>
-                        {props.detailedDiagram.id !== "" &&
-                            <Tab onClick={() => navigate("/" + props.detailedDiagram.id)} value="Details"
+                        {(props.detailedDiagramId !== "" || location.pathname.match("^/.*.{39}$")) &&
+                            <Tab onClick={() => navigate("/" + props.detailedDiagramId)} value="Details"
                                  label="Process Details"/>
                         }
                     </TabList>
