@@ -7,5 +7,9 @@ export type BpmnDiagramModel = {
     filename: string
     version: number
     comments: CommentModel[]
+    calledDiagrams: {
+        calledDiagramId: string,
+        calledFromActivities: string[]
+    }[]
     customDiagram: boolean
 }
