@@ -13,7 +13,7 @@ function CalledDiagramList(props: CalledDiagramListProps) {
     return (
         <Card>
             <CardContent>
-                <Typography variant="h5" color="secondary">Called Bpmn Diagrams</Typography>
+                <Typography variant="h5" color="secondary">Called Processes</Typography>
                 <Table size="small">
                     <TableHead>
                         <TableRow>
@@ -21,6 +21,7 @@ function CalledDiagramList(props: CalledDiagramListProps) {
                             <TableCell align="center">Business Key</TableCell>
                             <TableCell align="center">Version</TableCell>
                             <TableCell align="center">Called By Activities</TableCell>
+                            <TableCell align="center">Go To Diagram</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
