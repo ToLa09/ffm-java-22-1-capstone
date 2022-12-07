@@ -42,7 +42,11 @@ public class BpmnDiagramService {
 
     public BpmnDiagram addBpmnDiagram(BpmnDiagram newBpmnDiagram) {
         String id = serviceUtils.generateCamundaId(newBpmnDiagram.businessKey(), newBpmnDiagram.version());
-        BpmnDiagram bpmnDiagramWithId = newBpmnDiagram.withId(id).withCustomDiagram(true).withComments(new ArrayList<>());
+        BpmnDiagram bpmnDiagramWithId = newBpmnDiagram
+                .withId(id)
+                .withCustomDiagram(true)
+                .withComments(new ArrayList<>())
+                .withCalledDiagrams(new ArrayList<>());
         return repository.insert(bpmnDiagramWithId);
     }
 

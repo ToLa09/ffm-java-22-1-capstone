@@ -45,17 +45,17 @@ public class CamundaService {
         }
 
         for (CamundaProcessModel camundaProcessModel : processList) {
-            BpmnDiagram diagramToInsert = new BpmnDiagram(
-                    camundaProcessModel.id(),
-                    camundaProcessModel.name(),
-                    camundaProcessModel.key(),
-                    camundaProcessModel.resource(),
-                    camundaProcessModel.version(),
-                    new ArrayList<>(),
-                    getCalledBpmnDiagramsByDiagramId(camundaProcessModel.id()),
-                    false
-            );
             if (!repository.existsById(camundaProcessModel.id())) {
+                BpmnDiagram diagramToInsert = new BpmnDiagram(
+                        camundaProcessModel.id(),
+                        camundaProcessModel.name(),
+                        camundaProcessModel.key(),
+                        camundaProcessModel.resource(),
+                        camundaProcessModel.version(),
+                        new ArrayList<>(),
+                        getCalledBpmnDiagramsByDiagramId(camundaProcessModel.id()),
+                        false
+                );
                 repository.insert(diagramToInsert);
             }
         }
@@ -94,7 +94,7 @@ public class CamundaService {
         List<CamundaCalledProcessesModel> calledProcesses = requireNonNull(responseEntity.getBody(), BODY_IS_NULL_ERROR);
 
         if (calledProcesses.isEmpty()) {
-            throw new CamundaResponseException(BODY_IS_NULL_ERROR);
+            return new ArrayList<>();
         }
 
         List<BpmnDiagramCalled> calledDiagrams = new ArrayList<>();
