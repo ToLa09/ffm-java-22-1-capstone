@@ -18,6 +18,8 @@ public record BpmnDiagram(
         @NotNull
         int version,
         List<Comment> comments,
+
+        List<BpmnDiagramCalled> calledDiagrams,
         boolean customDiagram
 ) {
 }
