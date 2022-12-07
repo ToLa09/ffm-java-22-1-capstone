@@ -1,6 +1,7 @@
 package neuefische.capstone.camunda;
 
 import neuefische.capstone.bpmndiagram.BpmnDiagram;
+import neuefische.capstone.bpmndiagram.BpmnDiagramCalled;
 import neuefische.capstone.bpmndiagram.BpmnDiagramRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,8 @@ public class CamundaService {
 
     private final BpmnDiagramRepository repository;
 
-    private static final String ERROR_MESSAGE = "Response Body is null";
+    private static final String BODY_IS_NULL_ERROR = "Response Body is null";
+    private static final String ENTITY_IS_NULL_ERROR = "Response Entity is null";
 
     public CamundaService(BpmnDiagramRepository repository, @Value("${camunda.api.baseUrl}") String baseUrl) {
         this.webClient = WebClient.create(baseUrl);
@@ -33,13 +35,13 @@ public class CamundaService {
                         .retrieve()
                         .toEntityList(CamundaProcessModel.class)
                         .block()
-                , "Response Entity is null");
+                , ENTITY_IS_NULL_ERROR);
 
 
-        List<CamundaProcessModel> processList = requireNonNull(responseEntity.getBody(), ERROR_MESSAGE);
+        List<CamundaProcessModel> processList = requireNonNull(responseEntity.getBody(), BODY_IS_NULL_ERROR);
 
         if (processList.isEmpty()) {
-            throw new CamundaResponseException(ERROR_MESSAGE);
+            throw new CamundaResponseException(BODY_IS_NULL_ERROR);
         }
 
         for (CamundaProcessModel camundaProcessModel : processList) {
@@ -50,6 +52,7 @@ public class CamundaService {
                     camundaProcessModel.resource(),
                     camundaProcessModel.version(),
                     new ArrayList<>(),
+                    getCalledBpmnDiagramsByDiagramId(camundaProcessModel.id()),
                     false
             );
             if (!repository.existsById(camundaProcessModel.id())) {
@@ -67,14 +70,41 @@ public class CamundaService {
     }
 
     public String getXmlFileByDiagramId(String diagramId) {
-        ResponseEntity<CamundaProcessXml> responseEntity = requireNonNull(webClient
+        ResponseEntity<CamundaProcessXmlModel> responseEntity = requireNonNull(webClient
                         .get()
                         .uri("/process-definition/" + diagramId + "/xml")
                         .retrieve()
-                        .toEntity(CamundaProcessXml.class)
+                        .toEntity(CamundaProcessXmlModel.class)
                         .block()
-                , "Response Entity is null");
+                , ENTITY_IS_NULL_ERROR);
 
-        return requireNonNull(responseEntity.getBody(), ERROR_MESSAGE).xml();
+        return requireNonNull(responseEntity.getBody(), BODY_IS_NULL_ERROR).xml();
+    }
+
+    public List<BpmnDiagramCalled> getCalledBpmnDiagramsByDiagramId(String diagramId) {
+        ResponseEntity<List<CamundaCalledProcessesModel>> responseEntity = requireNonNull(webClient
+                        .get()
+                        .uri("/process-definition/" + diagramId + "/static-called-process-definitions")
+                        .retrieve()
+                        .toEntityList(CamundaCalledProcessesModel.class)
+                        .block()
+                , ENTITY_IS_NULL_ERROR);
+
+
+        List<CamundaCalledProcessesModel> calledProcesses = requireNonNull(responseEntity.getBody(), BODY_IS_NULL_ERROR);
+
+        if (calledProcesses.isEmpty()) {
+            throw new CamundaResponseException(BODY_IS_NULL_ERROR);
+        }
+
+        List<BpmnDiagramCalled> calledDiagrams = new ArrayList<>();
+
+        for (CamundaCalledProcessesModel calledProcess : calledProcesses) {
+            calledDiagrams.add(new BpmnDiagramCalled(
+                    calledProcess.id(),
+                    calledProcess.calledFromActivityIds()
+            ));
+        }
+        return calledDiagrams;
     }
 }
