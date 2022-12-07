@@ -20,6 +20,7 @@ function AddForm(props: AddFormProps) {
         , filename: ""
         , version: 1
         , comments: []
+        , calledDiagrams: []
         , customDiagram: true
     })
 
@@ -38,6 +39,7 @@ function AddForm(props: AddFormProps) {
                     , filename: ""
                     , version: 1
                     , comments: []
+                    , calledDiagrams: []
                     , customDiagram: true
                 })
                 setSnackbarAddOpen(true)

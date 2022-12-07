@@ -8,6 +8,7 @@ import CommentList from "./CommentList";
 import PropertiesList from "./PropertiesList";
 import BpmnViewer from "./BpmnViewer";
 import {useNavigate, useParams} from "react-router-dom";
+import CalledDiagramList from "./CalledDiagramList";
 
 type DiagramDetailsProps = {
     detailedDiagramId: string
@@ -29,6 +30,7 @@ function DiagramDetails(props: DiagramDetailsProps) {
         , filename: "-"
         , version: 1
         , comments: []
+        , calledDiagrams: []
         , customDiagram: true
     })
 
@@ -82,6 +84,11 @@ function DiagramDetails(props: DiagramDetailsProps) {
                 <Grid item xs={12}>
                     <BpmnViewer diagram={diagram}/>
                 </Grid>
+                {diagram.calledDiagrams !== null && diagram.calledDiagrams.length !== 0 &&
+                    <Grid item xs={12}>
+                        <CalledDiagramList diagram={diagram} bpmnDiagrams={props.bpmnDiagrams}/>
+                    </Grid>
+                }
             </Grid>
             <Snackbar
                 open={snackbarOpen}
