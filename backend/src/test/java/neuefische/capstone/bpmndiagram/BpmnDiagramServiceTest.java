@@ -27,6 +27,7 @@ class BpmnDiagramServiceTest {
                 , "order-car.bpmn"
                 , 1
                 , new ArrayList<>()
+                , new ArrayList<>()
                 , true
         );
         when(repository.findAll()).thenReturn(List.of(testDiagram));
@@ -48,6 +49,7 @@ class BpmnDiagramServiceTest {
                 , "order-car.bpmn"
                 , 1
                 , new ArrayList<>()
+                , new ArrayList<>()
                 , true
         );
         BpmnDiagram testDiagram2 = new BpmnDiagram(
@@ -56,6 +58,7 @@ class BpmnDiagramServiceTest {
                 , businessKey
                 , "order-car.bpmn"
                 , 2
+                , new ArrayList<>()
                 , new ArrayList<>()
                 , true
         );
@@ -79,6 +82,7 @@ class BpmnDiagramServiceTest {
                 , "order-car.bpmn"
                 , 1
                 , new ArrayList<>()
+                , new ArrayList<>()
                 , true
         );
         BpmnDiagram testDiagram2 = new BpmnDiagram(
@@ -87,6 +91,7 @@ class BpmnDiagramServiceTest {
                 , businessKey
                 , "order-car.bpmn"
                 , 2
+                , new ArrayList<>()
                 , new ArrayList<>()
                 , true
         );
@@ -109,6 +114,7 @@ class BpmnDiagramServiceTest {
                 , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
                 , 1
+                , new ArrayList<>()
                 , new ArrayList<>()
                 , true
         );
@@ -133,6 +139,7 @@ class BpmnDiagramServiceTest {
                 , "create-bill.xml"
                 , 2
                 , new ArrayList<>()
+                , new ArrayList<>()
                 , true
         );
         when(repository.save(updatedDiagram)).thenReturn(updatedDiagram);
@@ -153,6 +160,7 @@ class BpmnDiagramServiceTest {
                 , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
                 , 2
+                , new ArrayList<>()
                 , new ArrayList<>()
                 , true
         );
@@ -178,6 +186,7 @@ class BpmnDiagramServiceTest {
                 , "create-bill.xml"
                 , 1
                 , new ArrayList<>()
+                , new ArrayList<>()
                 , true
         );
         when(repository.findById(id)).thenReturn(Optional.of(testDiagram));
@@ -198,6 +207,7 @@ class BpmnDiagramServiceTest {
                 , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
                 , 1
+                , new ArrayList<>()
                 , new ArrayList<>()
                 , false
         );
@@ -240,6 +250,7 @@ class BpmnDiagramServiceTest {
                 , "create-bill.xml"
                 , 1
                 , new ArrayList<>()
+                , new ArrayList<>()
                 , false
         );
         when(repository.findById(diagramId)).thenReturn(Optional.of(testDiagram));
@@ -266,6 +277,7 @@ class BpmnDiagramServiceTest {
                 , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
                 , 1
+                , new ArrayList<>()
                 , new ArrayList<>()
                 , false
         );
@@ -299,6 +311,7 @@ class BpmnDiagramServiceTest {
                 , "create-bill.xml"
                 , 1
                 , commentList
+                , new ArrayList<>()
                 , false
         );
         BpmnDiagram testDiagramWithoutComment = testDiagram.withComments(List.of());
@@ -321,6 +334,7 @@ class BpmnDiagramServiceTest {
                 , "capstone.bpmn.billing.create-bill"
                 , "create-bill.xml"
                 , 1
+                , new ArrayList<>()
                 , new ArrayList<>()
                 , false
         );

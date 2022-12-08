@@ -1,6 +1,7 @@
 package neuefische.capstone.camunda;
 
 import neuefische.capstone.bpmndiagram.BpmnDiagram;
+import neuefische.capstone.bpmndiagram.BpmnDiagramCalled;
 import neuefische.capstone.bpmndiagram.BpmnDiagramRepository;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
@@ -52,6 +53,7 @@ class CamundaServiceTest {
                 , "create-diagram.bpmn"
                 , 1
                 , new ArrayList<>()
+                , new ArrayList<>()
                 , false
         );
 
@@ -76,6 +78,11 @@ class CamundaServiceTest {
                         """)
                 .addHeader("Content-Type", "application/json")
         );
+        mockWebServer.enqueue(new MockResponse()
+                .setBody("""
+                        []
+                        """)
+                .addHeader("Content-Type", "application/json"));
 
         when(repository.existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0")).thenReturn(false);
         when(repository.insert(mockProcess)).thenReturn(mockProcess);
@@ -120,6 +127,7 @@ class CamundaServiceTest {
                 , "Process_create-diagram"
                 , "create-diagram.bpmn"
                 , 1
+                , new ArrayList<>()
                 , new ArrayList<>()
                 , false
         );
@@ -168,6 +176,7 @@ class CamundaServiceTest {
                 , "create-diagram.bpmn"
                 , 1
                 , new ArrayList<>()
+                , new ArrayList<>()
                 , false
         );
         BpmnDiagram mockDiagram = new BpmnDiagram(
@@ -176,6 +185,7 @@ class CamundaServiceTest {
                 , "ReviewInvoice"
                 , "reviewInvoice.bpmn"
                 , 1
+                , new ArrayList<>()
                 , new ArrayList<>()
                 , false
         );
@@ -229,6 +239,60 @@ class CamundaServiceTest {
         //when
         String actual = service.getXmlFileByDiagramId(diagramId);
         String expected = "<?xml><bpmn:definitions><bpmn:process id=\"create-user\" name=\"create-user\" isExecutable=\"true\"></bpmn:definitions>";
+        //then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getCalledBpmnDiagramsById_ReturnsList() {
+        //given
+        mockWebServer.enqueue(new MockResponse()
+                .setBody("""
+                        [
+                                {
+                                    "id": "validate-password:1:b64b46f8-6a5e-11ed-aa1c-0a424f65c1c0",
+                                        "key": "validate-password",
+                                        "category": "http://bpmn.io/schema/bpmn",
+                                        "description": null,
+                                        "name": "validate-password",
+                                        "version": 1,
+                                        "resource": "validate-password.bpmn",
+                                        "deploymentId": "b643a5d6-6a5e-11ed-aa1c-0a424f65c1c0",
+                                        "diagram": null,
+                                        "suspended": false,
+                                        "tenantId": null,
+                                        "versionTag": null,
+                                        "historyTimeToLive": null,
+                                        "calledFromActivityIds": [
+                                    "Activity_1ka0o51"
+                            ],
+                                    "callingProcessDefinitionId": "create-user:2:c29dba0b-6a5e-11ed-aa1c-0a424f65c1c0",
+                                        "startableInTasklist": true
+                                }
+                        ]
+                        """)
+                .addHeader("Content-Type", "application/json"));
+        //when
+        List<BpmnDiagramCalled> actual = service.getCalledBpmnDiagramsByDiagramId("create-user:2:c29dba0b-6a5e-11ed-aa1c-0a424f65c1c0");
+        List<BpmnDiagramCalled> expected = List.of(new BpmnDiagramCalled(
+                "validate-password:1:b64b46f8-6a5e-11ed-aa1c-0a424f65c1c0",
+                List.of("Activity_1ka0o51")
+        ));
+        //then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getCalledBpmnDiagramsById_ReturnsEmptyList() {
+        //given
+        mockWebServer.enqueue(new MockResponse()
+                .setBody("""
+                        []
+                        """)
+                .addHeader("Content-Type", "application/json"));
+        //when
+        List<BpmnDiagramCalled> actual = service.getCalledBpmnDiagramsByDiagramId("create-user:2:c29dba0b-6a5e-11ed-aa1c-0a424f65c1c0");
+        List<BpmnDiagramCalled> expected = List.of();
         //then
         assertEquals(expected, actual);
     }

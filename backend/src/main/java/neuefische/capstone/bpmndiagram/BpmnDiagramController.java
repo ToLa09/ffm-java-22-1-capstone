@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/bpmndiagrams")
+@RequestMapping(path = "/api/bpmndiagrams", produces = "application/json")
 @RequiredArgsConstructor
 public class BpmnDiagramController {
 
