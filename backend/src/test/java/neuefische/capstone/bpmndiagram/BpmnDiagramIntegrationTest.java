@@ -350,6 +350,11 @@ class BpmnDiagramIntegrationTest {
                         """)
                 .addHeader("Content-Type", "application/json")
         );
+        mockWebServer.enqueue(new MockResponse()
+                .setBody("""
+                        []
+                        """)
+                .addHeader("Content-Type", "application/json"));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/camundaprocesses"))
                 .andExpect(status().isNoContent());
