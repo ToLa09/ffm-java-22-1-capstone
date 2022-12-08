@@ -34,6 +34,9 @@ function CalledDiagramListRow(props: CalledDiagramListRowProps) {
 
     useEffect(getDiagramFromList, [getDiagramFromList])
 
+    const handleNavigate = useCallback(() => navigate("/" + props.calledDiagramId)
+        , [navigate, props.calledDiagramId])
+
     return (
         <TableRow key={props.calledDiagramId}>
             <TableCell>{diagram.name}</TableCell>
@@ -45,7 +48,7 @@ function CalledDiagramListRow(props: CalledDiagramListRowProps) {
                 })}
             </TableCell>
             <TableCell align="center">
-                <IconButton onClick={() => navigate("/" + props.calledDiagramId)}>
+                <IconButton onClick={handleNavigate}>
                     <ArrowForwardIcon color="secondary"/>
                 </IconButton>
             </TableCell>
