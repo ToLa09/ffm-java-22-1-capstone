@@ -28,6 +28,7 @@ class BpmnDiagramServiceTest {
                 , 1
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , true
         );
         when(repository.findAll()).thenReturn(List.of(testDiagram));
@@ -50,6 +51,7 @@ class BpmnDiagramServiceTest {
                 , 1
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , true
         );
         BpmnDiagram testDiagram2 = new BpmnDiagram(
@@ -60,6 +62,7 @@ class BpmnDiagramServiceTest {
                 , 2
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , true
         );
         List<BpmnDiagram> diagramList = List.of(testDiagram1, testDiagram2);
@@ -83,6 +86,7 @@ class BpmnDiagramServiceTest {
                 , 1
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , true
         );
         BpmnDiagram testDiagram2 = new BpmnDiagram(
@@ -93,6 +97,7 @@ class BpmnDiagramServiceTest {
                 , 2
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , true
         );
         List<BpmnDiagram> diagramList = List.of(testDiagram1, testDiagram2);
@@ -116,6 +121,7 @@ class BpmnDiagramServiceTest {
                 , 1
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , true
         );
         BpmnDiagram testDiagramWithId = testDiagram.withId(testID);
@@ -140,6 +146,7 @@ class BpmnDiagramServiceTest {
                 , 2
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , true
         );
         when(repository.save(updatedDiagram)).thenReturn(updatedDiagram);
@@ -162,6 +169,7 @@ class BpmnDiagramServiceTest {
                 , 2
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , true
         );
         when(repository.existsById(updatedDiagram.id())).thenReturn(false);
@@ -187,6 +195,7 @@ class BpmnDiagramServiceTest {
                 , 1
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , true
         );
         when(repository.findById(id)).thenReturn(Optional.of(testDiagram));
@@ -209,6 +218,7 @@ class BpmnDiagramServiceTest {
                 , 1
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , false
         );
         when(repository.findById(id)).thenReturn(Optional.of(testDiagram));
@@ -252,6 +262,7 @@ class BpmnDiagramServiceTest {
                 , new ArrayList<>()
                 , new ArrayList<>()
                 , false
+                , false
         );
         when(repository.findById(diagramId)).thenReturn(Optional.of(testDiagram));
         //when
@@ -279,6 +290,7 @@ class BpmnDiagramServiceTest {
                 , 1
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , false
         );
         Comment testCommentWithIdAndDate = testComment.withId("1").withTime(LocalDateTime.of(2022, 11, 30, 1, 1));
@@ -313,6 +325,7 @@ class BpmnDiagramServiceTest {
                 , commentList
                 , new ArrayList<>()
                 , false
+                , false
         );
         BpmnDiagram testDiagramWithoutComment = testDiagram.withComments(List.of());
         when(repository.findById(diagramId)).thenReturn(Optional.of(testDiagram));
@@ -336,6 +349,7 @@ class BpmnDiagramServiceTest {
                 , 1
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , false
         );
         when(repository.findById(diagramId)).thenReturn(Optional.of(testDiagram));

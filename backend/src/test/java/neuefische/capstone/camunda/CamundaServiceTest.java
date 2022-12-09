@@ -54,6 +54,7 @@ class CamundaServiceTest {
                 , 1
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , true
                 , false
         );
 
@@ -86,7 +87,6 @@ class CamundaServiceTest {
 
         when(repository.existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0")).thenReturn(false);
         when(repository.insert(mockProcess)).thenReturn(mockProcess);
-
         //when
         service.writeCamundaProcessesToDB();
         RecordedRequest recordedRequest = mockWebServer.takeRequest();
@@ -129,6 +129,7 @@ class CamundaServiceTest {
                 , 1
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , false
         );
 
@@ -178,6 +179,7 @@ class CamundaServiceTest {
                 , new ArrayList<>()
                 , new ArrayList<>()
                 , false
+                , false
         );
         BpmnDiagram mockDiagram = new BpmnDiagram(
                 "ReviewInvoice:1:49eb58c6-6994-11ed-996b-0a424f65c1c0"
@@ -187,6 +189,7 @@ class CamundaServiceTest {
                 , 1
                 , new ArrayList<>()
                 , new ArrayList<>()
+                , false
                 , false
         );
 

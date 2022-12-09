@@ -54,6 +54,7 @@ public class CamundaService {
                         camundaProcessModel.version(),
                         new ArrayList<>(),
                         getCalledBpmnDiagramsByDiagramId(camundaProcessModel.id()),
+                        camundaProcessModel.startableInTasklist(),
                         false
                 );
                 repository.insert(diagramToInsert);

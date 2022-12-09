@@ -59,10 +59,6 @@ class BpmnDiagramIntegrationTest {
                                     "businessKey": "create-diagram",
                                     "filename": "create-diagram.bpmn",
                                     "version": 1,
-                                    "calledProcesses": null,
-                                    "commentText": null,
-                                    "commentTime": null,
-                                    "commentAuthor": null,
                                     "customDiagram": true
                                 }
                                 """))
@@ -76,7 +72,6 @@ class BpmnDiagramIntegrationTest {
                                     "businessKey": "create-diagram",
                                     "filename": "create-new-diagram.bpmn",
                                     "version": 2,
-                                    "comments": [],
                                     "customDiagram": true
                                 }
                                 """))
@@ -95,6 +90,7 @@ class BpmnDiagramIntegrationTest {
                             "filename": "create-new-diagram.bpmn",
                             "version": 2,
                             "comments": [],
+                            "calledDiagrams": [],
                             "customDiagram": true
                         }]
                         """.replace("<id>", responseObject.id())));
@@ -111,10 +107,6 @@ class BpmnDiagramIntegrationTest {
                                     "businessKey": "create-diagram",
                                     "filename": "create-diagram.bpmn",
                                     "version": 1,
-                                    "calledProcesses": null,
-                                    "commentText": null,
-                                    "commentTime": null,
-                                    "commentAuthor": null,
                                     "customDiagram": true
                                 }
                                 """))
@@ -129,10 +121,6 @@ class BpmnDiagramIntegrationTest {
                                     "businessKey": "create-diagram",
                                     "filename": "create-new-diagram.bpmn",
                                     "version": 2,
-                                    "calledProcesses": null,
-                                    "commentText": null,
-                                    "commentTime": null,
-                                    "commentAuthor": null,
                                     "customDiagram": true
                                 }
                                 """))
@@ -146,7 +134,6 @@ class BpmnDiagramIntegrationTest {
                                     "businessKey": "test",
                                     "filename": "test.bpmn",
                                     "version": 1,
-                                    "comments": [],
                                     "customDiagram": true
                                 }
                                 """))
@@ -164,6 +151,7 @@ class BpmnDiagramIntegrationTest {
                             "filename": "create-diagram.bpmn",
                             "version": 1,
                             "comments": [],
+                            "calledDiagrams": [],
                             "customDiagram": true
                         }]
                         """.replace("<id>", responseObject1.id())));
@@ -180,7 +168,6 @@ class BpmnDiagramIntegrationTest {
                                     "businessKey": "Process_create-diagram",
                                     "filename": "create-diagram.bpmn",
                                     "version": 1,
-                                    "comments": [],
                                     "customDiagram": true
                                 }
                                 """))
@@ -200,6 +187,7 @@ class BpmnDiagramIntegrationTest {
                                 "filename": "create-diagram.bpmn",
                                 "version": 1,
                                 "comments": [],
+                                "calledDiagrams": [],
                                 "customDiagram": true
                             }
                         ]
@@ -217,7 +205,6 @@ class BpmnDiagramIntegrationTest {
                                     "businessKey": "Process_create-diagram",
                                     "filename": "create-diagram.bpmn",
                                     "version": 1,
-                                    "comments": [],
                                     "customDiagram": true
                                 }
                                 """))
@@ -236,6 +223,7 @@ class BpmnDiagramIntegrationTest {
                                         "filename": "create-diagram.bpmn",
                                         "version": 1,
                                         "comments": [],
+                                        "calledDiagrams": [],
                                         "customDiagram": true
                                     }
                                 """.replace("<id>", responseObject.id())))
@@ -265,10 +253,6 @@ class BpmnDiagramIntegrationTest {
                                         "businessKey": "Process_create-diagram",
                                         "filename": "create-diagram.bpmn",
                                         "version": 1,
-                                        "calledProcesses": null,
-                                        "commentText": null,
-                                        "commentTime": null,
-                                        "commentAuthor": null,
                                         "customDiagram": true
                                     }
                                 """))
@@ -288,10 +272,6 @@ class BpmnDiagramIntegrationTest {
                                     "businessKey": "Process_create-diagram",
                                     "filename": "create-diagram.bpmn",
                                     "version": 1,
-                                    "calledProcesses": null,
-                                    "commentText": null,
-                                    "commentTime": null,
-                                    "commentAuthor": null,
                                     "customDiagram": true
                                 }
                                 """))
@@ -310,10 +290,6 @@ class BpmnDiagramIntegrationTest {
                                     "businessKey": "Process_create-diagram",
                                     "filename": "create-diagram.bpmn",
                                     "version": 1,
-                                    "calledProcesses": null,
-                                    "commentText": null,
-                                    "commentTime": null,
-                                    "commentAuthor": null,
                                     "customDiagram": true
                                 }
                                 """))
@@ -382,7 +358,6 @@ class BpmnDiagramIntegrationTest {
                                     "businessKey": "Process_create-diagram",
                                     "filename": "create-diagram.bpmn",
                                     "version": 1,
-                                    "comments": [],
                                     "customDiagram": true
                                 }
                                 """))
@@ -442,7 +417,6 @@ class BpmnDiagramIntegrationTest {
                                     "businessKey": "Process_create-diagram",
                                     "filename": "create-diagram.bpmn",
                                     "version": 1,
-                                    "comments": [],
                                     "customDiagram": true
                                 }
                                 """))
@@ -482,7 +456,6 @@ class BpmnDiagramIntegrationTest {
                                     "businessKey": "Process_create-diagram",
                                     "filename": "create-diagram.bpmn",
                                     "version": 1,
-                                    "comments": [],
                                     "customDiagram": true
                                 }
                                 """))

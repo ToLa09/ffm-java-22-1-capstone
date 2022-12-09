@@ -46,7 +46,8 @@ public class BpmnDiagramService {
                 .withId(id)
                 .withCustomDiagram(true)
                 .withComments(new ArrayList<>())
-                .withCalledDiagrams(new ArrayList<>());
+                .withCalledDiagrams(new ArrayList<>())
+                .withTemplate(false);
         return repository.insert(bpmnDiagramWithId);
     }
 
