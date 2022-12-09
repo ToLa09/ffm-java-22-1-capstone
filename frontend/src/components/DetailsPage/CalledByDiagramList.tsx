@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 
 type CalledByDiagramListProps = {
     detailedDiagramId: string
@@ -25,14 +24,19 @@ function CalledByDiagramList(props: CalledByDiagramListProps) {
 
     const [calledByDiagrams, setCalledByDiagrams] = useState<BpmnDiagramModel[]>([])
 
-    const fetchCalledByDiagramsList = useCallback(() => {
-        axios.get("/api/bpmndiagrams/" + props.detailedDiagramId + "/calledby")
-            .then(response => response.data)
-            .catch(error => console.error(error))
-            .then(setCalledByDiagrams)
-    }, [props.detailedDiagramId])
+    const getCalledByDiagramList = useCallback(() => {
+        let calledByDiagrams: BpmnDiagramModel[] = []
+        props.bpmnDiagrams.forEach((latestDiagram) => {
+            latestDiagram.calledDiagrams.forEach((calledDiagram) => {
+                if (calledDiagram.calledDiagramId === props.detailedDiagramId) {
+                    calledByDiagrams.push(latestDiagram)
+                }
+            })
+        })
+        setCalledByDiagrams(calledByDiagrams)
+    }, [props.bpmnDiagrams, props.detailedDiagramId])
 
-    useEffect(fetchCalledByDiagramsList, [fetchCalledByDiagramsList])
+    useEffect(getCalledByDiagramList, [getCalledByDiagramList])
 
     return (
         <>
