@@ -82,6 +82,7 @@ function DiagramTable(props: DiagramTableProps) {
                             <TableCell align="center">latest Version</TableCell>
                             <TableCell align="center">latest Comments</TableCell>
                             <TableCell align="center">Call Activities/ Calls from other Processes</TableCell>
+                            <TableCell align="center">Type</TableCell>
                             <TableCell align="center">Changeability</TableCell>
                             <TableCell></TableCell>
                         </TableRow>

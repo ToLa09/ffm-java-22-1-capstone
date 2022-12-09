@@ -11,5 +11,6 @@ export type BpmnDiagramModel = {
         calledDiagramId: string,
         calledFromActivities: string[]
     }[]
+    template: boolean
     customDiagram: boolean
 }

@@ -50,6 +50,7 @@ export default function DiagramTableRow(props: Props) {
                     {props.diagram.calledDiagrams !== null && props.diagram.calledDiagrams.length}<> /</>
                     {calledByDiagrams !== null && calledByDiagrams.length}
                 </TableCell>
+                <TableCell align="center">{props.diagram.template ? <>template</> : <>startable</>}</TableCell>
                 <TableCell align="center">{props.diagram.customDiagram ? "changeable" : "immutable"}</TableCell>
                 <TableCell align="center"><Button onClick={handleDetails} color="secondary">Show
                     Details</Button></TableCell>

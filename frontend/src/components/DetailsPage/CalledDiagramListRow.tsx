@@ -21,6 +21,7 @@ function CalledDiagramListRow(props: CalledDiagramListRowProps) {
         , version: 1
         , comments: []
         , calledDiagrams: []
+        , template: false
         , customDiagram: true
     })
 
