@@ -32,6 +32,7 @@ function DiagramDetails(props: DiagramDetailsProps) {
         , version: 1
         , comments: []
         , calledDiagrams: []
+        , template: false
         , customDiagram: true
     })
 
