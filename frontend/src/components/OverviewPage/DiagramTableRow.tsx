@@ -5,10 +5,10 @@ import TableRow from "@mui/material/TableRow";
 import {Button} from "@mui/material";
 import CommentListSimple from "../CommentListSimple";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 
 export type Props = {
     diagram: BpmnDiagramModel
+    bpmnDiagrams: BpmnDiagramModel[]
     fetchDiagrams: () => void
     setDetailedDiagramId: Dispatch<SetStateAction<string>>
 }
@@ -23,15 +23,19 @@ export default function DiagramTableRow(props: Props) {
         navigate("/" + props.diagram.id)
     }
 
-    const fetchCalledByDiagramsList = useCallback(() => {
-        axios.get("/api/bpmndiagrams/" + props.diagram.id + "/calledby")
-            .then(response => response.data)
-            .catch(error => console.error(error))
-            .then(setCalledByDiagrams)
-    }, [props.diagram.id])
+    const getCalledByDiagramList = useCallback(() => {
+        let calledByDiagrams: BpmnDiagramModel[] = []
+        props.bpmnDiagrams.forEach((latestDiagram) => {
+            latestDiagram.calledDiagrams.forEach((calledDiagram) => {
+                if (calledDiagram.calledDiagramId === props.diagram.id) {
+                    calledByDiagrams.push(latestDiagram)
+                }
+            })
+        })
+        setCalledByDiagrams(calledByDiagrams)
+    }, [props.bpmnDiagrams, props.diagram.id])
 
-    useEffect(fetchCalledByDiagramsList, [fetchCalledByDiagramsList])
-
+    useEffect(getCalledByDiagramList, [getCalledByDiagramList])
 
     return (
         <>
@@ -42,9 +46,10 @@ export default function DiagramTableRow(props: Props) {
                 <TableCell align="center">
                     <CommentListSimple diagram={props.diagram}/>
                 </TableCell>
-                <TableCell
-                    align="center">{props.diagram.calledDiagrams !== null && props.diagram.calledDiagrams.length}</TableCell>
-                <TableCell align="center">{calledByDiagrams !== null && calledByDiagrams.length}</TableCell>
+                <TableCell align="center">
+                    {props.diagram.calledDiagrams !== null && props.diagram.calledDiagrams.length}<> /</>
+                    {calledByDiagrams !== null && calledByDiagrams.length}
+                </TableCell>
                 <TableCell align="center">{props.diagram.customDiagram ? "changeable" : "immutable"}</TableCell>
                 <TableCell align="center"><Button onClick={handleDetails} color="secondary">Show
                     Details</Button></TableCell>
