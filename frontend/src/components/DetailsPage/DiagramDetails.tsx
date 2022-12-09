@@ -9,6 +9,7 @@ import PropertiesList from "./PropertiesList";
 import BpmnViewer from "./BpmnViewer";
 import {useNavigate, useParams} from "react-router-dom";
 import CalledDiagramList from "./CalledDiagramList";
+import CalledByDiagramList from "./CalledByDiagramList";
 
 type DiagramDetailsProps = {
     detailedDiagramId: string
@@ -44,7 +45,6 @@ function DiagramDetails(props: DiagramDetailsProps) {
     }
 
     useEffect(getDiagramFromListById, [id, props])
-
 
     return (
         <Box m={5}>
@@ -87,6 +87,11 @@ function DiagramDetails(props: DiagramDetailsProps) {
                 {diagram.calledDiagrams !== null && diagram.calledDiagrams.length !== 0 &&
                     <Grid item xs={12}>
                         <CalledDiagramList diagram={diagram} bpmnDiagrams={props.bpmnDiagrams}/>
+                    </Grid>
+                }
+                {id !== undefined &&
+                    <Grid item xs={12}>
+                        <CalledByDiagramList detailedDiagramId={id} bpmnDiagrams={props.bpmnDiagrams}/>
                     </Grid>
                 }
             </Grid>

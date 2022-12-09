@@ -31,6 +31,11 @@ public class BpmnDiagramController {
         return service.getHistoryByKey(key);
     }
 
+    @GetMapping("/{diagramId}/calledby")
+    List<BpmnDiagram> getListCalledByDiagrams(@PathVariable String diagramId) {
+        return service.getListCalledByDiagrams(diagramId);
+    }
+
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     BpmnDiagram addBpmnDiagram(@RequestBody @Valid BpmnDiagram newBpmnDiagram) {
