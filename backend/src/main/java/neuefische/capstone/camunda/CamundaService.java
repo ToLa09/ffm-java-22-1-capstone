@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static java.util.Objects.requireNonNull;
 
@@ -54,10 +55,16 @@ public class CamundaService {
                         camundaProcessModel.version(),
                         new ArrayList<>(),
                         getCalledBpmnDiagramsByDiagramId(camundaProcessModel.id()),
-                        camundaProcessModel.startableInTasklist(),
+                        !camundaProcessModel.startableInTasklist(),
                         false
                 );
                 repository.insert(diagramToInsert);
+            } else {
+                BpmnDiagram diagramToUpdate = repository
+                        .findById(camundaProcessModel.id())
+                        .orElseThrow(() -> new NoSuchElementException("No element with this ID found"))
+                        .withCalledDiagrams(getCalledBpmnDiagramsByDiagramId(camundaProcessModel.id()));
+                repository.save(diagramToUpdate);
             }
         }
         for (BpmnDiagram diagram : repository.findAllByCustomDiagram(false)) {
