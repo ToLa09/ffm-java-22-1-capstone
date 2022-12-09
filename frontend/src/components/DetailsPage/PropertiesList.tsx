@@ -1,4 +1,4 @@
-import React, {ChangeEvent, Dispatch, SetStateAction, useState} from 'react';
+import React, {ChangeEvent, Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {Box, Button, Card, CardContent, Grid, TextField, Typography} from "@mui/material";
 import axios from "axios";
 import {BpmnDiagramModel} from "../../model/BpmnDiagramModel";
@@ -15,11 +15,13 @@ function PropertiesList(props: PropertiesListProps) {
     const [editMode, setEditMode] = useState<boolean>(false)
     const [updatedDiagram, setUpdatedDiagram] = useState<BpmnDiagramModel>(props.detailedDiagram)
 
+    useEffect(() => setUpdatedDiagram(props.detailedDiagram), [props.detailedDiagram])
+
     const handleUpdate = () => {
         axios.put("/api/bpmndiagrams/" + props.detailedDiagram.id, updatedDiagram)
             .then(() => {
-                props.fetchDiagrams()
                 if (updatedDiagram !== props.detailedDiagram) {
+                    props.fetchDiagrams()
                     props.setSnackbarOpen(true)
                     props.setSnackbarMessage("Diagram updated!")
                     props.setDetailedDiagram(updatedDiagram)
@@ -64,37 +66,44 @@ function PropertiesList(props: PropertiesListProps) {
                         noValidate
                         autoComplete="off"
                     >
+                        <Typography variant="body2"><b>ID</b>: {props.detailedDiagram.id}</Typography>
                         <TextField
                             variant="outlined"
                             label="Name"
                             name="name"
+                            size="small"
                             value={updatedDiagram.name}
                             onChange={handleChange}/>
                         <TextField
                             variant="outlined"
                             label="Businesskey"
                             name="businessKey"
+                            size="small"
                             value={updatedDiagram.businessKey}
                             onChange={handleChange}/>
                         <TextField
                             variant="outlined"
                             label="Filename"
                             name="filename"
+                            size="small"
                             value={updatedDiagram.filename}
                             onChange={handleChange}/>
                         <TextField
                             variant="outlined"
                             label="Version"
                             name="version"
+                            size="small"
                             value={updatedDiagram.version}
                             onChange={handleChange}/>
                     </Box>
                     :
                     <>
-                        <Typography>Name: {props.detailedDiagram.name}</Typography>
-                        <Typography>Business Key: {props.detailedDiagram.businessKey}</Typography>
-                        <Typography>Filename: {props.detailedDiagram.filename}</Typography>
-                        <Typography>Latest Version: {props.detailedDiagram.version}</Typography>
+                        <Typography variant="body2"><b>ID:</b> {props.detailedDiagram.id}</Typography>
+                        <Typography variant="body2"><b>Name:</b> {props.detailedDiagram.name}</Typography>
+                        <Typography variant="body2"><b>Business Key:</b> {props.detailedDiagram.businessKey}
+                        </Typography>
+                        <Typography variant="body2"><b>Filename:</b> {props.detailedDiagram.filename}</Typography>
+                        <Typography variant="body2"><b>Latest Version:</b> {props.detailedDiagram.version}</Typography>
                     </>
                 }
             </CardContent>
