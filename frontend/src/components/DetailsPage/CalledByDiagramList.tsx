@@ -12,7 +12,6 @@ import {
     Typography
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import BlockIcon from '@mui/icons-material/Block';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
@@ -54,28 +53,16 @@ function CalledByDiagramList(props: CalledByDiagramListProps) {
                             <TableBody>
                                 {
                                     calledByDiagrams.map(diagram => {
-                                        let latestVersion: boolean = false
-                                        props.bpmnDiagrams.forEach(latestdiagram => {
-                                            if (latestdiagram.id === diagram.id) {
-                                                latestVersion = true;
-                                            }
-                                        })
                                         return <TableRow key={diagram.id}>
                                             <TableCell>{diagram.name}</TableCell>
                                             <TableCell align="center">{diagram.businessKey}</TableCell>
                                             <TableCell align="center">{diagram.id}</TableCell>
                                             <TableCell align="center">{diagram.version}</TableCell>
-                                            {latestVersion ?
-                                                <TableCell align="center">
-                                                    <IconButton onClick={() => navigate("/" + diagram.id)}>
-                                                        <ArrowForwardIcon color="secondary"/>
-                                                    </IconButton>
-                                                </TableCell>
-                                                :
-                                                <TableCell align="center">
-                                                    <BlockIcon color="disabled"></BlockIcon>
-                                                </TableCell>
-                                            }
+                                            <TableCell align="center">
+                                                <IconButton onClick={() => navigate("/" + diagram.id)}>
+                                                    <ArrowForwardIcon color="secondary"/>
+                                                </IconButton>
+                                            </TableCell>
                                         </TableRow>
                                     })
                                 }
