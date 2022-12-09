@@ -20,6 +20,8 @@ public record BpmnDiagram(
         List<Comment> comments,
 
         List<BpmnDiagramCalled> calledDiagrams,
+
+        boolean template,
         boolean customDiagram
 ) {
 }
