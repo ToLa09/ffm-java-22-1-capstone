@@ -98,16 +98,4 @@ public class BpmnDiagramService {
         }
         throw new NoSuchElementException("No comment found with this Id to this diagramId");
     }
-
-    public List<BpmnDiagram> getListCalledByDiagrams(String diagramId) {
-        List<BpmnDiagram> listOfCalls = new ArrayList<>();
-        for (BpmnDiagram diagram : repository.findAllByCustomDiagram(false)) {
-            for (BpmnDiagramCalled calledDiagram : diagram.calledDiagrams()) {
-                if (calledDiagram.calledDiagramId().equals(diagramId)) {
-                    listOfCalls.add(diagram);
-                }
-            }
-        }
-        return listOfCalls;
-    }
 }

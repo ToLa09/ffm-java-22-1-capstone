@@ -81,8 +81,7 @@ function DiagramTable(props: DiagramTableProps) {
                             <TableCell align="left">Filename</TableCell>
                             <TableCell align="center">latest Version</TableCell>
                             <TableCell align="center">latest Comments</TableCell>
-                            <TableCell align="center">Nr. of Subprocesses</TableCell>
-                            <TableCell align="center">Nr. of Calls from other Processes</TableCell>
+                            <TableCell align="center">Call Activities/ Calls from other Processes</TableCell>
                             <TableCell align="center">Changeability</TableCell>
                             <TableCell></TableCell>
                         </TableRow>
@@ -106,6 +105,7 @@ function DiagramTable(props: DiagramTableProps) {
                                 <DiagramTableRow
                                     key={diagram.id}
                                     diagram={diagram}
+                                    bpmnDiagrams={props.bpmnDiagrams}
                                     fetchDiagrams={props.fetchDiagrams}
                                     setDetailedDiagramId={props.setDetailedDiagramId}
                                 ></DiagramTableRow>
