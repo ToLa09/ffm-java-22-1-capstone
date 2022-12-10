@@ -47,8 +47,8 @@ export default function DiagramTableRow(props: Props) {
                     <CommentListSimple diagram={props.diagram}/>
                 </TableCell>
                 <TableCell align="center">
-                    {props.diagram.calledDiagrams !== null && props.diagram.calledDiagrams.length}<> /</>
-                    {calledByDiagrams !== null && calledByDiagrams.length}
+                    {props.diagram.calledDiagrams !== null && props.diagram.calledDiagrams.length} /
+                    <> </>{calledByDiagrams !== null && calledByDiagrams.length}
                 </TableCell>
                 <TableCell align="center">{props.diagram.template ? <>template</> : <>startable</>}</TableCell>
                 <TableCell align="center">{props.diagram.customDiagram ? "changeable" : "immutable"}</TableCell>
