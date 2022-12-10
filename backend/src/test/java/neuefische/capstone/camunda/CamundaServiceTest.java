@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -54,7 +55,7 @@ class CamundaServiceTest {
                 , 1
                 , new ArrayList<>()
                 , new ArrayList<>()
-                , true
+                , false
                 , false
         );
 
@@ -87,6 +88,7 @@ class CamundaServiceTest {
 
         when(repository.existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0")).thenReturn(false);
         when(repository.insert(mockProcess)).thenReturn(mockProcess);
+        when(repository.findAllByCustomDiagram(false)).thenReturn(List.of());
         //when
         service.writeCamundaProcessesToDB();
         RecordedRequest recordedRequest = mockWebServer.takeRequest();
@@ -111,10 +113,8 @@ class CamundaServiceTest {
         } catch (CamundaResponseException e) {
             //then
             RecordedRequest recordedRequest = mockWebServer.takeRequest();
-            HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition");
             assertEquals("Response Body is null", e.getMessage());
             assertEquals("GET", recordedRequest.getMethod());
-            assertEquals(expectedUrl, recordedRequest.getRequestUrl());
         }
     }
 
@@ -154,8 +154,15 @@ class CamundaServiceTest {
                         """)
                 .addHeader("Content-Type", "application/json")
         );
+        mockWebServer.enqueue(new MockResponse()
+                .setBody("""
+                        []
+                        """)
+                .addHeader("Content-Type", "application/json")
+        );
 
         when(repository.existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0")).thenReturn(true);
+        when(repository.findById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0")).thenReturn(Optional.of(mockProcess));
         //when
         service.writeCamundaProcessesToDB();
         //then
@@ -163,6 +170,7 @@ class CamundaServiceTest {
         HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition");
         verify(repository).existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0");
         verify(repository, never()).insert(mockProcess);
+        verify(repository).save(mockProcess);
         assertEquals("GET", recordedRequest.getMethod());
         assertEquals(expectedUrl, recordedRequest.getRequestUrl());
     }
@@ -216,10 +224,18 @@ class CamundaServiceTest {
                         """)
                 .addHeader("Content-Type", "application/json")
         );
+        mockWebServer.enqueue(new MockResponse()
+                .setBody("""
+                        []
+                        """)
+                .addHeader("Content-Type", "application/json")
+        );
 
         when(repository.findAllByCustomDiagram(false)).thenReturn(mockDiagramList);
         when(repository.existsById(mockDiagram.id())).thenReturn(true);
         doNothing().when(repository).delete(mockDiagramToDelete);
+        when(repository.findById(mockDiagram.id())).thenReturn(Optional.of(mockDiagram));
+        when(repository.findById(mockDiagramToDelete.id())).thenReturn(Optional.of(mockDiagramToDelete));
         //when
         service.writeCamundaProcessesToDB();
         //then
@@ -292,7 +308,8 @@ class CamundaServiceTest {
                 .setBody("""
                         []
                         """)
-                .addHeader("Content-Type", "application/json"));
+                .addHeader("Content-Type", "application/json")
+        );
         //when
         List<BpmnDiagramCalled> actual = service.getCalledBpmnDiagramsByDiagramId("create-user:2:c29dba0b-6a5e-11ed-aa1c-0a424f65c1c0");
         List<BpmnDiagramCalled> expected = List.of();
