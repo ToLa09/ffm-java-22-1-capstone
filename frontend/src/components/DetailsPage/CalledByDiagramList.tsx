@@ -28,7 +28,7 @@ function CalledByDiagramList(props: CalledByDiagramListProps) {
         let calledByDiagrams: BpmnDiagramModel[] = []
         props.bpmnDiagrams.forEach((latestDiagram) => {
             latestDiagram.calledDiagrams.forEach((calledDiagram) => {
-                if (calledDiagram.calledDiagramId === props.detailedDiagramId) {
+                if (calledDiagram.id === props.detailedDiagramId) {
                     calledByDiagrams.push(latestDiagram)
                 }
             })

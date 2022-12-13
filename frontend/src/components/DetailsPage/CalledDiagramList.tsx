@@ -26,11 +26,11 @@ function CalledDiagramList(props: CalledDiagramListProps) {
                     </TableHead>
                     <TableBody>
                         {
-                            props.diagram.calledDiagrams.map(({calledDiagramId, calledFromActivities}) => {
+                            props.diagram.calledDiagrams.map(({id, calledFromActivityIds}) => {
                                 return <CalledDiagramListRow
-                                    key={calledDiagramId}
-                                    calledDiagramId={calledDiagramId}
-                                    calledFromActivities={calledFromActivities}
+                                    key={id}
+                                    id={id}
+                                    calledFromActivityIds={calledFromActivityIds}
                                     bpmnDiagrams={props.bpmnDiagrams}
                                 />
                             })

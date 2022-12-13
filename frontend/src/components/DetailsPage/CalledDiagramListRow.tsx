@@ -5,8 +5,8 @@ import {useNavigate} from "react-router-dom";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 type CalledDiagramListRowProps = {
-    calledDiagramId: string
-    calledFromActivities: string []
+    id: string
+    calledFromActivityIds: string []
     bpmnDiagrams: BpmnDiagramModel[]
 }
 
@@ -27,24 +27,24 @@ function CalledDiagramListRow(props: CalledDiagramListRowProps) {
 
     const getDiagramFromList = useCallback(() => {
         props.bpmnDiagrams.forEach((diagram) => {
-            if (diagram.id === props.calledDiagramId) {
+            if (diagram.id === props.id) {
                 setDiagram(diagram)
             }
         })
-    }, [props.bpmnDiagrams, props.calledDiagramId])
+    }, [props.bpmnDiagrams, props.id])
 
     useEffect(getDiagramFromList, [getDiagramFromList])
 
-    const handleNavigate = useCallback(() => navigate("/" + props.calledDiagramId)
-        , [navigate, props.calledDiagramId])
+    const handleNavigate = useCallback(() => navigate("/" + props.id)
+        , [navigate, props.id])
 
     return (
-        <TableRow key={props.calledDiagramId}>
+        <TableRow key={props.id}>
             <TableCell>{diagram.name}</TableCell>
             <TableCell align="center">{diagram.businessKey}</TableCell>
             <TableCell align="center">{diagram.version}</TableCell>
             <TableCell align="center">
-                {props.calledFromActivities.map((activity) => {
+                {props.calledFromActivityIds.map((activity) => {
                     return <Typography key={activity} variant="body2">{activity}</Typography>
                 })}
             </TableCell>

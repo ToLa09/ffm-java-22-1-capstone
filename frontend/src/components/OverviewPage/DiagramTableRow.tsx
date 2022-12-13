@@ -27,7 +27,7 @@ export default function DiagramTableRow(props: Props) {
         let calledByDiagrams: BpmnDiagramModel[] = []
         props.bpmnDiagrams.forEach((latestDiagram) => {
             latestDiagram.calledDiagrams.forEach((calledDiagram) => {
-                if (calledDiagram.calledDiagramId === props.diagram.id) {
+                if (calledDiagram.id === props.diagram.id) {
                     calledByDiagrams.push(latestDiagram)
                 }
             })

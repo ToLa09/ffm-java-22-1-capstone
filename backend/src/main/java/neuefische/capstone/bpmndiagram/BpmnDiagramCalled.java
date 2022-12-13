@@ -1,9 +1,11 @@
 package neuefische.capstone.bpmndiagram;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public record BpmnDiagramCalled(
-        String calledDiagramId,
-        List<String> calledFromActivities
+        @JsonProperty("id") String calledDiagramId,
+        List<String> calledFromActivityIds
 ) {
 }
