@@ -8,8 +8,8 @@ export type BpmnDiagramModel = {
     version: number
     comments: CommentModel[]
     calledDiagrams: {
-        calledDiagramId: string,
-        calledFromActivities: string[]
+        id: string,
+        calledFromActivityIds: string[]
     }[]
     template: boolean
     customDiagram: boolean
