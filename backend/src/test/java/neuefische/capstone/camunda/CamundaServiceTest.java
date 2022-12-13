@@ -86,15 +86,13 @@ class CamundaServiceTest {
                         """)
                 .addHeader("Content-Type", "application/json"));
 
-        when(repository.existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0")).thenReturn(false);
         when(repository.insert(mockProcess)).thenReturn(mockProcess);
         when(repository.findAllByCustomDiagram(false)).thenReturn(List.of());
         //when
         service.writeCamundaProcessesToDB();
         RecordedRequest recordedRequest = mockWebServer.takeRequest();
-        HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition");
+        HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition/");
         //then
-        verify(repository).existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0");
         verify(repository).insert(mockProcess);
         assertEquals("GET", recordedRequest.getMethod());
         assertEquals(expectedUrl,recordedRequest.getRequestUrl());
@@ -110,7 +108,7 @@ class CamundaServiceTest {
         try {
             service.writeCamundaProcessesToDB();
             fail();
-        } catch (CamundaResponseException e) {
+        } catch (NullPointerException e) {
             //then
             RecordedRequest recordedRequest = mockWebServer.takeRequest();
             assertEquals("Response Body is null", e.getMessage());
@@ -161,14 +159,12 @@ class CamundaServiceTest {
                 .addHeader("Content-Type", "application/json")
         );
 
-        when(repository.existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0")).thenReturn(true);
         when(repository.findById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0")).thenReturn(Optional.of(mockProcess));
         //when
         service.writeCamundaProcessesToDB();
         //then
         RecordedRequest recordedRequest = mockWebServer.takeRequest();
-        HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition");
-        verify(repository).existsById("Process_create-diagram:1:31313844-699b-11ed-aa1c-0a424f65c1c0");
+        HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition/");
         verify(repository, never()).insert(mockProcess);
         verify(repository).save(mockProcess);
         assertEquals("GET", recordedRequest.getMethod());
