@@ -1,16 +1,17 @@
 package neuefische.capstone.camunda;
 
 import neuefische.capstone.bpmndiagram.BpmnDiagram;
-import neuefische.capstone.bpmndiagram.BpmnDiagramCalled;
 import neuefische.capstone.bpmndiagram.BpmnDiagramRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
@@ -23,6 +24,7 @@ public class CamundaService {
 
     private static final String BODY_IS_NULL_ERROR = "Response Body is null";
     private static final String ENTITY_IS_NULL_ERROR = "Response Entity is null";
+    public static final String CAMUNDA_PROCESSES_ENDPOINT = "/process-definition/";
 
     public CamundaService(BpmnDiagramRepository repository, @Value("${camunda.api.baseUrl}") String baseUrl) {
         this.webClient = WebClient.create(baseUrl);
@@ -30,89 +32,58 @@ public class CamundaService {
     }
 
     public void writeCamundaProcessesToDB() {
-        ResponseEntity<List<CamundaProcessModel>> responseEntity = requireNonNull(webClient
-                        .get()
-                        .uri("/process-definition")
-                        .retrieve()
-                        .toEntityList(CamundaProcessModel.class)
-                        .block()
-                , ENTITY_IS_NULL_ERROR);
-
-
-        List<CamundaProcessModel> processList = requireNonNull(responseEntity.getBody(), BODY_IS_NULL_ERROR);
-
-        if (processList.isEmpty()) {
-            throw new CamundaResponseException(BODY_IS_NULL_ERROR);
-        }
+        List<CamundaProcessModel> processList = fetchFromCamundaEngine(
+                CAMUNDA_PROCESSES_ENDPOINT,
+                new ParameterizedTypeReference<>() {
+                }
+        );
 
         for (CamundaProcessModel camundaProcessModel : processList) {
-            if (!repository.existsById(camundaProcessModel.id())) {
-                BpmnDiagram diagramToInsert = new BpmnDiagram(
-                        camundaProcessModel.id(),
-                        camundaProcessModel.name(),
-                        camundaProcessModel.key(),
-                        camundaProcessModel.resource(),
-                        camundaProcessModel.version(),
-                        new ArrayList<>(),
-                        getCalledBpmnDiagramsByDiagramId(camundaProcessModel.id()),
-                        !camundaProcessModel.startableInTasklist(),
-                        false
-                );
-                repository.insert(diagramToInsert);
-            } else {
-                BpmnDiagram diagramToUpdate = repository
-                        .findById(camundaProcessModel.id())
-                        .orElseThrow(() -> new NoSuchElementException("No element with this ID found"))
-                        .withCalledDiagrams(getCalledBpmnDiagramsByDiagramId(camundaProcessModel.id()));
-                repository.save(diagramToUpdate);
-            }
+            repository.findById(camundaProcessModel.id())
+                    .ifPresentOrElse(
+                            diagram -> repository.save(diagram.withCalledDiagrams(fetchFromCamundaEngine(
+                                    CAMUNDA_PROCESSES_ENDPOINT + camundaProcessModel.id() + "/static-called-process-definitions",
+                                    new ParameterizedTypeReference<>() {
+                                    }
+                            )))
+                            , () -> repository.insert(new BpmnDiagram(
+                                    camundaProcessModel.id(),
+                                    camundaProcessModel.name(),
+                                    camundaProcessModel.key(),
+                                    camundaProcessModel.resource(),
+                                    camundaProcessModel.version(),
+                                    Collections.emptyList(),
+                                    fetchFromCamundaEngine(
+                                            CAMUNDA_PROCESSES_ENDPOINT + camundaProcessModel.id() + "/static-called-process-definitions",
+                                            new ParameterizedTypeReference<>() {
+                                            }
+                                    ),
+                                    !camundaProcessModel.startableInTasklist(),
+                                    false
+                            ))
+                    );
         }
-        for (BpmnDiagram diagram : repository.findAllByCustomDiagram(false)) {
-            for (CamundaProcessModel process : processList) {
-                if (diagram.id().equals(process.id())) {
-                    return;
-                }
-                repository.delete(diagram);
-            }
-        }
+        Set<String> processIds = processList.stream().map(CamundaProcessModel::id).collect(Collectors.toSet());
+        repository.deleteByIdNotIn(processIds);
     }
 
     public String getXmlFileByDiagramId(String diagramId) {
-        ResponseEntity<CamundaProcessXmlModel> responseEntity = requireNonNull(webClient
-                        .get()
-                        .uri("/process-definition/" + diagramId + "/xml")
-                        .retrieve()
-                        .toEntity(CamundaProcessXmlModel.class)
-                        .block()
-                , ENTITY_IS_NULL_ERROR);
-
-        return requireNonNull(responseEntity.getBody(), BODY_IS_NULL_ERROR).xml();
+        return fetchFromCamundaEngine(
+                CAMUNDA_PROCESSES_ENDPOINT + diagramId + "/xml",
+                new ParameterizedTypeReference<CamundaProcessXmlModel>() {
+                }
+        ).xml();
     }
 
-    public List<BpmnDiagramCalled> getCalledBpmnDiagramsByDiagramId(String diagramId) {
-        ResponseEntity<List<CamundaCalledProcessesModel>> responseEntity = requireNonNull(webClient
+    private <T> T fetchFromCamundaEngine(String uri, ParameterizedTypeReference<T> type) {
+        ResponseEntity<T> responseEntity = requireNonNull(webClient
                         .get()
-                        .uri("/process-definition/" + diagramId + "/static-called-process-definitions")
+                        .uri(uri)
                         .retrieve()
-                        .toEntityList(CamundaCalledProcessesModel.class)
+                        .toEntity(type)
                         .block()
                 , ENTITY_IS_NULL_ERROR);
 
-
-        List<CamundaCalledProcessesModel> calledProcesses = requireNonNull(responseEntity.getBody(), BODY_IS_NULL_ERROR);
-
-        if (calledProcesses.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        List<BpmnDiagramCalled> calledDiagrams = new ArrayList<>();
-
-        for (CamundaCalledProcessesModel calledProcess : calledProcesses) {
-            calledDiagrams.add(new BpmnDiagramCalled(
-                    calledProcess.id(),
-                    calledProcess.calledFromActivityIds()
-            ));
-        }
-        return calledDiagrams;
+        return requireNonNull(responseEntity.getBody(), BODY_IS_NULL_ERROR);
     }
 }
