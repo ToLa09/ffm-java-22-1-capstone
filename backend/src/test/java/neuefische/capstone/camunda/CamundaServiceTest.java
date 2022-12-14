@@ -6,10 +6,7 @@ import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CamundaServiceTest {
     private static MockWebServer mockWebServer;
     private final BpmnDiagramRepository repository = mock(BpmnDiagramRepository.class);
@@ -45,6 +43,7 @@ class CamundaServiceTest {
     }
 
     @Test
+    @Order(3)
     void writeCamundaProcessesToDB_correctResponse() throws InterruptedException {
         //given
         BpmnDiagram mockProcess = new BpmnDiagram(
@@ -99,6 +98,7 @@ class CamundaServiceTest {
     }
 
     @Test
+    @Order(1)
     void writeCamundaProcessesToDB_BodyNull() throws InterruptedException {
         //given
         mockWebServer.enqueue(new MockResponse()
@@ -108,7 +108,7 @@ class CamundaServiceTest {
         try {
             service.writeCamundaProcessesToDB();
             fail();
-        } catch (NullPointerException e) {
+        } catch (CamundaResponseException e) {
             //then
             HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition/");
             RecordedRequest recordedRequest = mockWebServer.takeRequest();
@@ -119,6 +119,7 @@ class CamundaServiceTest {
     }
 
     @Test
+    @Order(2)
     void writeCamundaProcessesToDB_IDexistsAlready() throws InterruptedException {
         //given
         BpmnDiagram mockProcess = new BpmnDiagram(
@@ -171,9 +172,11 @@ class CamundaServiceTest {
         verify(repository).save(mockProcess);
         assertEquals("GET", recordedRequest.getMethod());
         assertEquals(expectedUrl, recordedRequest.getRequestUrl());
+        mockWebServer.takeRequest();
     }
 
     @Test
+    @Order(4)
     void deleteProcessesWhichAreDeletedInCamundaEngine() {
         //given
         BpmnDiagram mockDiagramToDelete = new BpmnDiagram(
@@ -242,6 +245,7 @@ class CamundaServiceTest {
     }
 
     @Test
+    @Order(5)
     void getXmlByDiagramId() {
         //given
         String diagramId = "create-user:2:c29dba0b-6a5e-11ed-aa1c-0a424f65c1c0";
