@@ -84,6 +84,11 @@ public class CamundaService {
                         .block()
                 , ENTITY_IS_NULL_ERROR);
 
-        return requireNonNull(responseEntity.getBody(), BODY_IS_NULL_ERROR);
+        T responseBody = responseEntity.getBody();
+
+        if (responseBody == null) {
+            throw new CamundaResponseException(BODY_IS_NULL_ERROR);
+        }
+        return responseBody;
     }
 }
