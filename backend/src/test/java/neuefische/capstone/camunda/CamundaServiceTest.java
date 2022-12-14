@@ -110,9 +110,11 @@ class CamundaServiceTest {
             fail();
         } catch (NullPointerException e) {
             //then
+            HttpUrl expectedUrl = mockWebServer.url(String.format("http://localhost:%s", mockWebServer.getPort()) + "/process-definition/");
             RecordedRequest recordedRequest = mockWebServer.takeRequest();
             assertEquals("Response Body is null", e.getMessage());
             assertEquals("GET", recordedRequest.getMethod());
+            assertEquals(expectedUrl, recordedRequest.getRequestUrl());
         }
     }
 

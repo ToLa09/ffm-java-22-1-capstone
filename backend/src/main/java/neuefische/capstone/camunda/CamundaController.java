@@ -17,7 +17,7 @@ public class CamundaController {
     public void writeCamundaProcessesToDB() {
         try {
             service.writeCamundaProcessesToDB();
-        } catch (NullPointerException e) {
+        } catch (CamundaResponseException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
