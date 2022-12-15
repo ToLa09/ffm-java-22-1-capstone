@@ -5,6 +5,7 @@ import neuefische.capstone.bpmndiagram.BpmnDiagramRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -31,6 +32,7 @@ public class CamundaService {
         this.repository = repository;
     }
 
+    @Scheduled(cron = "0 */5 * * * *")
     public void writeCamundaProcessesToDB() {
         List<CamundaProcessModel> processList = fetchFromCamundaEngine(
                 CAMUNDA_PROCESSES_ENDPOINT,
