@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import './css/App.css';
 import DiagramTable from "./components/OverviewPage/DiagramTable";
 import AddForm from "./components/AddPage/AddForm";
-import {AppBar, createTheme, IconButton, ThemeProvider, Toolbar, Typography} from "@mui/material";
+import {AppBar, createTheme, ThemeProvider, Toolbar, Typography} from "@mui/material";
 import DiagramDetails from "./components/DetailsPage/DiagramDetails";
 import {BpmnDiagramModel} from "./model/BpmnDiagramModel";
 import axios from "axios";
@@ -42,9 +42,7 @@ function App() {
                 <header>
                     <AppBar position="sticky">
                         <Toolbar>
-                            <IconButton size="large" edge="start" color="inherit" aria-label="logo">
-                                <AccountTreeIcon fontSize="large"/>
-                            </IconButton>
+                            <AccountTreeIcon fontSize="large"/>
                             <Typography variant="h2" color="inherit">BPMN-Library</Typography>
                         </Toolbar>
                     </AppBar>

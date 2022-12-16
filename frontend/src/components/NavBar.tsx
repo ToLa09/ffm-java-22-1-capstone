@@ -21,7 +21,7 @@ function NavBar(props: NavBarProps) {
         if (location.pathname === "/add") {
             setTab("Add")
         }
-        if (location.pathname.match("^/.*.{39}$")) {
+        if (location.pathname.match("^/.*.{36}$")) {
             setTab("Details")
         }
     }
@@ -40,7 +40,7 @@ function NavBar(props: NavBarProps) {
                     >
                         <Tab onClick={() => navigate("/")} value="Overview" label="Process Overview" color="primary"/>
                         <Tab onClick={() => navigate("/add")} value="Add" label="Add Process"/>
-                        {(props.detailedDiagramId !== "" || location.pathname.match("^/.*.{39}$")) &&
+                        {(props.detailedDiagramId !== "" || location.pathname.match("^/.*.{36}$")) &&
                             <Tab onClick={() => navigate("/" + props.detailedDiagramId)} value="Details"
                                  label="Process Details"/>
                         }
